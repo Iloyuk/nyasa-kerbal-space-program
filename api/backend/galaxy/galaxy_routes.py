@@ -18,7 +18,7 @@ def run_program(query):
 
 #Get all item from Galaxies.
 @galaxy.route('/galaxies', methods=['GET'])
-def get_products():
+def get_galaxy():
     query = '''
         SELECT * 
         FROM Galaxy
@@ -28,7 +28,7 @@ def get_products():
 
 #Get specific info of a galaxy
 @galaxy.route('/galaxies/<GalaxyID>', methods=['GET'])
-def get_product_detail (id):
+def get_galaxy_detail (id):
     query = f'''
         SELECT * 
         FROM Galaxy
