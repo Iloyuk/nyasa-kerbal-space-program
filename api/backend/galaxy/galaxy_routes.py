@@ -88,16 +88,6 @@ def get_starsystem_numStars (GID):
     '''
     run_program(query)
 
-
-@galaxy.route('/galaxies/<GalaxyID>/starsystems/', methods=['GET'])
-def get_starsystem_numStars (GID):
-    query = f'''
-        SELECT StarSystem.SystemName, StarSystem.NumStars
-        FROM StarSystem
-        WHERE StarSystem.GalaxyID = str{(GID)}
-    '''
-    run_program(query)
-
 #-------------------------------------------------------------
 
 @galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars', methods=['GET'])
