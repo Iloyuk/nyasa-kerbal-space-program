@@ -8,9 +8,6 @@ from enum import Enum
 
 constellation = Blueprint('constellation', __name__)
 
-class Hemisphere(Enum):
-    North = 1
-    South = 2
 
 def run_program(query):
     cursor = db.get_db().cursor()

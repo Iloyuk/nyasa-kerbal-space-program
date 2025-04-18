@@ -36,16 +36,67 @@ def get_galaxy_detail (id):
     '''
     run_program(query)
 
+#Put specific info into galaxies
+@galaxy.route('/galaxies/<GalaxyID>', methods = ['PUT'])
+def update_product():
+    galaxy_info = request.json
+    current_app.logger.info(galaxy_info)
+    return "Success"
+
+#--------------------------------------------------------------
 
 #Get all star systems in a galaxy
-@galaxy.route('/starsystems')
-def get_starsystems ():
-    query = '''
-        SELECT s.SystemName
-        FROM Galaxy JOIN StarSystem s
-        WHERE Galaxy.GalaxyID = s.GalaxyID
+@galaxy.route('/galaxies/<GalaxyID>/starsystems', methods=['GET'])
+def get_starsystems (GID):
+    query = f'''
+        SELECT StarSystem.SystemName
+        FROM StarSystem
+        WHERE StarSystem.GalaxyID = str{(GID)}
     '''
     run_program(query)
+
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>', methods=['GET'])
+def get_starsystem_info (GID, SID):
+    query = f'''
+        SELECT StarSystem.SystemName
+        FROM StarSystem
+        WHERE Galaxy.GalaxyID = str{(GID)} AND StarSystem.SystemID = str{(SID)}
+    '''
+    run_program(query)
+
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>', methods = ['PUT'])
+def update_product():
+    galaxy_info = request.json
+    current_app.logger.info(galaxy_info)
+    return "Success"
+
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<DistInLY>')
+def get_starsystem_distInLY (GID, DLY):
+    query = f'''
+        SELECT StarSystem.SystemName
+        FROM StarSystem
+        WHERE StarSystem.GalaxyID = str{(GID)} AND StarSystem.DistInLY <= str{(DLY)}
+    '''
+    run_program(query)
+
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/numStars')
+def get_starsystem_numStars (GID):
+    query = f'''
+        SELECT StarSystem.SystemName, StarSystem.NumStars
+        FROM StarSystem
+        WHERE StarSystem.GalaxyID = str{(GID)}
+    '''
+    run_program(query)
+
+#-------------------------------------------------------------
+
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars')
+def get_stars (GID, SID):
+    query = f'''
+        SELECT Star.StarName
+        FROM Star
+        WHERE Star.
+    '''
 
 
 
