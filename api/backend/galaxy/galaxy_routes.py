@@ -38,7 +38,7 @@ def get_galaxy_detail (id):
 
 #Put specific info into galaxies
 @galaxy.route('/galaxies/<GalaxyID>', methods = ['PUT'])
-def update_product():
+def update_galaxy():
     galaxy_info = request.json
     current_app.logger.info(galaxy_info)
     return "Success"
@@ -65,12 +65,12 @@ def get_starsystem_info (GID, SID):
     run_program(query)
 
 @galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>', methods = ['PUT'])
-def update_product():
-    galaxy_info = request.json
-    current_app.logger.info(galaxy_info)
+def update_system():
+    system_info = request.json
+    current_app.logger.info(system_info)
     return "Success"
 
-@galaxy.route('/galaxies/<GalaxyID>/starsystems/<DistInLY>')
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<DistInLY>', methods=['GET'])
 def get_starsystem_distInLY (GID, DLY):
     query = f'''
         SELECT StarSystem.SystemName
@@ -79,7 +79,17 @@ def get_starsystem_distInLY (GID, DLY):
     '''
     run_program(query)
 
-@galaxy.route('/galaxies/<GalaxyID>/starsystems/numStars')
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/numStars', methods=['GET'])
+def get_starsystem_numStars (GID):
+    query = f'''
+        SELECT StarSystem.SystemName, StarSystem.NumStars
+        FROM StarSystem
+        WHERE StarSystem.GalaxyID = str{(GID)}
+    '''
+    run_program(query)
+
+
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/', methods=['GET'])
 def get_starsystem_numStars (GID):
     query = f'''
         SELECT StarSystem.SystemName, StarSystem.NumStars
@@ -90,13 +100,119 @@ def get_starsystem_numStars (GID):
 
 #-------------------------------------------------------------
 
-@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars')
-def get_stars (GID, SID):
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars', methods=['GET'])
+def get_stars (SID):
     query = f'''
-        SELECT Star.StarName
+        SELECT *
         FROM Star
-        WHERE Star.
+        WHERE Star.SystemID = str{(SID)}
     '''
+    run_program(query)
+
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>', methods=['GET'])
+def get_stars_info (SID):
+    query = f'''
+        SELECT *
+        FROM Star
+        WHERE Star.StarID = str{(SID)}
+    '''
+    run_program(query)
+
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>', methods = ['PUT'])
+def update_star():
+    star_info = request.json
+    current_app.logger.info(star_info)
+    return "Success"
+
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>', methods = ['POST'])
+def add_star():
+    star_info = request.json
+
+    starID = star_info['StarID']
+    systemID = star_info['SystemID']
+    constID = star_info['ConstID']
+    starName = star_info['StarName']
+    mass = star_info['Mass']
+    temperature = star_info['Temperature']
+    spectralType = star_info['SpectralType']
+
+    query = f'''
+        INSERT INTO Star (StarID, SystemID, ConstID, StarName, Mass, Temperature, SpectralType)
+        VALUES (str{(starID)}, str{(systemID)}, str{(constID)}, {starName}, str{(mass)}, str{(temperature)}, {spectralType})
+    '''
+    run_program(query)
+
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<Mass>', methods=['GET'])
+def search_star_from_mass(mass):
+    query = f'''
+    SELECT StarName, Mass
+    FROM Star
+    WHERE Mass < str{(mass)}
+    '''
+    run_program(query)
+
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<Temperature>', methods=['GET'])
+def search_star_from_temperature(temp):
+    query = f'''
+    SELECT StarName, Temperature
+    FROM Star
+    WHERE Mass < str{(temp)}
+    '''
+    run_program(query)
+
+#---------------------------------------------------------------------------------
+
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>/planets', methods=['GET'])
+def get_planet (SID):
+    query = f'''
+        SELECT Planets.PlanetName
+        FROM Orbits JOIN Planets
+        WHERE Orbits.StarID = str{(SID)} 
+    '''
+    run_program(query)
+
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>/planets/<PlanetID>', methods=['GET'])
+def get_planet_info (PID):
+    query = f'''
+        SELECT Planets.PlanetName
+        FROM Planets
+        WHERE Planet.PlanetID = str{(PID)}
+    '''
+    run_program(query)
+
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>/planets/<PlanetID>', methods=['PUT'])
+def update_planet ():
+    planet_info = request.json
+    current_app.logger.info(planet_info)
+    return "Success"
+
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>/planets/<PlanetID>', methods=['POST'])
+def add_planet ():
+    planet_info = request.json
+
+    planetID = planet_info['PlanetID']
+    planetName = planet_info['PlanetName']
+    planetType = planet_info['PlanetType'] 
+    mass = planet_info['Mass'] 
+    numMoons = planet_info['NumMoons']
+    eccentricity = planet_info['Eccentricity'] 
+    inclination = planet_info['Inclination']
+    query = f'''
+        INSERT INTO Planet (PlanetID, PlanetName, PlanetType, Mass, NumMoons, Eccentricity, Inclination)
+        VALUES (str{(planetID)}, {planetName}, {planetType}, str{(mass)}, str{(numMoons)}, str{(eccentricity)}, str{(inclination)})
+    '''
+    run_program(query)
+
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>/planets/<PlanetID>', methods=['DELETE'])
+def delete_planet (PID):
+    query = f'''
+        DELETE FROM Planet
+        WHERE Planet.PlanetID = str{(PID)}
+    '''
+    run_program(query)
+
+
+
 
 
 
