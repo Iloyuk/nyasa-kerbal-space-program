@@ -80,3 +80,27 @@ if st.button('Act as Alex, a student who enjoys studying astronomy',
     st.session_state['role'] = 'student'
     st.session_state['first_name'] = 'Alex'
     st.switch_page('pages/100_Student_Home.py')
+
+if st.button('Act as Carl, a mission control engineer',
+             type='primary',
+             use_container_width=True):
+    st.session_state[('authenticated')] = True
+    st.session_state['role'] = 'mission_control_engineer',
+    st.session_state['first_name'] = 'Carl'
+    st.switch_page('pages/110_MS_Engineer_Home.py')
+
+if st.button('Act as Sammy, an astronomy research scientist',
+             type='primary',
+             use_container_width=True):
+    st.session_state[('authenticated')] = True
+    st.session_state['role'] = 'research_scientist',
+    st.session_state['first_name'] = 'Sammy'
+    st.switch_page('pages/110_MS_Engineer_Home.py')
+
+if st.button('Act as Lexie, a hobbyist astrologer',
+             type='primary',
+             use_container_width=True):
+    st.session_state[('authenticated')] = True
+    st.session_state['role'] = 'astrologer',
+    st.session_state['first_name'] = 'Lexie'
+    st.switch_page('pages/110_MS_Engineer_Home.py')
