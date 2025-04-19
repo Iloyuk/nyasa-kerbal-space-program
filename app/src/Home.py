@@ -84,7 +84,7 @@ if st.button('Act as Alex, a student who enjoys studying astronomy',
 if st.button('Act as Carl, a mission control engineer',
              type='primary',
              use_container_width=True):
-    st.session_state[('authenticated')] = True
+    st.session_state['authenticated'] = True
     st.session_state['role'] = 'mission_control_engineer',
     st.session_state['first_name'] = 'Carl'
     st.switch_page('pages/110_MS_Engineer_Home.py')
@@ -92,15 +92,15 @@ if st.button('Act as Carl, a mission control engineer',
 if st.button('Act as Sammy, an astronomy research scientist',
              type='primary',
              use_container_width=True):
-    st.session_state[('authenticated')] = True
+    st.session_state['authenticated'] = True
     st.session_state['role'] = 'research_scientist',
     st.session_state['first_name'] = 'Sammy'
-    st.switch_page('pages/110_MS_Engineer_Home.py')
+    st.switch_page('pages/120_Scientist_Home.py')
 
 if st.button('Act as Lexie, a hobbyist astrologer',
              type='primary',
              use_container_width=True):
-    st.session_state[('authenticated')] = True
+    st.session_state['authenticated'] = True
     st.session_state['role'] = 'astrologer',
     st.session_state['first_name'] = 'Lexie'
-    st.switch_page('pages/110_MS_Engineer_Home.py')
+    st.switch_page('pages/130_Astrologist_Home.py')
