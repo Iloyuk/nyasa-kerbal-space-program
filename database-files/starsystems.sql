@@ -22,7 +22,6 @@ DROP TABLE IF EXISTS Astronaut;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
-
 /*
  Create tables
  */
@@ -39,7 +38,7 @@ CREATE TABLE IF NOT EXISTS StarSystem (
     SystemID INT PRIMARY KEY,
     GalaxyID INT NOT NULL,
     SystemName VARCHAR(100) UNIQUE,
-    DistInYL INT NOT NULL,
+    DistInLY INT NOT NULL,
     SystemType ENUM('Binary','Multiple') NOT NULL,
     NumStars INT NOT NULL,
     FOREIGN KEY (GalaxyID) REFERENCES Galaxy(GalaxyID)
@@ -223,7 +222,7 @@ VALUES
 (9, 'Taurus', 'Tau', 'North', 'Aldebaran', 'Dec', 'Contains the Pleiades and Hyades clusters'),
 (10, 'Leo', 'Leo', 'North', 'Regulus', 'Mar', 'Recognizable by a sickle-shaped head');
 
-INSERT INTO StarSystem (SystemID, GalaxyID, SystemName, DistInYL, SystemType, NumStars)
+INSERT INTO StarSystem (SystemID, GalaxyID, SystemName, DistInLY, SystemType, NumStars)
 VALUES
 (1, 1, 'Alpha Centauri', 4, 'Multiple', 3),
 (2, 2, 'Almach System', 350, 'Binary', 2),

@@ -23,6 +23,6 @@ services:
     container_name: mysql-db-test
     hostname: db
     volumes:
-      - ./database-files:/docker-entrypoint-initdb.d/:ro
+      - ./database-files:/docker-entrypoint-initdb.d/:starsystems.sql
     ports:
       - 3201:3306
