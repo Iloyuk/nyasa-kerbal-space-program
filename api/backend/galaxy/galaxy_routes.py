@@ -178,29 +178,38 @@ def get_star_temp (GalaxyID, SystemID):
 @galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/Temperature/<Temperature>', methods=['GET'])
 def search_star_from_temperature(GalaxyID, SystemID, Temperature):
     query = f'''
-    SELECT StarName, Temperature
+    SELECT Star.StarName, Star.Temperature
     FROM Star
     WHERE Temperature < {(Temperature)} AND Star.SystemID = {(SystemID)}
+    '''
+    return run_program(query)
+
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>/orbits', methods=['GET'])
+def get_star_orbits(GalaxyID, SystemID,StarID):
+    query = f'''
+    SELECT Planets.PlanetName
+    FROM Orbits JOIN Planets
+    WHERE Orbits.StarID = {(StarID)}
     '''
     return run_program(query)
 
 #---------------------------------------------------------------------------------
 
 @galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>/planets', methods=['GET'])
-def get_planet (SID):
+def get_planet (GalaxyID, SystemID, StarID):
     query = f'''
         SELECT Planets.PlanetName
         FROM Orbits JOIN Planets
-        WHERE Orbits.StarID = str{(SID)} 
+        WHERE Orbits.StarID = {(StarID)} 
     '''
     run_program(query)
 
 @galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>/planets/<PlanetID>', methods=['GET'])
-def get_planet_info (PID):
+def get_planet_info (GalaxyID, SystemID, StarID, PlanetID):
     query = f'''
         SELECT Planets.PlanetName
         FROM Planets
-        WHERE Planet.PlanetID = str{(PID)}
+        WHERE Planet.PlanetID = {(PlanetID)}
     '''
     return run_program(query)
 
@@ -228,10 +237,10 @@ def add_planet ():
     return run_program(query)
 
 @galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>/planets/<PlanetID>', methods=['DELETE'])
-def delete_planet (PID):
+def delete_planet (GalaxyID, SystemID, StarID, PlanetID):
     query = f'''
         DELETE FROM Planet
-        WHERE Planet.PlanetID = str{(PID)}
+        WHERE Planet.PlanetID = str{(PlanetID)}
     '''
     return run_program(query)
 
