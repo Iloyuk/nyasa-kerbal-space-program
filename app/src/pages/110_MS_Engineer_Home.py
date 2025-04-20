@@ -21,8 +21,4 @@ with st.form("help"):
         data = requests.get('http://api:4000/missions/objective').json()
     st.form_submit_button('Update')
     st.dataframe(data)
-
-if st.button('Manage Missions',
-             type='primary',
-             use_container_width=True):
     
