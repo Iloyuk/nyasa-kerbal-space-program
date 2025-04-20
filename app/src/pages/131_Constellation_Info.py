@@ -11,8 +11,11 @@ SideBarLinks()
 data = {}
 try:
     data = requests.get('http://api:4000/constellation').json()
+    st.title("Information on all the constellations!")
+    for constellation in data:
+        st.write(f"### {constellation['ConstName']}")
+        st.write(f"Also abbreviated as {constellation['Abbreviation']}. Located in the "
+                 f"{constellation['Hemisphere']}ern hemisphere, and its brightest star "
+                 f"is {constellation['BrightestStar']}. A fun fact: {constellation['Notes']}.")
 except:
-    st.write("**Important**: Could not connect to sample api, so using dummy data.")
-    data = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
-
-st.dataframe(data)
+    st.write("Could not connect to API :c")
