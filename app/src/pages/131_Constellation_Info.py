@@ -1,21 +1,25 @@
 import logging
+
 logger = logging.getLogger(__name__)
 import requests
 import streamlit as st
 from modules.nav import SideBarLinks
 
-st.set_page_config(layout = 'wide')
+st.set_page_config(layout='wide')
 
 SideBarLinks()
 
 data = {}
 try:
-    data = requests.get('http://api:4000/constellation').json()
+    response = requests.get('http://api:4000/constellation').json()
+    response.raise_for_status()
+    data = response.json()
+
     st.title("Information on all the constellations!")
     for constellation in data:
         st.write(f"### {constellation['ConstName']}")
         st.write(f"Also abbreviated as {constellation['Abbreviation']}. Located in the "
                  f"{constellation['Hemisphere']}ern hemisphere, and its brightest star "
                  f"is {constellation['BrightestStar']}. A fun fact: {constellation['Notes']}.")
-except:
+except requests.exceptions.RequestException as e:
     st.write("Could not connect to API :c")

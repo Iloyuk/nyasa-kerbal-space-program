@@ -7,6 +7,7 @@ from backend.db_connection import db
 
 constellation = Blueprint('constellation', __name__)
 
+
 def run_program(query):
     cursor = db.get_db().cursor()
     cursor.execute(query)
@@ -14,6 +15,7 @@ def run_program(query):
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
+
 
 @constellation.route('/constellation', methods=['GET'])
 def get_constellation():
@@ -23,14 +25,26 @@ def get_constellation():
     '''
     return run_program(query)
 
+
 @constellation.route('/constellation/<ConstID>', methods=['GET'])
 def get_constellation_info(ConstID):
     query = f'''
         SELECT * 
         FROM Constellation
-        WHERE Constellation.ConstID = {(ConstID)}
+        WHERE Constellation.ConstID = {ConstID}
     '''
     return run_program(query)
+
+
+@constellation.route('/constellation/star/<StarName>', methods=['GET'])
+def get_constellation_from_star(StarName):
+    query = f'''
+        SELECT C.ConstName
+        FROM Constellation C JOIN Star S ON C.ConstID = S.ConstID
+        WHERE S.StarName = '{StarName}'
+    '''
+    return run_program(query)
+
 
 @constellation.route('/constellation/brightestStar', methods=['GET'])
 def get_brightest_star():
@@ -49,14 +63,16 @@ def find_const_best_view():
     '''
     return run_program(query)
 
+
 @constellation.route('/constellation/bestViewingMonth/<bestViewingMonth>', methods=['GET'])
 def get_const_best_view(bestViewingMonth):
     query = f'''
         SELECT * 
         FROM Constellation
-        WHERE Constellation.BestViewingMonth = {(bestViewingMonth)}
+        WHERE Constellation.BestViewingMonth = {bestViewingMonth}
     '''
     return run_program(query)
+
 
 @constellation.route('/constellation/hemisphere', methods=['GET'])
 def find_const_hemisphere():
@@ -66,12 +82,13 @@ def find_const_hemisphere():
     '''
     return run_program(query)
 
+
 @constellation.route('/constellation/hemisphere/<Hemisphere>', methods=['GET'])
 def get_const_hemisphere(Hemisphere):
     query = f'''
         SELECT * 
         FROM Constellation
-        WHERE Constellation.Hemisphere = {(Hemisphere)}
+        WHERE Constellation.Hemisphere = {Hemisphere}
     '''
     return run_program(query)
 
@@ -90,6 +107,6 @@ def get_const_by_name(ConstName):
     query = f'''
         SELECT * 
         FROM Constellation
-        WHERE Constellation.ConstName= {(ConstName)}
+        WHERE Constellation.ConstName= {ConstName}
     '''
     return run_program(query)
