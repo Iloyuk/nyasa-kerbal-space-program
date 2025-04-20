@@ -13,11 +13,7 @@ st.write('')
 st.write('')
 st.write('### What would you like to do today?')
 
-data = {} 
-try:
-  data = requests.get('http://api:4000/galaxies').json()
-except:
-  st.write("**Important**: Could not connect to sample api, so using dummy data.")
-  data = {"a":{"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
-
-st.dataframe(data)
+if st.button('View all the constellations',
+             type='primary',
+             use_container_width=True):
+  st.switch_page('pages/131_Constellation_Info.py')
