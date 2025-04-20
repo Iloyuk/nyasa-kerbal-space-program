@@ -22,12 +22,35 @@ def get_mission():
     '''
     return run_program(query)
 
+@mission.route('/missions/name', methods=['GET'])
+def get_missionname():
+    query = '''
+        SELECT Mission.MissionName FROM Mission NATURAL JOIN StarSystemMissions;
+    '''
+    return run_program(query)
+
+@mission.route('/missions/name/<MissionName>', methods=['GET'])
+def get_mission_search(MissionName):
+    query = f'''
+        SELECT * FROM Mission NATURAL JOIN StarSystemMissions
+        WHERE Mission.MissionName = {MissionName};
+    '''
+    return run_program(query)
+
 @mission.route('/missions/<MissionID>', methods=['GET'])
 def get_mission_info(MissionID):
     query = f'''
         SELECT * 
-        FROM Mission
+        FROM Mission NATURAL JOIN StarSystemMissions;
         WHERE Mission.MissionID = {(MissionID)}
+    '''
+    return run_program(query)
+
+@mission.route('/missions/objective', methods=['GET'])
+def get_ongoing_missions():
+    query = f'''
+        SELECT Mission.Objective, Mission.MissionName, Mission.Agency
+        FROM Mission
     '''
     return run_program(query)
 

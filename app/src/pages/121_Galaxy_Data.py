@@ -11,7 +11,7 @@ st.write("# Galaxy information")
 
 data = {}
 try:
-    data = requests.get('http://api:4001/g').json()
+    data = requests.get('http://api:4001/galaxy').json()
 except:
     st.write("**Important**: Could not connect to sample api.")
     data = {"a": {"b": "123", "c": "hello"}, "z": {"b": "456", "c": "goodbye"}}
