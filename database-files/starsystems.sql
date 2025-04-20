@@ -245,13 +245,20 @@ VALUES
 (5, 3, 4, 'Betelgeuse', 11800, 3500, 'M1'),
 (6, 3, 4, 'Bellatrix', 8700, 22000, 'B2'),
 (7, 5, 5, 'Vega', 2200, 9600, 'A0'),
-(8, 6, 6, 'Deneb', 19000, 8525, 'A2'),
+(8, 6, 7, 'Deneb', 19000, 8525, 'A2'),
 (9, 7, 7, 'Altair', 1800, 7550, 'A7'),
 (10, 8, 8, 'Sirius A', 2040, 9940, 'A1'),
 (11, 8, 8, 'Sirius B', 1020, 25200, 'DA'),
-(12, 9, 9, 'Rigel', 21000, 12100, 'B8'),
-(13, 10, 10, 'Antares', 15000, 3500, 'M1'),
-(14, 11, 10, 'Pollux', 1900, 4865, 'K0');
+(12, 9, 1, 'Rigel', 21000, 12100, 'B8'),
+(14, 11, 10, 'Pollux', 1900, 4865, 'K0'),
+(21, 4, 2, 'Alioth', 6500, 9000, 'A1'),
+(22, 10, 3, 'Antares', 15000, 3500, 'M1'),
+(23, 4, 4, 'Schedar', 5000, 4500, 'K0'),
+(24, 1, 5, 'Acrux', 18000, 25000, 'B0'),
+(25, 6, 6, 'Regulus', 3200, 12460, 'B7'),
+(26, 3, 8, 'Kaus Australis', 4200, 9440, 'B9'),
+(27, 8, 9, 'Aldebaran', 1900, 3910, 'K5'),
+(28, 1, 10, 'Alpha Centauri', 1100, 5790, 'G2');
 
 INSERT INTO Planet (PlanetID, PlanetName, PlanetType, Mass, NumMoons, Eccentricity, Inclination)
 VALUES
