@@ -7,6 +7,7 @@ from backend.db_connection import db
 
 findings = Blueprint('findings', __name__)
 
+
 def run_program(query):
     cursor = db.get_db().cursor()
     cursor.execute(query)
@@ -24,17 +25,19 @@ def get_finding():
     '''
     return run_program(query)
 
+
 @findings.route('/findings/<FindingID>', methods=['GET'])
-def get_finding_info (FindingID):
+def get_finding_info(FindingID):
     query = f'''
         SELECT * 
         FROM Finding
-        WHERE FindingID = {(FindingID)}
+        WHERE FindingID = {FindingID}
     '''
     return run_program(query)
 
+
 @findings.route('/findings/significance', methods=['GET'])
-def finding_high_sig ():
+def finding_high_sig():
     query = f'''
         SELECT M.MissionName, M.Objective, F.FindingDate, F.Notes
         FROM Mission M
@@ -42,15 +45,15 @@ def finding_high_sig ():
             JOIN Finding F ON MF.FindingID = F.FindingID
         '''
     return run_program(query)
+
 
 @findings.route('/findings/significance/<Significance>', methods=['GET'])
-def get_finding_high_sig (sig):
+def get_finding_high_sig(sig):
     query = f'''
         SELECT M.MissionName, M.Objective, F.FindingDate, F.Notes
         FROM Mission M
             JOIN MissionFinding MF ON M.MissionID = MF.MissionID
             JOIN Finding F ON MF.FindingID = F.FindingID
-        WHERE F.Significance = str{(sig)}
+        WHERE F.Significance = str{sig}
         '''
     return run_program(query)
-
