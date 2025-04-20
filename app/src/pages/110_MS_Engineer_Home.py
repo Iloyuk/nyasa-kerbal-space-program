@@ -20,6 +20,6 @@ with st.form("help"):
     if '/' in title or not data:
         data = requests.get('http://api:4000/missions/objective').json()
     else:
-        data = requests.get(f'http://api:4000/missions/name/"{title}"').json()
+        data = requests.get(f"http://api:4000/missions/name/{title}").json()
     st.form_submit_button('Update')
     st.dataframe(data)
