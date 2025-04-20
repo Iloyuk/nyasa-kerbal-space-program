@@ -4,7 +4,6 @@ from flask import jsonify
 from flask import make_response
 from flask import current_app
 from backend.db_connection import db
-from enum import Enum
 
 mission = Blueprint('mission', __name__)
 
@@ -17,10 +16,23 @@ def run_program(query):
     return response
 
 @mission.route('/missions', methods=['GET'])
-def get_spacecraft():
+def get_mission():
     query = '''
         SELECT * 
         FROM Mission
     '''
     return run_program(query)
 
+@mission.route('/missions/<MissionID>', methods=['GET'])
+def get_mission_info(MissionID):
+    query = f'''
+        SELECT * 
+        FROM Mission
+        WHERE Mission.MissionID = {(MissionID)}
+    '''
+    return run_program(query)
+
+@mission.route('/missions/<MissionID>', methods=['PUT'])
+def change_mission_info(MissionID):
+    mission_info = request.json
+    return "Success"

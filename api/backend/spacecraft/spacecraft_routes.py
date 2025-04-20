@@ -4,7 +4,6 @@ from flask import jsonify
 from flask import make_response
 from flask import current_app
 from backend.db_connection import db
-from enum import Enum
 
 spacecraft = Blueprint('spacecraft', __name__)
 
@@ -25,7 +24,7 @@ def get_spacecraft():
     return run_program(query)
 
 @spacecraft.route('/spacecraft/<ShipID>', methods=['GET'])
-def get_spacecraft(ShipID):
+def get_spacecraft_info(ShipID):
     query = f'''
         SELECT * 
         FROM Spacecraft
@@ -65,7 +64,7 @@ def get_spacecraft_parts(ShipID):
     return run_program(query)
 
 @spacecraft.route('/spacecraft/<ShipID>/parts/<PartID>', methods=['GET'])
-def get_spacecraft_parts(ShipID, PartID):
+def get_spacecraft_parts_info(ShipID, PartID):
     query = f'''
         SELECT * 
         FROM Part

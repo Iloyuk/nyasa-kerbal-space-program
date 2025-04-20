@@ -7,7 +7,6 @@ from backend.db_connection import db
 
 galaxy = Blueprint('galaxy', __name__)
 
-
 def run_program(query):
     cursor = db.get_db().cursor()
     cursor.execute(query)
@@ -235,11 +234,3 @@ def delete_planet (GalaxyID, SystemID, StarID, PlanetID):
         WHERE Planet.PlanetID = str{(PlanetID)}
     '''
     return run_program(query)
-
-
-
-
-
-
-
-

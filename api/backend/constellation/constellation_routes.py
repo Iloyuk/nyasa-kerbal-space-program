@@ -4,7 +4,6 @@ from flask import jsonify
 from flask import make_response
 from flask import current_app
 from backend.db_connection import db
-from enum import Enum
 
 constellation = Blueprint('constellation', __name__)
 
@@ -29,7 +28,7 @@ def get_constellation_info(ConstID):
     query = f'''
         SELECT * 
         FROM Constellation
-        WHERE Constellation.ConstID = str{(ConstID)}
+        WHERE Constellation.ConstID = {(ConstID)}
     '''
     return run_program(query)
 
@@ -42,7 +41,7 @@ def get_brightest_star():
     return run_program(query)
 
 
-@constellation.route('/constellation/bestViewingMonth', method=['GET'])
+@constellation.route('/constellation/bestViewingMonth', methods=['GET'])
 def find_const_best_view():
     query = f'''
         SELECT Constellation.BestViewingMonth
@@ -50,7 +49,7 @@ def find_const_best_view():
     '''
     return run_program(query)
 
-@constellation.route('/constellation/bestViewingMonth/<bestViewingMonth>', method=['GET'])
+@constellation.route('/constellation/bestViewingMonth/<bestViewingMonth>', methods=['GET'])
 def get_const_best_view(bestViewingMonth):
     query = f'''
         SELECT * 
@@ -59,33 +58,38 @@ def get_const_best_view(bestViewingMonth):
     '''
     return run_program(query)
 
-@constellation.route('/constellation/hemisphere', method=['GET'])
+@constellation.route('/constellation/hemisphere', methods=['GET'])
 def find_const_hemisphere():
     query = f'''
         SELECT Constellation.Hemisphere 
         FROM Constellation
     '''
-    run_program(query)
+    return run_program(query)
 
-@constellation.route('/constellation/hemisphere/<Hemisphere>', method=['GET'])
+@constellation.route('/constellation/hemisphere/<Hemisphere>', methods=['GET'])
 def get_const_hemisphere(Hemisphere):
     query = f'''
         SELECT * 
         FROM Constellation
         WHERE Constellation.Hemisphere = {(Hemisphere)}
     '''
-    run_program(query)
+    return run_program(query)
 
-@constellation.route('/constellation/name/<ConstName>', method=['GET'])
+
+@constellation.route('/constellation/name', methods=['GET'])
+def const_by_name():
+    query = f'''
+        SELECT Constellation.ConstName
+        FROM Constellation
+    '''
+    return run_program(query)
+
+
+@constellation.route('/constellation/name/<ConstName>', methods=['GET'])
 def get_const_by_name(ConstName):
     query = f'''
         SELECT * 
         FROM Constellation
         WHERE Constellation.ConstName= {(ConstName)}
     '''
-    run_program(query)
-
-
-
-
-
+    return run_program(query)

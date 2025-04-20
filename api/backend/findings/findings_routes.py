@@ -25,7 +25,7 @@ def get_finding():
     return run_program(query)
 
 @findings.route('/findings/<FindingID>', methods=['GET'])
-def get_finding (FindingID):
+def get_finding_info (FindingID):
     query = f'''
         SELECT * 
         FROM Finding

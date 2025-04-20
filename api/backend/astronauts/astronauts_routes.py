@@ -43,4 +43,3 @@ def get_astronaut_on_mission():
         WHERE SSM.EndDate IS NULL;
     '''
     return run_program(query)
-
