@@ -53,3 +53,4 @@ def get_finding_high_sig (sig):
         WHERE F.Significance = str{(sig)}
         '''
     return run_program(query)
+

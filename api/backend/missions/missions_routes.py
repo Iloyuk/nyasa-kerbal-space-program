@@ -18,8 +18,7 @@ def run_program(query):
 @mission.route('/missions', methods=['GET'])
 def get_mission():
     query = '''
-        SELECT * 
-        FROM Mission
+        SELECT * FROM Mission NATURAL JOIN StarSystemMissions;
     '''
     return run_program(query)
 
@@ -33,6 +32,11 @@ def get_mission_info(MissionID):
     return run_program(query)
 
 @mission.route('/missions/<MissionID>', methods=['PUT'])
-def change_mission_info(MissionID):
-    mission_info = request.json
-    return "Success"
+def change_mission_status(MissionID):
+    query = f'''
+    UPDATE StarSystemMissions
+    SET EndDate = now()
+    WHERE StarSystemMissions.MissionID = {MissionID};
+
+    '''
+    return run_program(query)

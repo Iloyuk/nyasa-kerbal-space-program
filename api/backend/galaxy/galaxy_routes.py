@@ -50,6 +50,15 @@ def update_galaxy():
     current_app.logger.info(galaxy_info)
     return "Success"
 
+@galaxy.route('/galaxies/elements/<DominantElement>', methods=['GET'])
+def get_galaxy_domElement (DominantElement):
+    query = f'''
+        SELECT GalaxyName
+        FROM Galaxy
+        WHERE DominantElement = {DominantElement};
+    '''
+    return run_program(query)
+
 #--------------------------------------------------------------
 
 #Get all star systems in a galaxy

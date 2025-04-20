@@ -23,6 +23,35 @@ def get_spacecraft():
     '''
     return run_program(query)
 
+
+@spacecraft.route('/spacecraft/status', methods=['GET'])
+def get_spacecraft_status():
+    query = '''
+        SELECT Spacecraft.Status
+        FROM Spacecraft
+    '''
+    return run_program(query)
+
+@spacecraft.route('/spacecraft/status/<Status>', methods=['GET'])
+def get_spacecraft_spec_status(Status):
+    query = f'''
+        SELECT *
+        FROM Spacecraft
+        WHERE Spacecraft.Status = {Status}
+    '''
+    return run_program(query)
+
+
+@spacecraft.route('/spacecraft/<ShipID>/<Status>', methods=['PUT'])
+def update_spacecraft_spec_status(ShipID, Status):
+    query = f'''
+        UPDATE Spacecraft
+        SET Status = {Status}
+        WHERE ShipID = {ShipID}
+    '''
+    return run_program(query)
+
+
 @spacecraft.route('/spacecraft/<ShipID>', methods=['GET'])
 def get_spacecraft_info(ShipID):
     query = f'''
