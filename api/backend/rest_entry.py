@@ -2,9 +2,16 @@ from flask import Flask
 
 from backend.db_connection import db
 
+
+from backend.astronauts.astronauts_routes import astronauts
+from backend.constellation.constellation_routes import constellation
+from backend.findings.findings_routes import findings
 from backend.galaxy.galaxy_routes import galaxy
-from backend.Samples.products.products_routes import products
-from backend.simple.simple_routes import simple_routes
+#from backend.missions.missions_routes import mission - in progress
+from backend.spacecraft.spacecraft_routes import spacecraft
+
+#from backend.Samples.products.products_routes import products
+#from backend.simple.simple_routes import simple_routes
 import os
 from dotenv import load_dotenv
 
@@ -41,7 +48,13 @@ def create_app():
     # and give a url prefix to each
     app.logger.info('current_app(): registering blueprints with Flask app object.')   
     #app.register_blueprint(simple_routes)
-    app.register_blueprint(galaxy)
+    app.register_blueprint(astronauts, web_prefix="/astronauts")
+    app.register_blueprint(constellation, web_prefix="/astronauts")
+    app.register_blueprint(findings, web_prefix="/findings")
+    app.register_blueprint(galaxy, web_prefix="/galaxy")
+    app.register_blueprint(spacecraft, web_prefix="/spacecraft")
+    
+    
 
     # Don't forget to return the app object
     return app

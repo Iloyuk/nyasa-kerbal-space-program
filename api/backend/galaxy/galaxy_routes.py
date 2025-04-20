@@ -112,7 +112,7 @@ def get_stars (GalaxyID, SystemID):
     query = f'''
         SELECT *
         FROM Star
-        WHERE Star.SystemID = str{(SystemID)}
+        WHERE Star.SystemID = {(SystemID)}
     '''
     return run_program(query)
 
@@ -121,18 +121,18 @@ def get_stars_info (GalaxyID, SystemID, StarID):
     query = f'''
         SELECT *
         FROM Star
-        WHERE Star.StarID = str{(StarID)} AND Star.SystemID = str{(SystemID)}
+        WHERE Star.StarID = {(StarID)} AND Star.SystemID = {(SystemID)}
     '''
     return run_program(query)
 
 @galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>', methods = ['PUT'])
-def update_star():
+def update_star(GalaxyID, SystemID, StarID):
     star_info = request.json
     current_app.logger.info(star_info)
     return "Success"
 
 @galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>', methods = ['POST'])
-def add_star():
+def add_star(GalaxyID, SystemID, StarID):
     star_info = request.json
 
     starID = star_info['StarID']
@@ -145,7 +145,7 @@ def add_star():
 
     query = f'''
         INSERT INTO Star (StarID, SystemID, ConstID, StarName, Mass, Temperature, SpectralType)
-        VALUES (str{(starID)}, str{(systemID)}, str{(constID)}, {starName}, str{(mass)}, str{(temperature)}, {spectralType})
+        VALUES ({(starID)}, {(systemID)}, {(constID)}, {(starName)}, {(mass)}, {(temperature)}, {(spectralType)})
     '''
     return run_program(query)
 
@@ -167,15 +167,16 @@ def search_star_from_mass(GalaxyID, SystemID, Mass):
     '''
     return run_program(query)
 
-@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/Temperature', methods=['GET'])
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/temperature', methods=['GET'])
 def get_star_temp (GalaxyID, SystemID):
     query = f'''
-    SELECT Star.StarName, Star.Mass
+    SELECT Star.StarName, Star.Temperature
     FROM Star
     WHERE Star.SystemID = {(SystemID)}
     ''' 
+    return run_program(query)
 
-@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/Temperature/<Temperature>', methods=['GET'])
+@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/temperature/<Temperature>', methods=['GET'])
 def search_star_from_temperature(GalaxyID, SystemID, Temperature):
     query = f'''
     SELECT Star.StarName, Star.Temperature
@@ -184,46 +185,37 @@ def search_star_from_temperature(GalaxyID, SystemID, Temperature):
     '''
     return run_program(query)
 
-@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>/orbits', methods=['GET'])
-def get_star_orbits(GalaxyID, SystemID,StarID):
-    query = f'''
-    SELECT Planets.PlanetName
-    FROM Orbits JOIN Planets
-    WHERE Orbits.StarID = {(StarID)}
-    '''
-    return run_program(query)
-
 #---------------------------------------------------------------------------------
 
 @galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>/planets', methods=['GET'])
 def get_planet (GalaxyID, SystemID, StarID):
     query = f'''
-        SELECT Planets.PlanetName
-        FROM Orbits JOIN Planets
+        SELECT Planet.PlanetName
+        FROM Orbits JOIN Planet
         WHERE Orbits.StarID = {(StarID)} 
     '''
-    run_program(query)
+    return run_program(query)
 
 @galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>/planets/<PlanetID>', methods=['GET'])
 def get_planet_info (GalaxyID, SystemID, StarID, PlanetID):
     query = f'''
-        SELECT Planets.PlanetName
-        FROM Planets
+        SELECT Planet.PlanetName
+        FROM Planet
         WHERE Planet.PlanetID = {(PlanetID)}
     '''
     return run_program(query)
 
 @galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>/planets/<PlanetID>', methods=['PUT'])
-def update_planet ():
+def update_planet (GalaxyID, SystemID, StarID, PlanetID):
     planet_info = request.json
     current_app.logger.info(planet_info)
     return "Success"
 
 @galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>/planets/<PlanetID>', methods=['POST'])
-def add_planet ():
+def add_planet (GalaxyID, SystemID, StarID, PlanetID):
     planet_info = request.json
 
-    planetID = planet_info['PlanetID']
+    planetID = {(PlanetID)}
     planetName = planet_info['PlanetName']
     planetType = planet_info['PlanetType'] 
     mass = planet_info['Mass'] 

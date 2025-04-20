@@ -21,16 +21,16 @@ def get_astronaut():
         SELECT * 
         FROM Astronaut
     '''
-    run_program(query)
+    return run_program(query)
 
 @astronauts.route('/astronauts/<AstroID>', methods=['GET'])
-def get_astronaut_info(id):
+def get_astronaut_info(AstroID):
     query = f'''
         SELECT * 
         FROM Astronaut
-        WHERE Astronaut.AstroID = str{(id)}
+        WHERE Astronaut.AstroID = {(AstroID)}
     '''
-    run_program(query)
+    return run_program(query)
 
 @astronauts.route('/astronauts/onMission', methods=['GET'])
 def get_astronaut_on_mission():
@@ -42,5 +42,5 @@ def get_astronaut_on_mission():
         JOIN StarSystemMissions SSM on MA.MissionID = SSM.MissionID
         WHERE SSM.EndDate IS NULL;
     '''
-    run_program(query)
+    return run_program(query)
 

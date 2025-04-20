@@ -22,18 +22,28 @@ def get_finding():
         SELECT * 
         FROM Finding
     '''
-    run_program(query)
+    return run_program(query)
 
 @findings.route('/findings/<FindingID>', methods=['GET'])
-def get_finding (id):
+def get_finding (FindingID):
     query = f'''
         SELECT * 
         FROM Finding
-        WHERE FindingID = str{(id)}
+        WHERE FindingID = {(FindingID)}
     '''
-    run_program(query)
+    return run_program(query)
 
-@findings.route('/findings/<Significance>', methods=['GET'])
+@findings.route('/findings/significance', methods=['GET'])
+def finding_high_sig ():
+    query = f'''
+        SELECT M.MissionName, M.Objective, F.FindingDate, F.Notes
+        FROM Mission M
+            JOIN MissionFinding MF ON M.MissionID = MF.MissionID
+            JOIN Finding F ON MF.FindingID = F.FindingID
+        '''
+    return run_program(query)
+
+@findings.route('/findings/significance/<Significance>', methods=['GET'])
 def get_finding_high_sig (sig):
     query = f'''
         SELECT M.MissionName, M.Objective, F.FindingDate, F.Notes
@@ -42,4 +52,4 @@ def get_finding_high_sig (sig):
             JOIN Finding F ON MF.FindingID = F.FindingID
         WHERE F.Significance = str{(sig)}
         '''
-    run_program(query)
+    return run_program(query)
