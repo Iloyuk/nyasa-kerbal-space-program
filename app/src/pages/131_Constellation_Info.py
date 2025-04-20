@@ -11,15 +11,13 @@ SideBarLinks()
 
 data = {}
 try:
-    response = requests.get('http://api:4000/constellation').json()
-    response.raise_for_status()
-    data = response.json()
+    data = requests.get('http://api:4000/constellation').json()
 
-    st.title("Information on all the constellations!")
+    st.title("🌟 Information on all the constellations!")
     for constellation in data:
         st.write(f"### {constellation['ConstName']}")
-        st.write(f"Also abbreviated as {constellation['Abbreviation']}. Located in the "
+        st.markdown(f"Also abbreviated as **{constellation['Abbreviation']}**. Located in the "
                  f"{constellation['Hemisphere']}ern hemisphere, and its brightest star "
-                 f"is {constellation['BrightestStar']}. A fun fact: {constellation['Notes']}.")
+                 f"is **{constellation['BrightestStar']}**. A fun fact: {constellation['Notes']}.")
 except requests.exceptions.RequestException as e:
     st.write("Could not connect to API :c")
