@@ -7,6 +7,7 @@ from backend.db_connection import db
 
 mission = Blueprint('mission', __name__)
 
+
 def run_program(query):
     cursor = db.get_db().cursor()
     cursor.execute(query)
@@ -15,6 +16,7 @@ def run_program(query):
     response.status_code = 200
     return response
 
+
 @mission.route('/missions', methods=['GET'])
 def get_mission():
     query = '''
@@ -22,12 +24,14 @@ def get_mission():
     '''
     return run_program(query)
 
+
 @mission.route('/missions/name', methods=['GET'])
 def get_missionname():
     query = '''
         SELECT Mission.MissionName FROM Mission NATURAL JOIN StarSystemMissions;
     '''
     return run_program(query)
+
 
 @mission.route('/missions/name/<MissionName>', methods=['GET'])
 def get_mission_search(MissionName):
@@ -37,14 +41,16 @@ def get_mission_search(MissionName):
     '''
     return run_program(query)
 
+
 @mission.route('/missions/<MissionID>', methods=['GET'])
 def get_mission_info(MissionID):
     query = f'''
         SELECT * 
         FROM Mission NATURAL JOIN StarSystemMissions;
-        WHERE Mission.MissionID = {(MissionID)}
+        WHERE Mission.MissionID = {MissionID}
     '''
     return run_program(query)
+
 
 @mission.route('/missions/objective', methods=['GET'])
 def get_ongoing_missions():

@@ -7,6 +7,7 @@ from backend.db_connection import db
 
 astronauts = Blueprint('astronauts', __name__)
 
+
 def run_program(query):
     cursor = db.get_db().cursor()
     cursor.execute(query)
@@ -14,6 +15,7 @@ def run_program(query):
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
+
 
 @astronauts.route('/astronauts', methods=['GET'])
 def get_astronaut():
@@ -23,14 +25,16 @@ def get_astronaut():
     '''
     return run_program(query)
 
+
 @astronauts.route('/astronauts/<AstroID>', methods=['GET'])
 def get_astronaut_info(AstroID):
     query = f'''
         SELECT * 
         FROM Astronaut
-        WHERE Astronaut.AstroID = {(AstroID)}
+        WHERE Astronaut.AstroID = {AstroID}
     '''
     return run_program(query)
+
 
 @astronauts.route('/astronauts/onMission', methods=['GET'])
 def get_astronaut_on_mission():
