@@ -140,10 +140,18 @@ def get_starsystem_info(GalaxyID, SystemID):
     query = f'''
         SELECT *
         FROM StarSystem
-        WHERE StarSystem.SystemID = {SystemID}
+        WHERE StarSystem.SystemID = {SystemID} AND StarSystem.GalaxyID = {GalaxyID}
     '''
     return run_program(query)
 
+@galaxy.route('/galaxies/starsystems/<SystemID>', methods=['GET'])
+def get_all_starsystem_info(SystemID):
+    query = f'''
+        SELECT *
+        FROM StarSystem
+        WHERE StarSystem.SystemID = {SystemID}
+    '''
+    return run_program(query)
 
 @galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>', methods=['PUT'])
 def update_system():

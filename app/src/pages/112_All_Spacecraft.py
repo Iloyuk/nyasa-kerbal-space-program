@@ -30,4 +30,4 @@ with st.form("aaa"):
 if st.button('Astronaut Data/Info',
              type='primary',
              use_container_width=True):
-    st.switch_page('pages/115_Astronaut_Data.py')
+    st.switch_page('pages/114_Astronaut_Data.py')

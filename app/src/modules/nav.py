@@ -62,6 +62,12 @@ def Findings():
 def CarlHomePage():
     st.sidebar.page_link("pages/110_MS_Engineer_Home.py", label="Missions/Home", icon="🖥️")
 
+def Spacecraft():
+    st.sidebar.page_link("pages/112_All_Spacecraft.py", label="Spacecraft", icon="🚀")
+
+def Missions():
+    st.sidebar.page_link("pages/113_Mission_Detail.py", label="Missions in Detail", icon="🔥")
+
 
 # --------------------------------Links Function -----------------------------------------------
 def SideBarLinks(show_home=False):
@@ -104,6 +110,8 @@ def SideBarLinks(show_home=False):
         if st.session_state.first_name == "Carl":
             CarlHomePage()
             Findings() 
+            Spacecraft()
+            Missions()
 
     # Always show the About page at the bottom of the list of links
     AboutPageNav()

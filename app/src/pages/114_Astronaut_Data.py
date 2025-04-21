@@ -38,6 +38,7 @@ with tab2:
         st.dataframe(data)
         selection = st.selectbox('Search',('Update', 'Add', 'Delete'))
         update = st.form_submit_button('Update')
+        refresh = st.form_submit_button('Refresh')
         ID = st.number_input("ID",value=None, step=1)
         Country = st.text_input("Country")
         YearsInSpace = st.number_input("Years in Space",value=None, step=1)
@@ -51,6 +52,7 @@ with tab2:
                         break
                 if ID and verif:
                     if selection == 'Update':
+                        st.write("in update mode!")
                         if Country and Country != "":
                             request = requests.put(f'http://api:4000/astronauts/{ID}/country/{Country}')
                         if YearsInSpace:
@@ -58,8 +60,10 @@ with tab2:
                         if Name and Name != "":
                             request = requests.put(f'http://api:4000/astronauts/{ID}/name/{Name}')
                     if selection == 'Delete':
+                        st.write("in delete mode!")
                         request = requests.delete(f'http://api:4000/astronauts/{ID}')
                 if selection == 'Add':
+                    st.write("in add mode!")
                     request = requests.post(f'http://api:4000/astronauts', json={
                         "Name": Name,
                         "Country": Country,

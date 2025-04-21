@@ -49,4 +49,4 @@ if st.button('View all spacecraft',
 if st.button('View Missions in Detail',
              type='primary',
              use_container_width=True):
-    st.switch_page('pages/114_Mission_Detail.py')
+    st.switch_page('pages/113_Mission_Detail.py')

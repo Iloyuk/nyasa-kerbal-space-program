@@ -42,7 +42,7 @@ def add_astro():
     yrinspace = astro_info['YearsInSpace']
     query = f'''
         INSERT INTO Astronaut(Name, Country, YearsInSpace)
-        VALUES "{name}","{country}",{yrinspace}
+        VALUES ("{name}","{country}",{yrinspace})
     '''
     return run_program(query)
 
@@ -58,7 +58,7 @@ def delete_astronaut(AstroID):
 def update_astronaut_name(AstroID, Name):
     query = f'''
         UPDATE Astronaut
-        SET Name = {Name}
+        SET Name = "{Name}"
         WHERE Astronaut.AstroID = {AstroID}
     '''
     return run_program(query)
@@ -67,7 +67,7 @@ def update_astronaut_name(AstroID, Name):
 def update_astronaut_country(AstroID, Country):
     query = f'''
         UPDATE Astronaut
-        SET Name = {Country}
+        SET Country = "{Country}"
         WHERE Astronaut.AstroID = {AstroID}
     '''
     return run_program(query)
@@ -76,7 +76,7 @@ def update_astronaut_country(AstroID, Country):
 def update_astronaut_yrs(AstroID, YearsInSpace):
     query = f'''
         UPDATE Astronaut
-        SET Name = {YearsInSpace}
+        SET YearsInSpace = {YearsInSpace}
         WHERE Astronaut.AstroID = {AstroID}
     '''
     return run_program(query)
@@ -116,10 +116,21 @@ def get_astronaut_on_mission():
 @astronauts.route('/astronauts/<AstroID>/missions', methods=['GET'])
 def get_astro_on_mission(AstroID):
     query = f'''
-        SELECT DISTINCT Mission.MissionName, Mission.Objective, Astronaut.Name
+        SELECT DISTINCT Astronaut.AstroID, Mission.MissionName, Astronaut.Name, Mission.Objective, Mission.SuccessRating
         FROM MissionAstronaut
-        NATRUAL JOIN Astronaut
-        NATURAL JOIN Mission
+        JOIN Astronaut ON MissionAstronaut.AstroID = Astronaut.AstroID
+        JOIN Mission ON MissionAstronaut.MissionID = Mission.MissionID
         WHERE Astronaut.AstroID = {AstroID}
+    '''
+    return run_program(query)
+
+@astronauts.route('/astronauts/missions/<MissionID>', methods=['GET'])
+def get_astro_on_spec_mission(MissionID):
+    query = f'''
+        SELECT DISTINCT Astronaut.AstroID, Mission.MissionName, Astronaut.Name, Mission.Objective, Mission.SuccessRating
+        FROM MissionAstronaut
+        JOIN Astronaut ON MissionAstronaut.AstroID = Astronaut.AstroID
+        JOIN Mission ON MissionAstronaut.MissionID = Mission.MissionID
+        WHERE Mission.MissionID = {MissionID}
     '''
     return run_program(query)
