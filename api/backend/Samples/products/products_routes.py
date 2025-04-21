@@ -204,5 +204,4 @@ def get_all_categories():
 def update_product():
     product_info = request.json
     current_app.logger.info(product_info)
-
     return "Success"

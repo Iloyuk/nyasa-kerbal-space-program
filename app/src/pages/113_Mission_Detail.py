@@ -35,10 +35,7 @@ with tab2:
         MissionName = st.text_input("MissionName",value=None)
         Objective = st.text_input("Objective",value=None)
         Agency = st.text_input("Agency",value=None)
-        MissionStatus = st.selectbox("Mission Status",("High","Medium","Low"))
-        SystemID = st.number_input("SystemID",step=1,value=1)
-        StartDate = st.date_input("StartDate", value=None)
-        EndDate = st.date_input("EndDate", value=None)
+        SuccessRating = st.selectbox("SuccessRating",("High","Medium","Low"))
         if update:
             verif = False
             for a in data:
@@ -49,21 +46,36 @@ with tab2:
                 if MissionName and MissionName != "": requests.put(f'http://api:4000/missions/{ID}/name/{MissionName}')
                 if Objective and Objective != "": requests.put(f'http://api:4000/missions/{ID}/objective/{Objective}')
                 if Agency and Agency != "": requests.put(f'http://api:4000/missions/{ID}/agency/{Agency}')
-                if MissionStatus: requests.put(f'http://api:4000/missions/{ID}/status/{MissionStatus}')
-                if SystemID: requests.put(f'http://api:4000/missions/{ID}/starsystem/{SystemID}')
-                if StartDate: requests.put(f'http://api:4000/missions/{ID}/starsystem/startdate/{str(StartDate)}')
-                if EndDate: requests.put(f'http://api:4000/missions/{ID}/starsystem/enddate/{str(EndDate)}')
+                if SuccessRating: requests.put(f'http://api:4000/missions/{ID}/status/{SuccessRating}')
             if selection == 'Add':
                 requests.post(f'http://api:4000/missions',json={
                     "MissionID":ID,
                     "MissionName":MissionName,
                     "Agency":Agency,
                     "Objective":Objective,
-                    "MissionStatus": str(MissionStatus)
+                    "SuccessRating": str(SuccessRating)
                 })
-                requests.post(f'http://api:4000/missions/starsystem',json={
-                    "MissionID":ID,
-                    "SystemID":MissionName,
-                    "StartDate":str(StartDate),
-                    "EndDate":str(EndDate),
-                })
+    with st.form("build-a-mission2"):
+        selection = st.selectbox('Search',('Update', 'Add'))
+        update = st.form_submit_button('Update')
+        ID = st.number_input("ID",value=None, step=1)
+        SystemID = st.number_input("SystemID",step=1,value=1)
+        StartDate = st.date_input("StartDate", value=None)
+        EndDate = st.date_input("EndDate", value=None)
+        if update:
+            verif = False
+            for a in data:
+                if a['MissionID'] == ID:
+                    verif = True
+                    break
+        if selection == 'Update':
+            if SystemID: requests.put(f'http://api:4000/missions/{ID}/starsystem/{SystemID}')
+            if StartDate: requests.put(f'http://api:4000/missions/{ID}/starsystem/startdate/{str(StartDate)}')
+            if EndDate: requests.put(f'http://api:4000/missions/{ID}/starsystem/enddate/"{str(EndDate)}"')
+        if selection == 'Add':
+            requests.post(f'http://api:4000/missions/starsystem',json={
+                "MissionID":ID,
+                "SystemID":SystemID,
+                "StartDate":str(StartDate),
+                "EndDate":str(EndDate),
+            })

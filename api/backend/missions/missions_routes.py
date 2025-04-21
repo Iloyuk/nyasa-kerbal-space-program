@@ -169,28 +169,27 @@ def update_mission_starsys_SystemID(MissionID,SystemID):
 @mission.route("/missions", methods=['POST'])
 def add_mission():
     data = request.json
-    ID = data['MissionID']
     MissionName = data['MissionName']
     Objective = data['Objective']
     Agency = data['Agency']
-    MissionStatus = data['MissionStatus']
+    SuccessRating = data['SuccessRating']
 
     query = f'''
-        INSERT INTO Mission(MissionID, MissionName, Objective, Agency, MissionStatus)
-        VALUES ({ID}, "{MissionName}", "{Objective}", "{Agency}", "{MissionStatus}")
+        INSERT INTO Mission(MissionName, Objective, Agency, SuccessRating)
+        VALUES ("{MissionName}", "{Objective}", "{Agency}", "{SuccessRating}")
     '''
     return run_program(query)
 
 @mission.route("/missions/starsystem", methods=['POST'])
 def add_mission_starsystem():
     data = request.json
-    ID = data['MissionID']
-    SID = data['SystemID']
+    MissionID = data['MissionID']
+    SystemID = data['SystemID']
     StartDate = data['StartDate']
     EndDate = data['EndDate']
 
     query = f'''
-        INSERT INTO StarSystemMission(MissionID, SystemID, StartDate, EndDate)
-        VALUES ({ID}, {SID}, "{StartDate}", "{EndDate}")
+        INSERT INTO StarSystemMissions(MissionID,SystemID,StartDate, EndDate)
+        VALUES ({MissionID},{SystemID}, "{StartDate}", "{EndDate}")
     '''
     return run_program(query)
