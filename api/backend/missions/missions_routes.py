@@ -54,6 +54,17 @@ def get_ongoing_missions():
     '''
     return run_program(query)
 
+@mission.route('/missions/<MissionID>/findings', methods=['GET'])
+def get_findings_from_mission(MissionID):
+    query = f'''
+        SELECT Mission.MissionName, Mission.MissionID, Finding.*
+        FROM MissionFinding 
+        NATURAL JOIN Mission
+        NATURAL JOIN Finding
+        WHERE Mission.MissionID = {MissionID}
+    '''
+    return run_program(query)
+
 @mission.route('/missions/<MissionID>', methods=['PUT'])
 def change_mission_status(MissionID):
     query = f'''

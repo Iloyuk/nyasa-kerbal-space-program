@@ -36,7 +36,7 @@ def get_finding_info (FindingID):
 @findings.route('/findings/significance', methods=['GET'])
 def finding_high_sig ():
     query = f'''
-        SELECT M.MissionName, M.Objective, F.FindingDate, F.Notes
+        SELECT M.MissionName, M.Objective, F.FindingDate, F.Notes, F.Significance
         FROM Mission M
             JOIN MissionFinding MF ON M.MissionID = MF.MissionID
             JOIN Finding F ON MF.FindingID = F.FindingID
@@ -44,13 +44,33 @@ def finding_high_sig ():
     return run_program(query)
 
 @findings.route('/findings/significance/<Significance>', methods=['GET'])
-def get_finding_high_sig (sig):
+def get_finding_high_sig (Significance):
     query = f'''
         SELECT M.MissionName, M.Objective, F.FindingDate, F.Notes
         FROM Mission M
             JOIN MissionFinding MF ON M.MissionID = MF.MissionID
             JOIN Finding F ON MF.FindingID = F.FindingID
-        WHERE F.Significance = str{(sig)}
+        WHERE F.Significance = "{(Significance)}"
         '''
+    return run_program(query)
+
+@findings.route('/findings/<FindingID>/Sig/<Significance>', methods=['PUT'])
+def update_finding_status(FindingID, Significance):
+    query = f'''
+        UPDATE Finding
+        SET Finding.Significance = "{Significance}"
+        WHERE Finding.FindingID = {FindingID}
+        
+    '''
+    return run_program(query)
+
+
+@findings.route('/findings/<FindingID>/Notes/<Notes>', methods=['PUT'])
+def update_finding_notes(FindingID, Notes):
+    query = f'''
+        UPDATE Finding
+        SET Finding.Notes = "{Notes}"
+        WHERE Finding.FindingID = {FindingID};
+    '''
     return run_program(query)
 

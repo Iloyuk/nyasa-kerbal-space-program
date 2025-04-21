@@ -8,10 +8,21 @@ st.set_page_config(layout = 'wide')
 
 SideBarLinks()
 
+#Things to do:
+# - /galaxies/{galaxyID}/starsystems
+# - /missions
+# - /missions/{missionID}
+# - /spacecraft
+# - /spacecraft/{spacecraftID}
+# - /astronauts
+# - /astronauts/{astronautID}
+# - /spacecraft/{spacecraftID}/parts
+# - /spacecraft/{spacecraftID}/parts/{partID}
+# - /findings
+# - /findings/{findingID}
+
 st.title(f"Welcome, {st.session_state.first_name}")
 st.write('### Here is a list of all missions')
-
-main = st.empty()
 
 with st.form("help"):
     title = st.text_input("Mission Name")
@@ -23,3 +34,13 @@ with st.form("help"):
             data = requests.get('http://api:4000/missions/objective').json()
     st.form_submit_button('Update')
     st.dataframe(data)
+
+if st.button('View all findings',
+             type='primary',
+             use_container_width=True):
+    st.switch_page('pages/111_Findings.py')
+
+if st.button('View all spacecraft',
+             type='primary',
+             use_container_width=True):
+    st.switch_page('pages/112_All_Spacecraft.py')
