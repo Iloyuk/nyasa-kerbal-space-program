@@ -47,8 +47,8 @@ def get_mission_extended_info():
 @mission.route('/missions/name/<MissionName>', methods=['GET'])
 def get_mission_search(MissionName):
     query = f'''
-        SELECT * FROM Mission NATURAL JOIN StarSystemMissions
-        WHERE Mission.MissionName = {MissionName};
+        SELECT * FROM Mission
+        WHERE Mission.MissionName = "{MissionName}";
     '''
     return run_program(query)
 
@@ -131,7 +131,7 @@ def update_mission_obj(MissionID,Objective):
     return run_program(query)
 
 @mission.route("/missions/<MissionID>/status/<Status>", methods=['PUT'])
-def update_mission_status(MissionID,Objective):
+def update_mission_status(MissionID,Status):
     query = f'''
         UPDATE Mission
         SET MissionStatus = "{Status}"
@@ -188,8 +188,14 @@ def add_mission_starsystem():
     StartDate = data['StartDate']
     EndDate = data['EndDate']
 
-    query = f'''
-        INSERT INTO StarSystemMissions(MissionID,SystemID,StartDate, EndDate)
-        VALUES ({MissionID},{SystemID}, "{StartDate}", "{EndDate}")
-    '''
+    if EndDate == "None":
+        query = f'''
+            INSERT INTO StarSystemMissions(MissionID,SystemID,StartDate, EndDate)
+            VALUES ({MissionID},{SystemID}, "{StartDate}", NULL)
+        '''
+    else:
+        query = f'''
+            INSERT INTO StarSystemMissions(MissionID,SystemID,StartDate, EndDate)
+            VALUES ({MissionID},{SystemID}, "{StartDate}", "{EndDate}")
+        '''
     return run_program(query)
