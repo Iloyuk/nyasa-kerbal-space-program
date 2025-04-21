@@ -344,3 +344,7 @@ VALUES
 (2, 2),
 (3, 3),
 (4, 4);
+
+SELECT *
+FROM StarSystem
+WHERE GalaxyID = 2

@@ -12,10 +12,9 @@ SideBarLinks()
 
 st.write("# Galaxy Database")
 
-main = st.empty()
-
 with st.form("lookup"):
-    galaxy = st.text_input("**Enter galaxy name for lookup:**")
+    st.write('**Lookup galaxy**')
+    galaxy = st.text_input("Enter galaxy name:")
     st.form_submit_button('Search')
     if '/' in galaxy or '\\' in galaxy or len(galaxy) == 0:
         data = requests.get('http://api:4000/galaxies').json()
@@ -27,11 +26,11 @@ with st.form("lookup"):
 
 with st.form("input"):
     st.write('**Add a new galaxy to the database**')
-    galaxy_name = st.text_input('Galaxy Name')
-    redshift = st.text_input('Redshift')
-    year_discovered = st.text_input('Year Discovered (YYYY-MM-DD)')
-    solar_mass = st.text_input('Solar Mass in Trillions')
-    dominant_element = st.text_input('Dominant Element')
+    galaxy_name = st.text_input('Galaxy Name:')
+    redshift = st.text_input('Redshift:')
+    year_discovered = st.text_input('Year Discovered (YYYY-MM-DD):')
+    solar_mass = st.text_input('Solar Mass in Trillions:')
+    dominant_element = st.text_input('Dominant Element:')
     submitted = st.form_submit_button('Add')
 
     if submitted:
@@ -49,16 +48,16 @@ with st.form("input"):
             else:
                 st.error(response.json().get("error", "Unknown error"))
         except requests.exceptions.RequestException as e:
-            st.error("Could not retrieve data.")
+            st.error("Could not insert data.")
             st.text(f"Details: {e}")
 
 with st.form("replace"):
     st.write('**Modify an existing galaxy**')
-    galaxy_name = st.text_input('Galaxy\'s Name to be modified')
-    redshift = st.text_input('Redshift')
-    year_discovered = st.text_input('Year Discovered (YYYY-MM-DD)')
-    solar_mass = st.text_input('Solar Mass in Trillions')
-    dominant_element = st.text_input('Dominant Element')
+    galaxy_name = st.text_input('Galaxy\'s Name to be modified:')
+    redshift = st.text_input('Redshift:')
+    year_discovered = st.text_input('Year Discovered (YYYY-MM-DD):')
+    solar_mass = st.text_input('Solar Mass in Trillions:')
+    dominant_element = st.text_input('Dominant Element:')
     submitted = st.form_submit_button('Modify')
 
     if submitted:
@@ -78,5 +77,5 @@ with st.form("replace"):
             else:
                 st.error(response.json().get("error", "Unknown error"))
         except requests.exceptions.RequestException as e:
-            st.error("Could not retrieve data.")
+            st.error("Could not update data.")
             st.text(f"Details: {e}")

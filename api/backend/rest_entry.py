@@ -9,10 +9,9 @@ from backend.galaxy.galaxy_routes import galaxy
 from backend.missions.missions_routes import mission
 from backend.spacecraft.spacecraft_routes import spacecraft
 
-#from backend.Samples.products.products_routes import products
-#from backend.simple.simple_routes import simple_routes
 import os
 from dotenv import load_dotenv
+
 
 def create_app():
     app = Flask(__name__)
@@ -36,26 +35,21 @@ def create_app():
     app.config['MYSQL_DATABASE_PASSWORD'] = os.getenv('MYSQL_ROOT_PASSWORD').strip()
     app.config['MYSQL_DATABASE_HOST'] = os.getenv('DB_HOST').strip()
     app.config['MYSQL_DATABASE_PORT'] = int(os.getenv('DB_PORT').strip())
-    app.config['MYSQL_DATABASE_DB'] = os.getenv('DB_NAME').strip()  # Change this to your DB name
+    app.config['MYSQL_DATABASE_DB'] = os.getenv('DB_NAME').strip()
 
     # Initialize the database object with the settings above. 
     app.logger.info('current_app(): starting the database connection')
     db.init_app(app)
 
-
     # Register the routes from each Blueprint with the app object
     # and give a url prefix to each
-    app.logger.info('current_app(): registering blueprints with Flask app object.')   
-    #app.register_blueprint(simple_routes)
+    app.logger.info('current_app(): registering blueprints with Flask app object.')
     app.register_blueprint(astronauts, web_prefix="/astronaut")
     app.register_blueprint(mission, web_prefix="/mission")
     app.register_blueprint(constellation, web_prefix="/constellation")
     app.register_blueprint(findings, web_prefix="/findings")
     app.register_blueprint(galaxy, web_prefix="/galaxy")
     app.register_blueprint(spacecraft, web_prefix="/spacecraft")
-    
-    
 
     # Don't forget to return the app object
     return app
-
