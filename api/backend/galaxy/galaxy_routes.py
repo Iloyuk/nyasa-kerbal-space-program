@@ -18,16 +18,7 @@ def run_program(query):
     return response
 
 
-@galaxy.route('/')
-def welcome():
-    current_app.logger.info('GET / handler')
-    welcome_message = '<h1>Welcome to the CS 3200 Project Template REST API'
-    response = make_response(welcome_message)
-    response.status_code = 200
-    return response
-
-
-# Get all galaxies, with a limit of 10
+# Do stuff with galaxies
 @galaxy.route('/galaxies', methods=['GET', 'POST', 'PUT'])
 def get_galaxies():
     if request.method == 'GET':
@@ -55,7 +46,7 @@ def get_galaxies():
                 data['DominantElement']
             ))
             db.get_db().commit()
-            return jsonify({'message': 'Star inserted successfully'}), 200
+            return jsonify({'message': 'Galaxy inserted successfully'}), 200
         except Exception as e:
             db.get_db().rollback()
             return jsonify({'error': str(e)}), 400
@@ -92,7 +83,7 @@ def get_galaxies():
 
 # Get specific info of a galaxy from galaxy name
 @galaxy.route('/galaxies/<GalaxyName>', methods=['GET'])
-def find_galaxy(GalaxyName):
+def find_galaxy_by_name(GalaxyName):
     query = f'''
         SELECT *
         FROM Galaxy
@@ -101,9 +92,9 @@ def find_galaxy(GalaxyName):
     return run_program(query)
 
 
-# Get specific info of a galaxy from galaxy id
+# Get specific info of a galaxy from galaxy ID
 @galaxy.route('/galaxies/<int:GalaxyID>', methods=['GET'])
-def get_galaxy_detail_int(GalaxyID):
+def find_galaxy_by_id(GalaxyID):
     query = f'''
         SELECT * 
         FROM Galaxy
@@ -112,80 +103,88 @@ def get_galaxy_detail_int(GalaxyID):
     return run_program(query)
 
 
-@galaxy.route('/galaxies/elements/<DominantElement>', methods=['GET'])
-def get_galaxy_domElement(DominantElement):
+# -------------------------------------------------------------- Star Systems
+
+# Get all star systems in a galaxy by galaxy id
+@galaxy.route('/galaxies/<int:GalaxyID>/starsystems', methods=['GET', 'POST', 'PUT'])
+def find_starsystems_by_galaxy_id(GalaxyID):
+    if request.method == 'GET':
+        query = f'''
+            SELECT SystemName
+            FROM StarSystem
+            WHERE GalaxyID = {GalaxyID}
+        '''
+        return run_program(query)
+
+    elif request.method == 'POST':
+        data = request.get_json()
+        query = f'''
+            INSERT INTO StarSystem (GalaxyID, SystemName, DistInLY, SystemType, NumStars)
+            VALUES ({GalaxyID}, '{data['SystemName']}', {data['DistInLY']}, '{data['SystemType']}', {data['NumStars']})
+            '''
+
+        try:
+            cursor = db.get_db().cursor()
+            cursor.execute(query)
+            db.get_db().commit()
+            return jsonify({'message': 'Star System inserted successfully'}), 200
+        except Exception as e:
+            db.get_db().rollback()
+            return jsonify({'error': str(e)}), 400
+
+    elif request.method == 'PUT':
+        data = request.get_json()
+        query = f'''
+            UPDATE StarSystem
+            SET GalaxyID = {GalaxyID},
+                DistInLY = {data['DistInLY']},
+                SystemType = '{data['SystemType']}',
+                NumStars = {data['NumStars']}
+            WHERE SystemName = '{data['SystemName']}'
+            '''
+
+        try:
+            cursor = db.get_db().cursor()
+            cursor.execute(query)
+            db.get_db().commit()
+            return jsonify({
+                'message': 'Star system updated successfully',
+                'rows_affected': cursor.rowcount
+            }), 200
+        except Exception as e:
+            db.get_db().rollback()
+            return jsonify({'error': str(e)}), 400
+
+
+# Get all star systems in a galaxy by galaxy name
+@galaxy.route('/galaxies/<GalaxyName>/starsystems', methods=['GET'])
+def find_starsystems_by_galaxy_name(GalaxyName):
     query = f'''
-        SELECT GalaxyName
-        FROM Galaxy
-        WHERE DominantElement = {DominantElement};
-    '''
+        SELECT S.SystemName
+        FROM StarSystem S JOIN Galaxy G on S.GalaxyID = G.GalaxyID
+        WHERE G.GalaxyName LIKE '%{GalaxyName}%'
+        '''
     return run_program(query)
 
 
-# --------------------------------------------------------------
-
-# Get all star systems in a galaxy
-@galaxy.route('/galaxies/<GalaxyID>/starsystems', methods=['GET'])
-def get_starsystems(GalaxyID):
-    query = f'''
-        SELECT StarSystem.SystemName
-        FROM StarSystem
-        WHERE StarSystem.GalaxyID = {GalaxyID}
-    '''
-    return run_program(query)
-
-
-@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>', methods=['GET'])
-def get_starsystem_info(GalaxyID, SystemID):
+# Get a star system by its id
+@galaxy.route('/galaxies/starsystems/<int:SystemID>', methods=['GET'])
+def find_starsystems_by_starsystem_name(SystemID):
     query = f'''
         SELECT *
         FROM StarSystem
-        WHERE StarSystem.SystemID = {SystemID} AND StarSystem.GalaxyID = {GalaxyID}
+        WHERE SystemID = {SystemID}
     '''
     return run_program(query)
 
-@galaxy.route('/galaxies/starsystems/<SystemID>', methods=['GET'])
-def get_all_starsystem_info(SystemID):
+
+# Get a star system by a combination of galaxy name and star system name
+@galaxy.route('/galaxies/<GalaxyName>/starsystems/<SystemName>', methods=['GET'])
+def find_starsystems_by_galaxy_and_starsystem_name(GalaxyName, SystemName):
     query = f'''
         SELECT *
-        FROM StarSystem
-        WHERE StarSystem.SystemID = {SystemID}
-    '''
-    return run_program(query)
-
-@galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>', methods=['PUT'])
-def update_system():
-    system_info = request.json
-    current_app.logger.info(system_info)
-    return "Success"
-
-
-@galaxy.route('/galaxies/<GalaxyID>/starsystems/DistInLY', methods=['GET'])
-def get_all_starsystem_distInLY(GalaxyID):
-    query = f'''
-        SELECT StarSystem.SystemName, StarSystem.DistInLY
-        FROM StarSystem
-        WHERE StarSystem.GalaxyID = {GalaxyID}
-    '''
-    return run_program(query)
-
-
-@galaxy.route('/galaxies/<GalaxyID>/starsystems/DistInLY/<DistInLY>', methods=['GET'])
-def get_starsystem_distInLY(GalaxyID, DistInLY):
-    query = f'''
-        SELECT StarSystem.SystemName, StarSystem.DistInLY
-        FROM StarSystem
-        WHERE StarSystem.GalaxyID = {GalaxyID} AND StarSystem.DistInLY <= {DistInLY}
-    '''
-    return run_program(query)
-
-
-@galaxy.route('/galaxies/<GalaxyID>/starsystems/numStars', methods=['GET'])
-def get_starsystem_numStars(GalaxyID):
-    query = f'''
-        SELECT StarSystem.SystemName, StarSystem.NumStars
-        FROM StarSystem
-        WHERE StarSystem.GalaxyID = {GalaxyID}
+        FROM StarSystem SS JOIN Galaxy G on SS.GalaxyID = G.GalaxyID
+        WHERE G.GalaxyName LIKE '%{GalaxyName}%' AND SS.SystemName LIKE '%{SystemName}%'
     '''
     return run_program(query)
 

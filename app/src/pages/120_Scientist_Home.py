@@ -1,10 +1,9 @@
 import logging
-logger = logging.getLogger(__name__)
-
 import streamlit as st
 from modules.nav import SideBarLinks
+logger = logging.getLogger(__name__)
 
-st.set_page_config(layout = 'wide')
+st.set_page_config(layout='wide')
 
 SideBarLinks()
 
@@ -17,3 +16,8 @@ if st.button('Access the galaxy database',
              type='primary',
              use_container_width=True):
     st.switch_page('pages/121_Galaxy_Data.py')
+
+if st.button('Access the star system database',
+             type='primary',
+             use_container_width=True):
+    st.switch_page('pages/122_Star_System_Data.py')
