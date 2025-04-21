@@ -26,33 +26,60 @@ def welcome():
     return response
 
 
-# Get all item from Galaxies.
-@galaxy.route('/galaxies', methods=['GET'])
-def get_galaxy():
-    query = '''
-        SELECT * 
+# Get all galaxies, with a limit of 10
+@galaxy.route('/galaxies', methods=['GET', 'PUT'])
+def get_galaxies():
+    if request.method == 'GET':
+        query = '''
+            SELECT * 
+            FROM Galaxy
+            LIMIT 10
+        '''
+        return run_program(query)
+
+    elif request.method == 'PUT':
+        data = request.get_json()
+        query = '''
+            INSERT INTO Galaxy (GalaxyName, Redshift, YearDiscovered, SolarMassTrillions, DominantElement)
+            VALUES (%s, %s, %s, %s, %s)
+            '''
+
+        try:
+            cursor = db.get_db().cursor()
+            cursor.execute(query, (
+                data['GalaxyName'],
+                float(data['Redshift']),
+                data['YearDiscovered'],
+                int(data['SolarMassTrillions']),
+                data['DominantElement']
+            ))
+            db.get_db().commit()
+            return jsonify({'message': 'Star inserted successfully'}), 200
+        except Exception as e:
+            db.get_db().rollback()
+            return jsonify({'error': str(e)}), 400
+
+
+# Get specific info of a galaxy from galaxy name
+@galaxy.route('/galaxies/<GalaxyName>', methods=['GET'])
+def find_galaxy(GalaxyName):
+    query = f'''
+        SELECT *
         FROM Galaxy
-    '''
+        WHERE GalaxyName LIKE '%{GalaxyName}%'
+        '''
     return run_program(query)
 
 
-# Get specific info of a galaxy
-@galaxy.route('/galaxies/<GalaxyID>', methods=['GET'])
-def get_galaxy_detail(GalaxyID):
+# Get specific info of a galaxy from galaxy id
+@galaxy.route('/galaxies/<int:GalaxyID>', methods=['GET'])
+def get_galaxy_detail_int(GalaxyID):
     query = f'''
         SELECT * 
         FROM Galaxy
-        WHERE Galaxy.GalaxyID = {GalaxyID}
+        WHERE GalaxyID = {GalaxyID}
     '''
     return run_program(query)
-
-
-# Put specific info into galaxies
-@galaxy.route('/galaxies/<GalaxyID>', methods=['PUT'])
-def update_galaxy():
-    galaxy_info = request.json
-    current_app.logger.info(galaxy_info)
-    return "Success"
 
 
 @galaxy.route('/galaxies/elements/<DominantElement>', methods=['GET'])

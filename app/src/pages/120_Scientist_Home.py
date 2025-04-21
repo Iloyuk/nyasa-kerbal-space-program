@@ -13,7 +13,7 @@ st.write('')
 st.write('')
 st.write('### What would you like to do today?')
 
-if st.button('View all galaxy data',
+if st.button('Access the galaxy database',
              type='primary',
              use_container_width=True):
     st.switch_page('pages/121_Galaxy_Data.py')
