@@ -15,7 +15,7 @@ st.write("# Galaxy Database")
 main = st.empty()
 
 with st.form("lookup"):
-    galaxy = st.text_input("Enter galaxy name for lookup:")
+    galaxy = st.text_input("**Enter galaxy name for lookup:**")
     st.form_submit_button('Search')
     if '/' in galaxy or '\\' in galaxy or len(galaxy) == 0:
         data = requests.get('http://api:4000/galaxies').json()
@@ -26,7 +26,7 @@ with st.form("lookup"):
     st.dataframe(data)
 
 with st.form("input"):
-    st.write('Add a new galaxy to the database')
+    st.write('**Add a new galaxy to the database**')
     galaxy_name = st.text_input('Galaxy Name')
     redshift = st.text_input('Redshift')
     year_discovered = st.text_input('Year Discovered (YYYY-MM-DD)')
@@ -46,6 +46,35 @@ with st.form("input"):
 
             if response.status_code == 200:
                 st.success("Galaxy inserted successfully!")
+            else:
+                st.error(response.json().get("error", "Unknown error"))
+        except requests.exceptions.RequestException as e:
+            st.error("Could not retrieve data.")
+            st.text(f"Details: {e}")
+
+with st.form("replace"):
+    st.write('**Modify an existing galaxy**')
+    galaxy_name = st.text_input('Galaxy\'s Name to be modified')
+    redshift = st.text_input('Redshift')
+    year_discovered = st.text_input('Year Discovered (YYYY-MM-DD)')
+    solar_mass = st.text_input('Solar Mass in Trillions')
+    dominant_element = st.text_input('Dominant Element')
+    submitted = st.form_submit_button('Modify')
+
+    if submitted:
+        try:
+            response = requests.put('http://api:4000/galaxies', json={
+                "GalaxyName": galaxy_name,
+                "Redshift": redshift,
+                "YearDiscovered": year_discovered,
+                "SolarMassTrillions": solar_mass,
+                "DominantElement": dominant_element
+            })
+
+            if response.json()['rows_affected'] == 0:
+                st.error("Could not modify galaxy.")
+            elif response.status_code == 200:
+                st.success("Galaxy updated successfully!")
             else:
                 st.error(response.json().get("error", "Unknown error"))
         except requests.exceptions.RequestException as e:
