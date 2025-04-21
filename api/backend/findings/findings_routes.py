@@ -14,6 +14,7 @@ def run_program(query):
     theData = cursor.fetchall()
     response = make_response(jsonify(theData))
     response.status_code = 200
+    db.get_db().commit()
     return response
 
 
@@ -77,3 +78,16 @@ def update_finding_notes(FindingID, Notes):
         WHERE Finding.FindingID = {FindingID};
     '''
     return run_program(query)
+
+@findings.route('/findings', methods=['POST'])
+def add_finding():
+    finding_info = request.json
+    sig = finding_info['Significance']
+    findDate = finding_info['FindingDate']
+    notes = finding_info['Notes']
+    query = f'''
+    INSERT INTO Finding(Significance, FindingDate, Notes)
+    VALUES ("{sig}", "{findDate}","{notes}");
+    '''
+    return run_program(query)
+

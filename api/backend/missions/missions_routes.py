@@ -14,6 +14,7 @@ def run_program(query):
     theData = cursor.fetchall()
     response = make_response(jsonify(theData))
     response.status_code = 200
+    db.get_db().commit()
     return response
 
 
@@ -68,6 +69,14 @@ def get_findings_from_mission(MissionID):
         NATURAL JOIN Mission
         NATURAL JOIN Finding
         WHERE Mission.MissionID = {MissionID}
+    '''
+    return run_program(query)
+
+@mission.route('/missions/<MissionID>/findings/<FindingID>', methods=['POST'])
+def add_findings_and_mission(MissionID, FindingID):
+    query = f'''
+        INSERT INTO MissionFinding(MissionID, FindingID)
+        VALUES ({MissionID},{FindingID})
     '''
     return run_program(query)
 

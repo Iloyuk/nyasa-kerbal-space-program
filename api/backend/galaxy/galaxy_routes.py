@@ -14,6 +14,7 @@ def run_program(query):
     theData = cursor.fetchall()
     response = make_response(jsonify(theData))
     response.status_code = 200
+    db.get_db().commit()
     return response
 
 

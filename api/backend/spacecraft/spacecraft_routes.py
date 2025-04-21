@@ -108,7 +108,6 @@ def get_spacecraft_parts_info(ShipID, PartID):
     '''
     return run_program(query)
 
-
 @spacecraft.route('/spacecraft/<ShipID>/parts/<PartID>', methods=['PUT'])
 def update_part(ShipID, PartID):
     part_info = request.json

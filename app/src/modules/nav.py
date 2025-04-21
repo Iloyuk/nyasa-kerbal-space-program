@@ -55,6 +55,13 @@ def AdminPageNav():
         "pages/21_ML_Model_Mgmt.py", label="ML Model Management", icon="🏢"
     )
 
+### For Carl
+def Findings():
+    st.sidebar.page_link("pages/111_Findings.py", label="Findings", icon="🧠")
+
+def CarlHomePage():
+    st.sidebar.page_link("pages/110_MS_Engineer_Home.py", label="Missions/Home", icon="🖥️")
+
 
 # --------------------------------Links Function -----------------------------------------------
 def SideBarLinks(show_home=False):
@@ -92,6 +99,11 @@ def SideBarLinks(show_home=False):
         # If the user is an administrator, give them access to the administrator pages
         if st.session_state["role"] == "administrator":
             AdminPageNav()
+
+        # carl my goat
+        if st.session_state.first_name == "Carl":
+            CarlHomePage()
+            Findings() 
 
     # Always show the About page at the bottom of the list of links
     AboutPageNav()
