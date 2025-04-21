@@ -27,7 +27,7 @@ def welcome():
 
 
 # Get all galaxies, with a limit of 10
-@galaxy.route('/galaxies', methods=['GET', 'PUT'])
+@galaxy.route('/galaxies', methods=['GET', 'POST'])
 def get_galaxies():
     if request.method == 'GET':
         query = '''
@@ -37,7 +37,7 @@ def get_galaxies():
         '''
         return run_program(query)
 
-    elif request.method == 'PUT':
+    elif request.method == 'POST':
         data = request.get_json()
         query = '''
             INSERT INTO Galaxy (GalaxyName, Redshift, YearDiscovered, SolarMassTrillions, DominantElement)

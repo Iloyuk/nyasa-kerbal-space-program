@@ -36,7 +36,7 @@ with st.form("input"):
 
     if submitted:
         try:
-            response = requests.put('http://api:4000/galaxies', json={
+            response = requests.post('http://api:4000/galaxies', json={
                 "GalaxyName": galaxy_name,
                 "Redshift": redshift,
                 "YearDiscovered": year_discovered,
