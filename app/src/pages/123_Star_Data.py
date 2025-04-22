@@ -47,7 +47,7 @@ with st.form("lookup_star"):
     # TODO: add submitted_planet
 
 with st.form("input"):
-    st.write('**Add a star to the database**')
+    st.write('**Add a new star to the database**')
     star_name = st.text_input("Star Name:")
     sys_id = st.text_input("Star System ID:")
     const_id = st.text_input("Constellation ID:")
@@ -61,9 +61,9 @@ with st.form("input"):
             response = requests.post('http://api:4000/stars', json={
                 "SystemID": sys_id,
                 "ConstID": const_id,
-                "StarName": star_name,
-                "Mass": mass,
-                "Temperature": temp,
+                "StarName": star_name if star_name != "" else None,
+                "Mass": mass if mass != "" else None,
+                "Temperature": temp if temp != "" else None,
                 "SpectralType": spectral_type
             })
 
@@ -98,12 +98,15 @@ with st.form("update"):
                 "StarID": star_id
             })
 
-            if response.json()['rows_affected'] == 0:
-                st.error("Could not modify star.")
-            elif response.status_code == 200:
-                st.success("Star updated successfully!")
+            if response.status_code == 200:
+                result = response.json()
+                if result.get('rows_affected') == 0:
+                    st.warning("No star was updated")
+                else:
+                    st.success("Star updated successfully!")
             else:
-                st.error(response.json().get("error", "Unknown error"))
+                error = response.json().get("error", "Unknown error occurred.")
+                st.error(f"Update failed: {error}")
 
         except requests.exceptions.RequestException as e:
             st.error("Could not update data.")

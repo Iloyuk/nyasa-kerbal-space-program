@@ -34,8 +34,8 @@ def add_or_update_stars():
                 int(data['SystemID']),
                 int(data['ConstID']),
                 data['StarName'],
-                int(data['Mass']),
-                int(data['Temperature']),
+                data['Mass'],
+                data['Temperature'],
                 data['SpectralType']
             ))
             db.get_db().commit()

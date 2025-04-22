@@ -2,6 +2,7 @@ import logging
 import requests
 import streamlit as st
 from modules.nav import SideBarLinks
+
 logger = logging.getLogger(__name__)
 
 SideBarLinks()
@@ -13,9 +14,9 @@ data = requests.get('http://api:4000/galaxies').json()
 st.dataframe(data)
 
 with st.form("Galaxy Searcher"):
-    GalaxyID = st.number_input("Search in Galaxy",value=None,step=1)
+    GalaxyID = st.number_input("Search in Galaxy", value=None, step=1)
     viewStarSystem = st.checkbox("View Star System")
-    viewStars= st.checkbox("View Stars")
+    viewStars = st.checkbox("View Stars")
     viewPlanets = st.checkbox("View Planets")
     update = st.form_submit_button('Update')
     if update:
@@ -26,7 +27,7 @@ with st.form("Galaxy Searcher"):
                 if a['GalaxyID'] == GalaxyID:
                     verif = True
                     break
-            if verif: 
+            if verif:
                 systems = requests.get(f'http://api:4000/galaxies/{GalaxyID}/starsystems').json()
                 if systems and viewStarSystem:
                     st.write("Star systems in planet:")
@@ -46,8 +47,7 @@ with st.form("Galaxy Searcher"):
                     for s in stars:
                         for sta in s:
                             starID = sta['StarID']
-                            planet = requests.get(f'http://api:4000/galaxies/{starSystemID}/starsystems/{StarSysID}/stars/{starID}/planets').json()
+                            planet = requests.get(
+                                f'http://api:4000/galaxies/{starSystemID}/starsystems/{StarSysID}/stars/{starID}/planets').json()
                             if planet:
                                 st.dataframe(planet)
-
-

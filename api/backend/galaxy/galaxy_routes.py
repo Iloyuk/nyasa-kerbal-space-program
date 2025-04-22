@@ -40,9 +40,9 @@ def get_galaxies():
             cursor = db.get_db().cursor()
             cursor.execute(query, (
                 data['GalaxyName'],
-                float(data['Redshift']),
+                data['Redshift'],
                 data['YearDiscovered'],
-                int(data['SolarMassTrillions']),
+                data['SolarMassTrillions'],
                 data['DominantElement']
             ))
             db.get_db().commit()

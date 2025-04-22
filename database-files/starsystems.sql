@@ -347,10 +347,3 @@ VALUES
 (2, 2),
 (3, 3),
 (4, 4);
-
-SELECT *
-FROM Galaxy;
-
-SELECT *
-FROM Galaxy
-WHERE GalaxyID = 7

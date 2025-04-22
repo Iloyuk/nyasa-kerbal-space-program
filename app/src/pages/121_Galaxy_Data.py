@@ -36,11 +36,11 @@ with st.form("input"):
     if submitted:
         try:
             response = requests.post('http://api:4000/galaxies', json={
-                "GalaxyName": galaxy_name,
-                "Redshift": redshift,
+                "GalaxyName": galaxy_name if galaxy_name != "" else None,
+                "Redshift": redshift if redshift != "" else None,
                 "YearDiscovered": year_discovered,
-                "SolarMassTrillions": solar_mass,
-                "DominantElement": dominant_element
+                "SolarMassTrillions": solar_mass if solar_mass != "" else None,
+                "DominantElement": dominant_element if dominant_element != "" else None
             })
 
             if response.status_code == 200:
@@ -72,12 +72,16 @@ with st.form("replace"):
                 "DominantElement": dominant_element
             })
 
-            if response.json()['rows_affected'] == 0:
-                st.error("Could not modify galaxy.")
-            elif response.status_code == 200:
-                st.success("Galaxy updated successfully!")
+            if response.status_code == 200:
+                result = response.json()
+                if result.get('rows_affected') == 0:
+                    st.warning("No galaxy was updated")
+                else:
+                    st.success("Galaxy updated successfully!")
             else:
-                st.error(response.json().get("error", "Unknown error"))
+                error = response.json().get("error", "Unknown error occurred.")
+                st.error(f"Update failed: {error}")
+
         except requests.exceptions.RequestException as e:
             st.error("Could not update data.")
             st.text(f"Details: {e}")

@@ -15,7 +15,7 @@ st.write("# Star System Database")
 
 with st.form("lookup"):
     st.write('**Lookup a star system in a galaxy, either by galaxy, star system, or a combination of both**')
-    galaxy = st.text_input("Enter galaxy name/id *(this can be blank if searching by star system id)*:")
+    galaxy = st.text_input("Enter galaxy name/id *(leave this blank if searching by star system id)*:")
     star_sys = st.text_input("Enter star system name/id *(this can be blank if searching galaxies)*:")
     submitted = st.form_submit_button('Search')
 
@@ -73,7 +73,7 @@ with st.form("input"):
     if submitted:
         try:
             response = requests.post(f'http://api:4000/galaxies/{galaxy_id}/starsystems', json={
-                "SystemName": system_name,
+                "SystemName": system_name if system_name != "" else None,
                 "DistInLY": dist_in_ly,
                 "SystemType": system_type,
                 "NumStars": num_stars
@@ -107,12 +107,15 @@ with st.form("replace"):
                 "NumStars": num_stars,
             })
 
-            if response.json()['rows_affected'] == 0:
-                st.error("Could not modify star system.")
-            elif response.status_code == 200:
-                st.success("Star system updated successfully!")
+            if response.status_code == 200:
+                result = response.json()
+                if result.get('rows_affected') == 0:
+                    st.warning("No star system was updated")
+                else:
+                    st.success("Star system updated successfully!")
             else:
-                st.error(response.json().get("error", "Unknown error"))
+                error = response.json().get("error", "Unknown error occurred.")
+                st.error(f"Update failed: {error}")
 
         except requests.exceptions.RequestException as e:
             st.error("Could not update data.")
