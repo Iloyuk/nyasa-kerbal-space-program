@@ -8,6 +8,9 @@ from backend.findings.findings_routes import findings
 from backend.galaxy.galaxy_routes import galaxy
 from backend.missions.missions_routes import mission
 from backend.spacecraft.spacecraft_routes import spacecraft
+from backend.star_systems.star_system_routes import star_system
+from backend.stars.star_routes import star
+from backend.planets.planet_routes import planet
 
 import os
 from dotenv import load_dotenv
@@ -50,6 +53,9 @@ def create_app():
     app.register_blueprint(findings, web_prefix="/findings")
     app.register_blueprint(galaxy, web_prefix="/galaxy")
     app.register_blueprint(spacecraft, web_prefix="/spacecraft")
+    app.register_blueprint(star_system, web_prefix="/star_system")
+    app.register_blueprint(star, web_prefix="/star")
+    app.register_blueprint(planet, web_prefix="/planet")
 
     # Don't forget to return the app object
     return app
