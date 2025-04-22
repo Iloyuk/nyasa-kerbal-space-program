@@ -53,7 +53,8 @@ with st.form("input"):
 
 with st.form("replace"):
     st.write('**Modify an existing galaxy**')
-    galaxy_name = st.text_input('Galaxy\'s Name to be modified:')
+    galaxy_id = st.text_input('*Galaxy ID to be modified:*')
+    galaxy_name = st.text_input('Galaxy Name:')
     redshift = st.text_input('Redshift:')
     year_discovered = st.text_input('Year Discovered (YYYY-MM-DD):')
     solar_mass = st.text_input('Solar Mass in Trillions:')
@@ -63,6 +64,7 @@ with st.form("replace"):
     if submitted:
         try:
             response = requests.put('http://api:4000/galaxies', json={
+                "GalaxyID": galaxy_id,
                 "GalaxyName": galaxy_name,
                 "Redshift": redshift,
                 "YearDiscovered": year_discovered,

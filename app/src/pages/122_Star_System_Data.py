@@ -89,7 +89,8 @@ with st.form("input"):
 
 with st.form("replace"):
     st.write('**Modify an existing star system**')
-    system_name = st.text_input("*Star System Name:*")
+    system_id = st.text_input("*Star System ID to be modified:*")
+    system_name = st.text_input("Star System Name:")
     galaxy_id = st.text_input("Galaxy ID:")
     dist_in_ly = st.text_input("Dist. In Light Years:")
     system_type = st.text_input("Star System Type (Binary, Multiple):")
@@ -100,6 +101,7 @@ with st.form("replace"):
         try:
             response = requests.put(f'http://api:4000/galaxies/{galaxy_id}/starsystems', json={
                 "SystemName": system_name,
+                "SystemID": system_id,
                 "DistInLY": dist_in_ly,
                 "SystemType": system_type,
                 "NumStars": num_stars,
@@ -111,6 +113,7 @@ with st.form("replace"):
                 st.success("Star system updated successfully!")
             else:
                 st.error(response.json().get("error", "Unknown error"))
+
         except requests.exceptions.RequestException as e:
             st.error("Could not update data.")
             st.text(f"Details: {e}")
