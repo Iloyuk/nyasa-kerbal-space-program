@@ -21,3 +21,8 @@ if st.button('Access the star system database',
              type='primary',
              use_container_width=True):
     st.switch_page('pages/122_Star_System_Data.py')
+
+if st.button('Access the star database',
+             type='primary',
+             use_container_width=True):
+    st.switch_page('pages/123_Star_Data.py')
