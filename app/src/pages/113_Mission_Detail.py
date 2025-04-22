@@ -28,15 +28,19 @@ with tab1:
 with tab2:
     with st.form("build-a-mission"):
         data = requests.get('http://api:4000/missions/extended').json()
+        ss = []
+        for starsystem in requests.get('http://api:4000/galaxies/starsystems').json():
+            ss.append(starsystem['SystemID'])
         st.dataframe(data)
         selection = st.selectbox('Search',('Update', 'Add'))
+        refresh = st.form_submit_button('Refresh')
         update = st.form_submit_button('Update')
         ID = st.number_input("ID",value=None, step=1)
         MissionName = st.text_input("MissionName",value=None)
         Objective = st.text_input("Objective",value=None)
         Agency = st.text_input("Agency",value=None)
         SuccessRating = st.selectbox("SuccessRating",("High","Medium","Low"))
-        SystemID = st.number_input("SystemID",step=1,value=1)
+        SystemID = st.selectbox("System ID",ss)
         StartDate = st.date_input("StartDate", value=None)
         EndDate = st.date_input("EndDate", value=None)
         if update:
@@ -55,20 +59,29 @@ with tab2:
                 if EndDate: requests.put(f'http://api:4000/missions/{ID}/starsystem/enddate/{str(EndDate)}')
             if selection == 'Add':
                 try:
-                    requests.post(f'http://api:4000/missions',json={
-                        "MissionName":MissionName,
-                        "Agency":Agency,
-                        "Objective":Objective,
-                        "SuccessRating": str(SuccessRating)
-                    })
-                    NewID = requests.get(f'http://api:4000/missions/name/{MissionName}').json()
-                    for newID in NewID:
-                        ID = newID['MissionID']      
-                    requests.post(f'http://api:4000/missions/starsystem',json={
-                        "MissionID":ID,
-                        "SystemID":SystemID,
-                        "StartDate":str(StartDate),
-                        "EndDate":str(EndDate),
-                    })
+                    if MissionName and Objective and Agency and SuccessRating and SystemID and StartDate:
+                        request = requests.post(f'http://api:4000/missions',json={
+                            "MissionName":MissionName,
+                            "Agency":Agency,
+                            "Objective":Objective,
+                            "SuccessRating": str(SuccessRating)
+                        })
+                        if request.status_code == 200:
+                            st.success("Addition successful!")
+                        if request.status_code == 500:
+                            st.error("There appears to be an error with the code. Let Davey know or something")
+                        NewID = requests.get(f'http://api:4000/missions/name/{MissionName}').json()
+                        for newID in NewID:
+                            ID = newID['MissionID']      
+                        request = requests.post(f'http://api:4000/missions/starsystem',json={
+                            "MissionID":ID,
+                            "SystemID":SystemID,
+                            "StartDate":str(StartDate),
+                            "EndDate":str(EndDate),
+                        })
+                        if request.status_code == 200:
+                            st.success("Addition successful!")
+                        if request.status_code == 500:
+                            st.error("There appears to be an error with the code. Let Davey know or something")
                 except Exception as e:
                     st.error(f"Cannot be completed: {e}")

@@ -110,7 +110,7 @@ def find_galaxy_by_id(GalaxyID):
 def find_starsystems_by_galaxy_id(GalaxyID):
     if request.method == 'GET':
         query = f'''
-            SELECT SystemName
+            SELECT SystemName, SystemID
             FROM StarSystem
             WHERE GalaxyID = {GalaxyID}
         '''
@@ -155,18 +155,6 @@ def find_starsystems_by_galaxy_id(GalaxyID):
             db.get_db().rollback()
             return jsonify({'error': str(e)}), 400
 
-
-# Get all star systems in a galaxy by galaxy name
-@galaxy.route('/galaxies/<GalaxyName>/starsystems', methods=['GET'])
-def find_starsystems_by_galaxy_name(GalaxyName):
-    query = f'''
-        SELECT S.SystemName
-        FROM StarSystem S JOIN Galaxy G on S.GalaxyID = G.GalaxyID
-        WHERE G.GalaxyName LIKE '%{GalaxyName}%'
-        '''
-    return run_program(query)
-
-
 # Get a star system by its id
 @galaxy.route('/galaxies/starsystems/<int:SystemID>', methods=['GET'])
 def find_starsystems_by_starsystem_name(SystemID):
@@ -176,6 +164,15 @@ def find_starsystems_by_starsystem_name(SystemID):
         WHERE SystemID = {SystemID}
     '''
     return run_program(query)
+
+@galaxy.route('/galaxies/starsystems', methods=['GET'])
+def find_starsystems():
+    query = f'''
+        SELECT *
+        FROM StarSystem
+    '''
+    return run_program(query)
+
 
 
 # Get a star system by a combination of galaxy name and star system name
@@ -282,8 +279,8 @@ def search_star_from_temperature(GalaxyID, SystemID, Temperature):
 @galaxy.route('/galaxies/<GalaxyID>/starsystems/<SystemID>/stars/<StarID>/planets', methods=['GET'])
 def get_planet(GalaxyID, SystemID, StarID):
     query = f'''
-        SELECT Planet.PlanetName
-        FROM Orbits JOIN Planet
+        SELECT *
+        FROM Orbits NATURAL JOIN Planet
         WHERE Orbits.StarID = {StarID} 
     '''
     return run_program(query)

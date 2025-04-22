@@ -27,17 +27,18 @@ with tab1:
                     response = requests.get(f'http://api:4000/astronauts/{input}')
                 response.raise_for_status()
                 result = response.json()
-                st.dataframe(result)
-                for i in result:
-                    ID = i['AstroID']
-                    mission = requests.get(f'http://api:4000/astronauts/{ID}/missions').json()
-                    st.dataframe(mission)
+                if result:
+                    st.dataframe(result)
+                    for i in result:
+                        ID = i['AstroID']
+                        mission = requests.get(f'http://api:4000/astronauts/{ID}/missions').json()
+                        st.dataframe(mission)
 with tab2:
     with st.form("aaaa"):
         data = requests.get('http://api:4000/astronauts').json()
         st.dataframe(data)
         selection = st.selectbox('Search',('Update', 'Add', 'Delete'))
-        update = st.form_submit_button('Update')
+        update = st.form_submit_button('Commit')
         refresh = st.form_submit_button('Refresh')
         ID = st.number_input("ID",value=None, step=1)
         Country = st.text_input("Country")
@@ -59,9 +60,17 @@ with tab2:
                             request = requests.put(f'http://api:4000/astronauts/{ID}/yearsinspace/{YearsInSpace}')
                         if Name and Name != "":
                             request = requests.put(f'http://api:4000/astronauts/{ID}/name/{Name}')
+                        if request.status_code == 200:
+                            st.success("update successful!")
+                        if request.status_code == 500:
+                            st.error("There appears to be an error with the code. Let Davey know or something")
                     if selection == 'Delete':
                         st.write("in delete mode!")
                         request = requests.delete(f'http://api:4000/astronauts/{ID}')
+                        if request.status_code == 200:
+                            st.success("Delete successful!")
+                        if request.status_code == 500:
+                            st.error("There appears to be an error with the code. Let Davey know or something")
                 if selection == 'Add':
                     st.write("in add mode!")
                     request = requests.post(f'http://api:4000/astronauts', json={
@@ -69,9 +78,20 @@ with tab2:
                         "Country": Country,
                         "YearsInSpace": YearsInSpace
                     })
+                    if request.status_code == 200:
+                        st.success("Addition successful!")
+                    if request.status_code == 500:
+                        st.error("There appears to be an error with the code. Let Davey know or something")
             except Exception as e:
                 st.error("An error has occured")
                 st.text(f"Details: {e}")
+        if refresh:
+            if selection == 'Update':
+                st.write("in update mode!")
+            if selection == 'Delete':
+                st.write("in delete mode!")
+            if selection == 'Add':
+                st.write("in add mode!")
 
 
                 
