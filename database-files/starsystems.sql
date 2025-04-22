@@ -347,3 +347,17 @@ VALUES
 (2, 2),
 (3, 3),
 (4, 4);
+
+Select *
+FROM Planet;
+
+SELECT P.PlanetID, P.PlanetName, P.PlanetType, P.Mass, P.NumMoons, P.Eccentricity, P.Inclination, S.StarID
+FROM Planet P
+         JOIN Orbits O ON P.PlanetID = O.PlanetID
+         JOIN Star S ON S.StarID = O.StarID
+WHERE P.PlanetID = 5;
+
+SELECT P.PlanetID, P.PlanetName, P.PlanetType, P.Mass, P.NumMoons, P.Eccentricity, P.Inclination, S.StarID
+FROM Planet P
+         LEFT JOIN Orbits O ON P.PlanetID = O.PlanetID
+         LEFT JOIN Star S ON S.StarID = O.StarID
