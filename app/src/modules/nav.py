@@ -5,12 +5,14 @@
 import streamlit as st
 import base64
 
+
 #what i use to change the background - davey
-@st.cache(allow_output_mutation=True)
+@st.cache_data
 def get_base64(bin_file):
     with open(bin_file, 'rb') as f:
         data = f.read()
     return base64.b64encode(data).decode()
+
 
 def set_background(png_file):
     bin_str = get_base64(png_file)
@@ -29,12 +31,16 @@ def set_background(png_file):
 def HomeNav():
     st.sidebar.page_link("Home.py", label="Home", icon="🏠")
 
+
 def AboutPageNav():
     st.sidebar.page_link("pages/30_About.py", label="About", icon="🧠")
 
+
 ## Alex
 def GalaxyVis():
-    st.sidebar.page_link("pages/101_Galaxy_VIsualization.py", label="Galaxy Visualization",icon="🌌" )
+    st.sidebar.page_link("pages/101_Galaxy_VIsualization.py", label="Galaxy Visualization", icon="🌌")
+
+
 ## Sammy
 
 ## Lexie
@@ -43,11 +49,14 @@ def GalaxyVis():
 def Findings():
     st.sidebar.page_link("pages/111_Findings.py", label="Findings", icon="🌟")
 
+
 def CarlHomePage():
     st.sidebar.page_link("pages/110_MS_Engineer_Home.py", label="Missions/Home", icon="🖥️")
 
+
 def Spacecraft():
     st.sidebar.page_link("pages/112_All_Spacecraft.py", label="Spacecraft", icon="🚀")
+
 
 def Missions():
     st.sidebar.page_link("pages/113_Mission_Detail.py", label="Missions in Detail", icon="🔥")
@@ -83,7 +92,7 @@ def SideBarLinks(show_home=False):
         # carl my goat
         if st.session_state.first_name == "Carl":
             CarlHomePage()
-            Findings() 
+            Findings()
             Spacecraft()
             Missions()
 

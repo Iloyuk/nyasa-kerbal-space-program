@@ -7,6 +7,7 @@ from backend.db_connection import db
 
 star = Blueprint('star', __name__)
 
+
 def run_program(query):
     cursor = db.get_db().cursor()
     cursor.execute(query)
@@ -18,40 +19,9 @@ def run_program(query):
 
 
 # Add or update stars
-@star.route('/stars', methods=['GET', 'POST', 'PUT'])
-def view_add_or_update_stars():
-    if request.method == 'GET':
-        star_identifier = request.args.get('star')
-        cursor = db.get_db().cursor()
-
-        if star_identifier.isnumeric():
-            query = '''
-                SELECT S.StarName AS 'MainStar', P.PlanetID, P.PlanetName
-                FROM Star S JOIN Orbits O on S.StarID = O.StarID
-                            JOIN Planet P on O.PlanetID = P.PlanetID
-                WHERE S.StarID = %s
-            '''
-            cursor.execute(query, star_identifier)
-        else:
-            query = '''
-                SELECT S.StarName AS 'MainStar', P.PlanetID, P.PlanetName
-                FROM Star S JOIN Orbits O on S.StarID = O.StarID
-                            JOIN Planet P on O.PlanetID = P.PlanetID
-                WHERE S.StarName LIKE %s
-            '''
-            cursor.execute(query, (f"%{star_identifier}%",))
-
-        try:
-            theData = cursor.fetchall()
-            response = make_response(jsonify(theData))
-            response.status_code = 200
-            db.get_db().commit()
-            return response
-        except Exception as e:
-            db.get_db().rollback()
-            return jsonify({'error': str(e)}), 400
-
-    elif request.method == 'POST':
+@star.route('/stars', methods=['POST', 'PUT'])
+def add_or_update_stars():
+    if request.method == 'POST':
         data = request.get_json()
         query = '''
             INSERT INTO Star (SystemID, ConstID, StarName, Mass, Temperature, SpectralType) 

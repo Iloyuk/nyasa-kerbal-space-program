@@ -7,6 +7,7 @@ from backend.db_connection import db
 
 galaxy = Blueprint('galaxy', __name__)
 
+
 def run_program(query):
     cursor = db.get_db().cursor()
     cursor.execute(query)
@@ -112,4 +113,15 @@ def find_galaxy_by_id(GalaxyID):
         FROM Galaxy
         WHERE GalaxyID = {GalaxyID}
     '''
+    return run_program(query)
+
+
+# Get all star systems in a galaxy by galaxy name
+@galaxy.route('/galaxies/<GalaxyName>/starsystems', methods=['GET'])
+def find_starsystems_by_galaxy_name(GalaxyName):
+    query = f'''
+        SELECT S.SystemName
+        FROM StarSystem S JOIN Galaxy G on S.GalaxyID = G.GalaxyID
+        WHERE G.GalaxyName LIKE '%{GalaxyName}%'
+        '''
     return run_program(query)

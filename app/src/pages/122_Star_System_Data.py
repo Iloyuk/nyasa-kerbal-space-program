@@ -24,7 +24,7 @@ with st.form("lookup"):
             st.error("Please enter a valid galaxy name/id for lookup")
         elif len(galaxy) == 0:
             if len(star_sys) > 0 and star_sys.isnumeric():
-                data = requests.get(f'http://api:4000/galaxies/starsystems/{star_sys}').json()
+                data = requests.get(f'http://api:4000/starsystems/{star_sys}').json()
                 if not data:
                     st.error("Could not find the star system")
                 else:
@@ -47,7 +47,7 @@ with st.form("lookup"):
             else:
                 try:
                     if star_sys.isnumeric():
-                        data = requests.get(f'http://api:4000/galaxies/starsystems/{star_sys}').json()
+                        data = requests.get(f'http://api:4000/starsystems/{star_sys}').json()
                     else:
                         data = requests.get(f'http://api:4000/galaxies/{galaxy}/starsystems/{star_sys}').json()
 

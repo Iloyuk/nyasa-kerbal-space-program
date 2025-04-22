@@ -26,3 +26,8 @@ if st.button('Access the star database',
              type='primary',
              use_container_width=True):
     st.switch_page('pages/123_Star_Data.py')
+
+if st.button('Access the planet database',
+             type='primary',
+             use_container_width=True):
+    st.switch_page('pages/124_Planet_Data.py')

@@ -31,9 +31,10 @@ with st.form("lookup_star_system"):
 with st.form("lookup_star"):
     st.write('**Look up information on a star**')
     star = st.text_input("Enter star id:")
-    submitted = st.form_submit_button('Search')
+    submitted_star = st.form_submit_button('Search star information')
+    submitted_planet = st.form_submit_button('Search planets which orbit this star')
 
-    if submitted:
+    if submitted_star:
         if not star.isnumeric():
             st.error("Please enter a valid star id")
         else:
@@ -42,6 +43,8 @@ with st.form("lookup_star"):
                 st.error("Could not find star")
             else:
                 st.dataframe(data)
+
+    # TODO: add submitted_planet
 
 with st.form("input"):
     st.write('**Add a star to the database**')

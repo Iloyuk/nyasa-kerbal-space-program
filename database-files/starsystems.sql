@@ -268,6 +268,9 @@ VALUES
 ('Earth', 'Terrestrial', 1, 1, 0.017, 0.0),
 ('Almach X1', 'Ice Giant', 100, 4, 0.07, 1.8);
 
+
+SELECT *
+FROM Planet;
 INSERT INTO Orbits (PlanetID, StarID, OrbitalPeriod, SemiMajorAxis)
 VALUES
 (1, 1, 11.2, 0.05),
