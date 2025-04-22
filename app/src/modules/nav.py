@@ -3,61 +3,45 @@
 # This file has function to add certain functionality to the left side bar of the app
 
 import streamlit as st
+import base64
+
+#what i use to change the background - davey
+@st.cache(allow_output_mutation=True)
+def get_base64(bin_file):
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+def set_background(png_file):
+    bin_str = get_base64(png_file)
+    page_bg_img = '''
+    <style>
+    .stApp {
+    background-image: url("data:image/png;base64,%s");
+    background-size: cover;
+    }
+    </style>
+    ''' % bin_str
+    st.markdown(page_bg_img, unsafe_allow_html=True)
 
 
 #### ------------------------ General ------------------------
 def HomeNav():
     st.sidebar.page_link("Home.py", label="Home", icon="🏠")
 
-
 def AboutPageNav():
     st.sidebar.page_link("pages/30_About.py", label="About", icon="🧠")
 
+## Alex
+def GalaxyVis():
+    st.sidebar.page_link("pages/101_Galaxy_VIsualization.py", label="Galaxy Visualization",icon="🌌" )
+## Sammy
 
-#### ------------------------ Examples for Role of pol_strat_advisor ------------------------
-def PolStratAdvHomeNav():
-    st.sidebar.page_link(
-        "pages/00_Pol_Strat_Home.py", label="Political Strategist Home", icon="👤"
-    )
-
-
-def WorldBankVizNav():
-    st.sidebar.page_link(
-        "pages/01_World_Bank_Viz.py", label="World Bank Visualization", icon="🏦"
-    )
-
-
-def MapDemoNav():
-    st.sidebar.page_link("pages/02_Map_Demo.py", label="Map Demonstration", icon="🗺️")
-
-
-## ------------------------ Examples for Role of usaid_worker ------------------------
-def ApiTestNav():
-    st.sidebar.page_link("pages/12_API_Test.py", label="Test the API", icon="🛜")
-
-
-def PredictionNav():
-    st.sidebar.page_link(
-        "pages/11_Prediction.py", label="Regression Prediction", icon="📈"
-    )
-
-
-def ClassificationNav():
-    st.sidebar.page_link(
-        "pages/13_Classification.py", label="Classification Demo", icon="🌺"
-    )
-
-
-#### ------------------------ System Admin Role ------------------------
-def AdminPageNav():
-    st.sidebar.page_link("pages/20_Admin_Home.py", label="System Admin", icon="🖥️")
-    st.sidebar.page_link(
-        "pages/21_ML_Model_Mgmt.py", label="ML Model Management", icon="🏢"
-    )
+## Lexie
 
 ### For Carl
 def Findings():
-    st.sidebar.page_link("pages/111_Findings.py", label="Findings", icon="🧠")
+    st.sidebar.page_link("pages/111_Findings.py", label="Findings", icon="🌟")
 
 def CarlHomePage():
     st.sidebar.page_link("pages/110_MS_Engineer_Home.py", label="Missions/Home", icon="🖥️")
@@ -69,13 +53,17 @@ def Missions():
     st.sidebar.page_link("pages/113_Mission_Detail.py", label="Missions in Detail", icon="🔥")
 
 
+def BackgroundImgSet():
+    set_background("assets/galaxybackground.png")
+
+
 # --------------------------------Links Function -----------------------------------------------
 def SideBarLinks(show_home=False):
     """
     This function handles adding links to the sidebar of the app based upon the logged-in user's role, which was put in the streamlit session_state object when logging in.
     """
 
-    # add a logo to the sidebar always
+    # add a logo to the sidebar always    
     st.sidebar.image("assets/logo.png", width=150)
 
     # If there is no logged in user, redirect to the Home (Landing) page
@@ -89,23 +77,9 @@ def SideBarLinks(show_home=False):
 
     # Show the other page navigators depending on the users' role.
     if st.session_state["authenticated"]:
-
-        # Show World Bank Link and Map Demo Link if the user is a political strategy advisor role.
-        if st.session_state["role"] == "pol_strat_advisor":
-            PolStratAdvHomeNav()
-            WorldBankVizNav()
-            MapDemoNav()
-
-        # If the user role is usaid worker, show the Api Testing page
-        if st.session_state["role"] == "usaid_worker":
-            PredictionNav()
-            ApiTestNav()
-            ClassificationNav()
-
-        # If the user is an administrator, give them access to the administrator pages
-        if st.session_state["role"] == "administrator":
-            AdminPageNav()
-
+        #Alex
+        if st.session_state.first_name == "Alex":
+            GalaxyVis()
         # carl my goat
         if st.session_state.first_name == "Carl":
             CarlHomePage()
@@ -115,6 +89,7 @@ def SideBarLinks(show_home=False):
 
     # Always show the About page at the bottom of the list of links
     AboutPageNav()
+    BackgroundImgSet()
 
     if st.session_state["authenticated"]:
         # Always show a logout button if there is a logged in user

@@ -14,6 +14,7 @@ def run_program(query):
     theData = cursor.fetchall()
     response = make_response(jsonify(theData))
     response.status_code = 200
+    db.get_db().commit()
     return response
 
 
@@ -98,6 +99,18 @@ def get_spacecraft_parts(ShipID):
     '''
     return run_program(query)
 
+@spacecraft.route('/spacecraft/<ShipID>/parts', methods=['POST'])
+def add_spacecraft_parts(ShipID):
+    data = request.json
+    partName = data['PartName']
+    mass = data['MassInTons']
+    length = data['LengthInCM']
+    usage = data['PartUsage']
+    query = f'''
+        INSERT INTO Part(ShipID, PartName, MassInTons, LengthInCM, PartUsage)
+        VALUES ({ShipID},"{partName}",{mass},{length},"{usage}") 
+    '''
+    return run_program(query)
 
 @spacecraft.route('/spacecraft/<ShipID>/parts/<PartID>', methods=['GET'])
 def get_spacecraft_parts_info(ShipID, PartID):
