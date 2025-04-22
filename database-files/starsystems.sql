@@ -346,5 +346,8 @@ VALUES
 (4, 4);
 
 SELECT *
-FROM StarSystem
-WHERE GalaxyID = 2
+FROM Galaxy;
+
+SELECT *
+FROM Galaxy
+WHERE GalaxyID = 7

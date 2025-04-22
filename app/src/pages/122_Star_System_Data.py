@@ -30,12 +30,12 @@ with st.form("lookup"):
                 else:
                     st.dataframe(data)
             else:
-                st.dataframe(requests.get('http://api:4000/galaxies').json())
+                st.dataframe(requests.get('http://api:4000/galaxies/names').json())
         elif len(star_sys) == 0:  # If user only entered galaxy for search
             try:
                 data = requests.get(f'http://api:4000/galaxies/{galaxy}/starsystems').json()
                 if not data:
-                    st.error("Could not find the galaxy")
+                    st.error("Could not find the galaxy, or galaxy contains no star systems")
                 else:
                     st.dataframe(data)
             except requests.exceptions.RequestException as e:
@@ -58,6 +58,8 @@ with st.form("lookup"):
                 except requests.exceptions.RequestException as e:
                     st.error("Could not retrieve data.")
                     st.text(f"Details: {e}")
+    else:
+        st.dataframe(requests.get('http://api:4000/galaxies/names').json())
 
 with st.form("input"):
     st.write("**Add a new star system to the database**")

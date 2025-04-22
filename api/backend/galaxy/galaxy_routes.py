@@ -81,6 +81,17 @@ def get_galaxies():
             return jsonify({'error': str(e)}), 400
 
 
+# Get names of galaxies
+@galaxy.route('/galaxies/names', methods=['GET'])
+def get_galaxy_names():
+    query = '''
+        SELECT GalaxyName
+        FROM Galaxy
+        LIMIT 10
+        '''
+    return run_program(query)
+
+
 # Get specific info of a galaxy from galaxy name
 @galaxy.route('/galaxies/<GalaxyName>', methods=['GET'])
 def find_galaxy_by_name(GalaxyName):
@@ -180,7 +191,7 @@ def find_starsystems_by_starsystem_name(SystemID):
 
 # Get a star system by a combination of galaxy name and star system name
 @galaxy.route('/galaxies/<GalaxyName>/starsystems/<SystemName>', methods=['GET'])
-def find_starsystems_by_galaxy_and_starsystem_name(GalaxyName, SystemName):
+def find_starsystems_by_galaxy_name_and_starsystem_name(GalaxyName, SystemName):
     query = f'''
         SELECT *
         FROM StarSystem SS JOIN Galaxy G on SS.GalaxyID = G.GalaxyID
