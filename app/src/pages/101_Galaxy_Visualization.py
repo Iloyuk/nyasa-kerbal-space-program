@@ -13,21 +13,21 @@ data = requests.get('http://api:4000/galaxies').json()
 st.dataframe(data)
 
 with st.form("Galaxy Searcher"):
-    starSystemID = st.number_input("Search in Galaxy",value=None,step=1)
+    GalaxyID = st.number_input("Search in Galaxy",value=None,step=1)
     viewStarSystem = st.checkbox("View Star System")
     viewStars= st.checkbox("View Stars")
     viewPlanets = st.checkbox("View Planets")
     update = st.form_submit_button('Update')
     if update:
-        if starSystemID:
+        if GalaxyID:
             stars = []
             verif = False
             for a in data:
-                if a['GalaxyID'] == starSystemID:
+                if a['GalaxyID'] == GalaxyID:
                     verif = True
                     break
             if verif: 
-                systems = requests.get(f'http://api:4000/galaxies/{starSystemID}/starsystems').json()
+                systems = requests.get(f'http://api:4000/galaxies/{GalaxyID}/starsystems').json()
                 if systems and viewStarSystem:
                     st.write("Star systems in planet:")
                     st.dataframe(systems)
@@ -36,7 +36,7 @@ with st.form("Galaxy Searcher"):
                     st.write("Stars in star system:")
                 for system in systems:
                     StarSysID = system['SystemID']
-                    star = requests.get(f'http://api:4000/galaxies/{starSystemID}/starsystems/{StarSysID}/stars').json()
+                    star = requests.get(f'http://api:4000/starsystems/{StarSysID}').json()
                     if star:
                         stars.append(star)
                         if viewStars:
