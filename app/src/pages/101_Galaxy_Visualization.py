@@ -8,9 +8,9 @@ logger = logging.getLogger(__name__)
 SideBarLinks()
 
 st.header('Galaxy Visualization')
-#st.write(f"### Hi, {st.session_state['first_name']}.")
 
-data = requests.get('http://api:4000/galaxies').json()
+amount = int(st.number_input("Amount of galaxies you would like to display:", min_value=0, step=1, format="%d"))
+data = requests.get('http://api:4000/galaxies', params={"amount": amount}).json()
 st.dataframe(data)
 
 with st.form("Galaxy Searcher"):
@@ -51,13 +51,3 @@ with st.form("Galaxy Searcher"):
                                 f'http://api:4000/planets/orbits',params={"star":starID}).json()
                             if planet:
                                 st.dataframe(planet)
-
-if st.button('Star Systems in detail',
-             type='primary',
-             use_container_width=True):
-    st.switch_page('pages/102_Star_System_Vis.py')
-
-if st.button('Constellations',
-             type='primary',
-             use_container_width=True):
-    st.switch_page('pages/103_Constellations.py')
