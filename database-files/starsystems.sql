@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS Star (
     Mass INT,
     Temperature INT,
     SpectralType VARCHAR(15) NOT NULL,
+    SpectralType VARCHAR(15) NOT NULL,
     FOREIGN KEY (SystemID) REFERENCES StarSystem(SystemID)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
@@ -219,13 +220,56 @@ VALUES
 ('IC 1101', 0.077, '1790-11-12', 100.0, 'Iron'),
 ('NGC 4696', 0.00987, '1826-10-03', 2.1, 'Hydrogen'),
 ('NGC 6872', 0.0146, '1850-02-27', 1.6, 'Carbon');
+('Triangulum', 0.00096, '1764-01-01', 0.5, 'Helium'),
+('Andromeda Galaxy', -0.001001, '0964-01-01', 1.5, 'Hydrogen'),
+('Large Magellanic Cloud', 0.000934, '1500-01-01', 0.1, 'Hydrogen'),
+('Small Magellanic Cloud', 0.000527, '1500-01-01', 0.07, 'Helium'),
+('Triangulum Galaxy', 0.00096, '1764-08-25', 0.5, 'Hydrogen'),
+('NGC 1300', 0.00526, '1835-03-04', 1.0, 'Oxygen'),
+('NGC 6744', 0.00281, '1826-06-15', 1.4, 'Helium'),
+('NGC 4414', 0.00367, '1865-09-10', 1.2, 'Hydrogen'),
+('IC 1101', 0.077, '1790-11-12', 100.0, 'Iron'),
+('NGC 4696', 0.00987, '1826-10-03', 2.1, 'Hydrogen'),
+('NGC 6872', 0.0146, '1850-02-27', 1.6, 'Carbon');
 
 -- STAR SYSTEM
 INSERT INTO StarSystem (GalaxyID, SystemName, DistInLY, SystemType, NumStars)
 VALUES
 (1, 'Barnard’s Star System', 5, 'Binary', 1),
+(1, 'Barnard’s Star System', 5, 'Binary', 1),
 (1, 'Sirius System', 8, 'Binary', 2),
 (2, 'M31 System Y', 2540001, 'Multiple', 3),
+(3, 'M33-Kepler System', 2730000, 'Binary', 2),
+(1, 'Alpha Centauri', 4, 'Multiple', 3),
+(1, 'Proxima Centauri System', 4, 'Binary', 1),
+(1, 'TRAPPIST-1 System', 40, 'Binary', 1),
+(1, 'Epsilon Eridani System', 10, 'Binary', 1),
+(1, 'Gliese 581 System', 20, 'Binary', 1),
+(1, 'Tau Ceti System', 12, 'Binary', 1),
+(1, 'Wolf 1061 System', 14, 'Binary', 1),
+(1, 'Luyten’s Star System', 12, 'Binary', 1),
+(1, 'Kapteyn’s Star System', 13, 'Binary', 1),
+(1, 'Kepler-62 System', 1200, 'Multiple', 2),
+(2, 'Kepler-186 System', 492, 'Multiple', 2),
+(2, 'Kepler-22 System', 620, 'Binary', 1),
+(3, 'OGLE-2005-BLG-390Lb Host', 21500, 'Binary', 1),
+(4, 'PSR B1257+12 System', 2300, 'Binary', 1),
+(1, 'LHS 1140 System', 49, 'Binary', 1),
+-- Andromeda Galaxy
+(2, 'RX J0042.6+4115 System', 2520000, 'Binary', 2),
+(2, 'Andromeda-V1 System', 2530000, 'Binary', 1),
+-- Triangulum Galaxy
+(3, 'M33-X7 System', 3000000, 'Binary', 2),
+(3, 'NGC 604 Region Cluster A', 3020000, 'Multiple', 7),
+-- NGC 6744
+(4, 'HD 128311 System', 30000000, 'Binary', 1),
+(4, 'HD 122563 System', 31000000, 'Binary', 1),
+-- IC 1101
+(5, 'ICX-01 SuperCluster Core', 110000000, 'Multiple', 5),
+(5, 'ICX-Alpha Prime', 111000000, 'Binary', 2),
+-- NGC 1300
+(6, 'NGC 1300-BH1 System', 61000000, 'Binary', 2),
+(6, 'NGC 1300-Y7', 61500000, 'Multiple', 3);
 (3, 'M33-Kepler System', 2730000, 'Binary', 2),
 (1, 'Alpha Centauri', 4, 'Multiple', 3),
 (1, 'Proxima Centauri System', 4, 'Binary', 1),
@@ -262,6 +306,16 @@ VALUES
 INSERT INTO Constellation (ConstName, Abbreviation, Hemisphere, BrightestStar, BestViewingMonth, Notes)
 VALUES 
 ('Centaurus', 'Cen', 'South', 'Alpha Centauri', 'May', 'Home to the closest star system'),
+('Cassiopeia', 'Cas', 'North', 'Schedar', 'Nov', 'Visible year-round in the Northern Hemisphere'),
+('Orion', 'Ori', 'North', 'Rigel', 'Jan', 'One of the most recognizable constellations with the Orion Belt.'),
+('Scorpius', 'Sco', 'South', 'Antares', 'Jul', 'Features a bright red supergiant star, Antares.'),
+('Ursa Major', 'UMa', 'North', 'Alioth', 'Apr', 'Home to the Big Dipper asterism.'),
+('Crux', 'Cru', 'South', 'Acrux', 'May', 'The smallest constellation, also known as the Southern Cross.'),
+('Lyra', 'Lyr', 'North', 'Vega', 'Aug', 'Contains the bright star Vega and the Ring Nebula.'),
+('Taurus', 'Tau', 'North', 'Aldebaran', 'Feb', 'Associated with the Pleiades and Hyades star clusters.'),
+('Canis Major', 'CMa', 'South', 'Sirius', 'Feb', 'Home to Sirius, the brightest star in the night sky.'),
+('Cygnus', 'Cyg', 'North', 'Deneb', 'Sep', 'Also known as the Northern Cross; part of the Summer Triangle.'),
+('Sagittarius', 'Sgr', 'South', 'Kaus Australis', 'Aug', 'Contains the center of the Milky Way galaxy.');
 ('Cassiopeia', 'Cas', 'North', 'Schedar', 'Nov', 'Visible year-round in the Northern Hemisphere'),
 ('Orion', 'Ori', 'North', 'Rigel', 'Jan', 'One of the most recognizable constellations with the Orion Belt.'),
 ('Scorpius', 'Sco', 'South', 'Antares', 'Jul', 'Features a bright red supergiant star, Antares.'),
@@ -335,6 +389,23 @@ VALUES
 ('Helios', 'Gas Giant', 318, 69, 0.048, 1.3),
 ('Hyperion', 'Ice Giant', 85, 14, 0.017, 0.8),
 ('Chroma', 'Ocean World', 4.2, 2, 0.12, 2.0);
+('M87-ExoA', 'Ice Giant', 14800, 5, 0.1, 3.5),
+('TRAPPIST-1e', 'Terrestrial', 0.692, 0, 0.005, 89.7),
+('Kepler-186f', 'Terrestrial', 1.4, 0, 0.04, 89.9),
+('Proxima c', 'Super-Earth', 1.27, 0, 0.35, 88.5),
+('HD 209458 b', 'Hot Jupiter', 220, 0, 0.014, 86.1),
+('GJ 1214 b', 'Mini-Neptune', 6.5, 0, 0.27, 88.9),
+('Kepler-22b', 'Super-Earth', 36, 0, 0.13, 89.8),
+('55 Cancri e', 'Lava World', 8.6, 0, 0.05, 83.4),
+('Kepler-62f', 'Terrestrial', 2.8, 0, 0.05, 89.5),
+('HD 189733 b', 'Hot Jupiter', 365, 0, 0.03, 85.7),
+('LHS 1140 b', 'Super-Earth', 6.6, 0, 0.15, 88.2),
+-- Solar System Inspired
+('Juno', 'Terrestrial', 0.02, 0, 0.26, 13.0),
+('Vulcan', 'Terrestrial', 0.5, 0, 0.01, 0.5),
+('Helios', 'Gas Giant', 318, 69, 0.048, 1.3),
+('Hyperion', 'Ice Giant', 85, 14, 0.017, 0.8),
+('Chroma', 'Ocean World', 4.2, 2, 0.12, 2.0);
 
 -- ORBITS
 INSERT INTO Orbits (PlanetID, StarID, OrbitalPeriod, SemiMajorAxis)
@@ -377,10 +448,57 @@ VALUES
 ('Artemis I Orion', 'Operational', 26000, 'NASA/ESA', 4),
 ('Dragon Endeavour', 'Operational', 12055, 'SpaceX', 4),
 ('Europa Clipper', 'Under Construction', 6000, 'NASA JPL', 0);
+('Cosmic Cruiser', 'Operational', 34000, 'SpaceX', 8),
+('Apollo 11', 'Decommissioned', 30300, 'NASA', 3),
+('James Webb Space Telescope', 'Operational', 6200, 'NASA/ESA/CSA', 0),
+('Starship HLS', 'Under Construction', 120000, 'SpaceX', 6),
+('ExoMars Rover', 'Operational', 310, 'ESA/Roscosmos', 0),
+('Artemis I Orion', 'Operational', 26000, 'NASA/ESA', 4),
+('Dragon Endeavour', 'Operational', 12055, 'SpaceX', 4),
+('Europa Clipper', 'Under Construction', 6000, 'NASA JPL', 0);
 
 -- PART
 INSERT INTO Part (ShipID, PartName, MassInTons, LengthInCM, PartUsage)
 VALUES 
+-- 🚀 Apollo 11
+(1, 'Command Module Columbia', 5, 320, 'Crew cabin and reentry control'),
+(1, 'Lunar Module Eagle', 15, 420, 'Moon landing and ascent stage'),
+(1, 'Service Module Engine', 2, 260, 'Orbital maneuvering and power systems'),
+
+-- 🛰️ Voyager 1
+(2, 'High-Gain Antenna', 0.1, 360, 'Interstellar communication'),
+(2, 'RTG Power Supply', 0.3, 150, 'Power source via radioisotope decay'),
+(2, 'Imaging Science Subsystem', 0.2, 100, 'Planetary and deep space imaging'),
+
+-- 🔭 James Webb Space Telescope
+(3, 'Primary Mirror Array', 2.4, 650, 'Infrared light collection'),
+(3, 'Sunshield Layers', 0.5, 2100, 'Thermal protection for optics'),
+(3, 'Cryocooler Unit', 0.2, 100, 'Infrared detector cooling system'),
+
+-- 🚀 Starship HLS
+(4, 'Main Propulsion Tank', 30, 1200, 'Methalox fuel storage'),
+(4, 'Heat Shield Tiles', 5, 500, 'Thermal protection during reentry'),
+(4, 'Lunar Cargo Bay', 10, 800, 'Payload delivery to lunar surface'),
+
+-- 🚘 ExoMars Rover
+(5, 'Drill Assembly', 0.15, 120, 'Subsurface soil sampling'),
+(5, 'Analytical Laboratory Drawer', 0.08, 90, 'Onboard chemical analysis'),
+(5, 'Solar Panels', 0.12, 140, 'Energy collection'),
+
+-- 🚀 Artemis I Orion
+(6, 'Crew Module', 8, 320, 'Human habitation and controls'),
+(6, 'European Service Module', 10, 500, 'Power and propulsion for Orion'),
+(6, 'Docking Adapter', 1, 120, 'Space station interface'),
+
+-- 🚀 Dragon Endeavour
+(7, 'Trunk Section', 2, 400, 'Unpressurized cargo and solar arrays'),
+(7, 'Heat Shield', 1.5, 320, 'Atmospheric reentry protection'),
+(7, 'Launch Abort System', 1, 300, 'Emergency crew escape'),
+
+-- 🛰️ Europa Clipper
+(8, 'Radar for Ice Penetration', 0.4, 160, 'Analyze subsurface ice structures'),
+(8, 'Thermal Emission Imaging System', 0.2, 110, 'Map surface temperature'),
+(8, 'Magnetometer Boom', 0.3, 200, 'Detect magnetic field from ocean activity');
 -- 🚀 Apollo 11
 (1, 'Command Module Columbia', 5, 320, 'Crew cabin and reentry control'),
 (1, 'Lunar Module Eagle', 15, 420, 'Moon landing and ascent stage'),
@@ -436,6 +554,13 @@ VALUES
 ('Europa Clipper Launch', 'NASA', 'Investigate Jupiter’s moon Europa for potential habitability', 'Medium'),
 ('Dragon ISS Supply Run', 'SpaceX', 'Resupply mission to the ISS', 'High'),
 ('Starship Lunar Test', 'SpaceX', 'Test reusable lunar lander system in lunar orbit', 'High');
+('Stellar Drift', 'SpaceX', 'Crewed deep space test of long-range ship', 'High'),
+('Apollo 11', 'NASA', 'First manned Moon landing and return', 'High'),
+('JWST Launch Mission', 'NASA/ESA/CSA', 'Deploy space telescope to L2 orbit for deep space observation', 'High'),
+('ExoMars Surface Mission', 'ESA/Roscosmos', 'Search for signs of life on Mars', 'Medium'),
+('Europa Clipper Launch', 'NASA', 'Investigate Jupiter’s moon Europa for potential habitability', 'Medium'),
+('Dragon ISS Supply Run', 'SpaceX', 'Resupply mission to the ISS', 'High'),
+('Starship Lunar Test', 'SpaceX', 'Test reusable lunar lander system in lunar orbit', 'High');
 
 -- ASTRONAUT
 INSERT INTO Astronaut (Name, Country, YearsInSpace)
@@ -450,6 +575,15 @@ VALUES
 -- MISSION SPACECRAFT
 INSERT INTO MissionSpacecraft (MissionID, ShipID, MissionStatus)
 VALUES 
+(1, 1, 'Complete'),   -- Apollo 11
+(2, 2, 'Ongoing'),    -- Voyager 1
+(3, 3, 'Complete'),   -- JWST
+(4, 6, 'Complete'),   -- Artemis I
+(5, 5, 'Ongoing'),    -- ExoMars
+(6, 8, 'Planned'),    -- Europa Clipper
+(7, 7, 'Complete'),   -- Dragon ISS
+(8, 4, 'Planned');    -- Starship Lunar
+
 (1, 1, 'Complete'),   -- Apollo 11
 (2, 2, 'Ongoing'),    -- Voyager 1
 (3, 3, 'Complete'),   -- JWST
@@ -485,10 +619,23 @@ VALUES
 ('Medium', '2023-11-21', 'Detected possible organics on Mars from ExoMars instruments.'),
 ('Medium', '2027-05-15', 'Planned subsurface scan of Europa’s ice crust.'),
 ('Medium', '2021-12-06', 'Successful lunar flyby by Artemis I.');
+('Medium', '2025-03-01', 'Tested long-duration life support in deep space'),
+('High', '1969-07-20', 'Confirmed successful manned landing on the Moon.'),
+('High', '1990-08-25', 'Captured image of the Pale Blue Dot from Voyager 1.'),
+('High', '2022-07-12', 'First deep field image from JWST revealing early galaxies.'),
+('Medium', '2023-11-21', 'Detected possible organics on Mars from ExoMars instruments.'),
+('Medium', '2027-05-15', 'Planned subsurface scan of Europa’s ice crust.'),
+('Medium', '2021-12-06', 'Successful lunar flyby by Artemis I.');
 
 -- MISSION FINDING
 INSERT INTO MissionFinding (MissionID, FindingID)
 VALUES 
+(1, 1),  -- Apollo 11 Moon landing
+(2, 2),  -- Voyager Pale Blue Dot
+(3, 3),  -- JWST deep field
+(4, 6),  -- Artemis lunar flyby
+(5, 4),  -- ExoMars organic detection
+(6, 5);  -- Europa Clipper planned scan
 (1, 1),  -- Apollo 11 Moon landing
 (2, 2),  -- Voyager Pale Blue Dot
 (3, 3),  -- JWST deep field
