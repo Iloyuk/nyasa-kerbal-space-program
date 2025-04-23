@@ -23,7 +23,7 @@ def run_program(query):
 def find_starsystems_by_galaxy_id(GalaxyID):
     if request.method == 'GET':
         query = f'''
-            SELECT SystemName
+            SELECT SystemName, SystemID
             FROM StarSystem
             WHERE GalaxyID = {GalaxyID}
         '''

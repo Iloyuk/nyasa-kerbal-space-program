@@ -26,10 +26,10 @@ st.write('### Here is a list of all missions')
 
 with st.form("help"):
     title = st.text_input("Mission Name")
-    if '/' in title or '\\' in title:
+    if '/' in title or '\\' in title or not title:
         data = requests.get('http://api:4000/missions/objective').json()
     else:
-        data = requests.get(f'http://api:4000/missions/name/"{title}"').json()
+        data = requests.get(f'http://api:4000/missions/name/{title}').json()
         if not data:
             data = requests.get('http://api:4000/missions/objective').json()
 

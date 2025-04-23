@@ -203,161 +203,164 @@ CREATE TABLE IF NOT EXISTS Orbits (
 /*
  Insert data into tables
  */
+-- GALAXY
 INSERT INTO Galaxy (GalaxyName, Redshift, YearDiscovered, SolarMassTrillions, DominantElement)
-VALUES
-('Milky Way', 0.0, '0001-01-01', 1, 'Hydrogen'),
-('Andromeda', 0.001, '1923-10-05', 1, 'Hydrogen'),
-('Triangulum', 0.0027, '1764-08-01', 0.5, 'Helium'),
-('Whirlpool', 0.0016, '1773-03-13', 1, 'Hydrogen');
+VALUES 
+('Milky Way', 0.0, '1610-01-01', 1.5, 'Hydrogen'),
+('Andromeda', -0.001001, '0964-01-01', 1.23, 'Hydrogen'),
+('Triangulum', 0.00096, '1764-01-01', 0.5, 'Helium');
 
-INSERT INTO Constellation (ConstName, Abbreviation, Hemisphere, BrightestStar, BestViewingMonth, Notes)
-VALUES
-('Orion', 'Ori', 'South', 'Rigel', 'Jan', 'Features Orions Belt'),
-('Cassiopeia', 'Cas', 'North', 'Schedar', 'Nov', 'W-shaped constellation'),
-('Lyra', 'Lyr', 'North', 'Vega', 'Jul', 'Hosts Ring Nebula'),
-('Crux', 'Cru', 'South', 'Acrux', 'May', 'Southern Cross'),
-('Scorpius', 'Sco', 'South', 'Antares', 'Jul', 'Curved shape like a scorpion'),
-('Ursa Major', 'UMa', 'North', 'Alioth', 'Apr', 'Includes the Big Dipper asterism'),
-('Canis Major', 'CMa', 'South', 'Sirius', 'Feb', 'Home to the brightest star in the night sky'),
-('Cygnus', 'Cyg', 'North', 'Deneb', 'Sep', 'Known as the Northern Cross'),
-('Taurus', 'Tau', 'North', 'Aldebaran', 'Dec', 'Contains the Pleiades and Hyades clusters'),
-('Leo', 'Leo', 'North', 'Regulus', 'Mar', 'Recognizable by a sickle-shaped head');
-
+-- STAR SYSTEM
 INSERT INTO StarSystem (GalaxyID, SystemName, DistInLY, SystemType, NumStars)
 VALUES
-(1, 'Alpha Centauri', 4, 'Multiple', 3),
-(2, 'Almach System', 350, 'Binary', 2),
-(3, 'M33-A1', 3000000, 'Binary', 2),
-(1, 'Solar System', 0, 'Multiple', 1),
-(1, 'Vega System', 25, 'Binary', 2),
-(1, 'Deneb System', 2600, 'Multiple', 3),
-(1, 'Altair System', 17, 'Binary', 2),
+(1, 'Barnards Star System', 5, 'Binary', 1),
 (1, 'Sirius System', 8, 'Binary', 2),
-(1, 'Rigel System', 860, 'Multiple', 3),
-(1, 'Antares System', 550, 'Multiple', 2),
-(1, 'Pollux System', 34, 'Binary', 2);
+(2, 'M31 System Y', 2540001, 'Multiple', 3),
+(3, 'M33-Kepler System', 2730000, 'Binary', 2);
 
+-- CONSTELLATION
+INSERT INTO Constellation (ConstName, Abbreviation, Hemisphere, BrightestStar, BestViewingMonth, Notes)
+VALUES 
+('Orion', 'Ori', 'North', 'Rigel', 'Jan', 'Contains the Orion Nebula'),
+('Centaurus', 'Cen', 'South', 'Alpha Centauri', 'May', 'Home to the closest star system'),
+('Cassiopeia', 'Cas', 'North', 'Schedar', 'Nov', 'Visible year-round in the Northern Hemisphere');
+
+-- STAR
 INSERT INTO Star (SystemID, ConstID, StarName, Mass, Temperature, SpectralType)
-VALUES
-(1, 1, 'Proxima Centauri', 123, 3042, 'M5'),
-(1, 1, 'Alpha Centauri A', 200, 5790, 'G2'),
-(2, 2, 'Almach A', 300, 8000, 'B9'),
-(4, 3, 'Sun', 1989000, 5778, 'G2'),
-(3, 4, 'Betelgeuse', 11800, 3500, 'M1'),
-(3, 4, 'Bellatrix', 8700, 22000, 'B2'),
-(5, 5, 'Vega', 2200, 9600, 'A0'),
-(6, 7, 'Deneb', 19000, 8525, 'A2'),
-(7, 7, 'Altair', 1800, 7550, 'A7'),
-(8, 8, 'Sirius A', 2040, 9940, 'A1'),
-(8, 8, 'Sirius B', 1020, 25200, 'DA'),
-(9, 1, 'Rigel', 21000, 12100, 'B8'),
-(11, 10, 'Pollux', 1900, 4865, 'K0'),
-(4, 2, 'Alioth', 6500, 9000, 'A1'),
-(10, 3, 'Antares', 15000, 3500, 'M1'),
-(4, 4, 'Schedar', 5000, 4500, 'K0'),
-(1, 5, 'Acrux', 18000, 25000, 'B0'),
-(6, 6, 'Regulus', 3200, 12460, 'B7'),
-(3, 8, 'Kaus Australis', 4200, 9440, 'B9'),
-(8, 9, 'Aldebaran', 1900, 3910, 'K5'),
-(1, 10, 'Alpha Centauri', 1100, 5790, 'G2');
-
+VALUES 
+(1, 1, 'Sun', 1989000, 5778, 'G2V'),
+(2, 2, 'Alpha Centauri A', 1100000, 5790, 'G2V'),
+(2, 2, 'Alpha Centauri B', 907000, 5260, 'K1V'),
+(2, 2, 'Proxima Centauri', 123000, 3042, 'M5V'),
+(4, 2, 'Barnards Star', 144000, 3134, 'M4V'),
+(5, 2, 'Sirius A', 2040000, 9940, 'A1V'),
+(5, 2, 'Sirius B', 98000, 25200, 'DA2'),
+(6, 3, 'M31-Y Alpha', 1800000, 7300, 'F5V'),
+(6, 3, 'M31-Y Beta', 1600000, 6200, 'G0V'),
+(6, 3, 'M31-Y Gamma', 1450000, 5900, 'G5V'),
+(7, 1, 'Kepler-M33 A', 1200000, 5500, 'G2V'),
+(7, 1, 'Kepler-M33 B', 1050000, 5100, 'K2V'),
+(8, 3, 'M87-Core A', 3500000, 7000, 'F0V'),
+(8, 3, 'M87-Core B', 3200000, 6500, 'F2V'),
+(9, 1, 'Spiral Alpha', 2800000, 5900, 'G0V'),
+(9, 1, 'Spiral Beta', 2600000, 5700, 'G5V'),
+(9, 1, 'Spiral Gamma', 2400000, 5400, 'K0V'),
+(10, 2, 'Sombrero-A', 3100000, 7700, 'A0V'),
+(10, 2, 'Sombrero-B', 3000000, 7300, 'F5V');
+-- PLANET
 INSERT INTO Planet (PlanetName, PlanetType, Mass, NumMoons, Eccentricity, Inclination)
-VALUES
-('Proxima b', 'Terrestrial', 1, 0, 0.05, 1.0),
-('Alpha C b', 'Gas Giant', 317, 12, 0.04, 2.1),
-('Earth', 'Terrestrial', 1, 1, 0.017, 0.0),
-('Almach X1', 'Ice Giant', 100, 4, 0.07, 1.8);
+VALUES 
+('Earth', 'Terrestrial', 5972, 1, 0.0167, 0.00005),
+('Mars', 'Terrestrial', 641, 2, 0.0934, 1.850),
+('Proxima b', 'Exoplanet', 1080, 0, 0.05, 0.0),
+('Spiral-1b', 'Gas Giant', 19000, 16, 0.04, 2.3),
+('Sombrero Prime', 'Rocky', 8500, 2, 0.08, 5.2),
+('M87-ExoA', 'Ice Giant', 14800, 5, 0.1, 3.5);
 
-
-SELECT *
-FROM Planet;
+-- ORBITS
 INSERT INTO Orbits (PlanetID, StarID, OrbitalPeriod, SemiMajorAxis)
-VALUES
-(1, 1, 11.2, 0.05),
-(2, 2, 370, 1.5),
-(3, 4, 365.25, 1.0),
-(4, 3, 800, 3.2);
+VALUES 
+(1, 1, 365.25, 1.0),
+(2, 1, 687, 1.52),
+(3, 4, 11.2, 0.05),
+(4, 6, 430, 0.9),
+(5, 10, 380, 1.1),
+(6, 7, 700, 2.2);
 
+-- SPACECRAFT
 INSERT INTO Spacecraft (ShipName, Status, Mass, Manufacturer, Capacity)
-VALUES
-('Voyager X', 'Operational', 12000, 'SpaceTech Industries', 6),
-('Pioneer Nova', 'Decommissioned', 9500, 'NovaWorks', 4),
-('Aurora-3', 'Operational', 15000, 'AstroForge', 8),
-('Eventide', 'Damaged', 18000, 'DeepSky Labs', 10);
+VALUES 
+('Voyager I', 'Operational', 721, 'NASA', 0),
+('Perseverance Rover', 'Operational', 1025, 'JPL', 0),
+('Orion Crew Module', 'Operational', 26000, 'Lockheed Martin', 6),
+('Kepler Explorer', 'Operational', 1400, 'NASA', 0),
+('BlackHole Probe', 'Under Construction', 900, 'ESA', 0),
+('Cosmic Cruiser', 'Operational', 34000, 'SpaceX', 8);
 
+-- PART
 INSERT INTO Part (ShipID, PartName, MassInTons, LengthInCM, PartUsage)
-VALUES
-(1, 'Ion Thruster', 2, 300, 'Propulsion'),
-(1, 'Navigation Module', 1, 150, 'Guidance'),
-(2, 'Life Support Unit', 3, 400, 'Crew Sustainability'),
-(3, 'Energy Core', 5, 500, 'Power Supply');
+VALUES 
+(1, 'Antenna Assembly', 0.3, 500, 'Deep Space Communication'),
+(2, 'Sampling Arm', 0.1, 220, 'Soil Collection'),
+(3, 'Life Support Module', 2, 800, 'Crew Sustenance'),
+(4, 'Telescope Array', 0.2, 300, 'Exoplanet Observation'),
+(5, 'Gravity Scanner', 0.5, 250, 'Black Hole Measurement'),
+(6, 'Habitat Module', 5, 950, 'Crew Living Quarters');
 
-INSERT INTO Astronaut (Name, Country, YearsInSpace)
-VALUES
-('Elena Torres', 'Spain', 5),
-('Kenji Watanabe', 'Japan', 8),
-('Liam Chen', 'Canada', 6),
-('Ava Singh', 'India', 7);
-
-INSERT INTO SpacecraftAstronaut (ShipID, AstroID)
-VALUES
-(1, 1),
-(1, 2),
-(3, 3),
-(4, 4);
-
+-- MISSION
 INSERT INTO Mission (MissionName, Agency, Objective, SuccessRating)
-VALUES
-('Centauri Scout', 'ESA', 'Survey Alpha Centauri', 'High'),
-('Andromeda Path', 'NASA', 'Andromeda flyby', 'Medium'),
-('Solar Flare Study', 'ISRO', 'Monitor solar storms', 'High'),
-('Deep Dive', 'CSA', 'Explore Triangulum core', 'Low');
+VALUES 
+('Voyager Interstellar Mission', 'NASA', 'Study outer solar system and interstellar space', 'High'),
+('Mars 2020', 'NASA', 'Search for signs of ancient life on Mars', 'High'),
+('Artemis I', 'NASA', 'Uncrewed lunar orbit mission to test Orion', 'Medium'),
+('Kepler-Deep Search', 'NASA', 'Detect Earth-like planets in distant systems', 'High'),
+('EventHorizon Chase', 'ESA', 'Map regions near supermassive black holes', 'Medium'),
+('Stellar Drift', 'SpaceX', 'Crewed deep space test of long-range ship', 'High');
 
+-- ASTRONAUT
+INSERT INTO Astronaut (Name, Country, YearsInSpace)
+VALUES 
+('Neil Armstrong', 'USA', 2),
+('Yuri Gagarin', 'Russia', 1),
+('Christina Koch', 'USA', 3),
+('Mae Jemison', 'USA', 1),
+('Valentina Tereshkova', 'Russia', 2),
+('Luca Parmitano', 'Italy', 2);
+
+-- MISSION SPACECRAFT
 INSERT INTO MissionSpacecraft (MissionID, ShipID, MissionStatus)
-VALUES
-(1, 1, 'Complete'),
-(2, 2, 'Planned'),
-(3, 3, 'Ongoing'),
-(4, 4, 'Planned');
+VALUES 
+(1, 1, 'Complete'),  -- Voyager I
+(2, 2, 'Complete'),  -- Perseverance
+(3, 3, 'Complete'),  -- Orion
+(4, 4, 'Complete'),
+(5, 5, 'Ongoing'),
+(6, 6, 'Planned');
 
+-- MISSION ASTRONAUT
 INSERT INTO MissionAstronaut (MissionID, AstroID)
-VALUES
-(1, 1),
-(1, 2),
-(3, 3),
-(4, 4);
+VALUES 
+(1, 1),  -- Neil Armstrong
+(2, 3),  -- Christina Koch
+(3, 1),  -- Neil Armstrong
+(3, 3),  -- Christina Koch
+(6, 4),
+(6, 6);
 
-INSERT INTO StarSystemMissions (SystemID, MissionID, StartDate, EndDate)
-VALUES
-(1, 1, '2021-04-01', '2022-12-20'),
-(2, 2, '2025-01-01', NULL),
-(4, 3, '2024-06-15', NULL),
-(3, 4, '2025-02-20', NULL);
-
+-- FINDINGS
 INSERT INTO Finding (Significance, FindingDate, Notes)
-VALUES
-('High', '2022-11-01', 'Detected water vapor on Proxima b'),
-('Medium', '2023-02-15', 'Radiation spikes near Almach A'),
-('Low', '2024-01-03', 'Stable magnetic fields observed'),
-('High', '2025-03-22', 'Possible microbial biosignatures on Almach X1');
+VALUES 
+('High', '1979-01-01', 'Discovered edge of heliosphere via Voyager I'),
+('Medium', '2021-02-18', 'Confirmed signs of ancient habitable environment on Mars'),
+('Medium', '2022-11-26', 'Orion capsule successfully returned from lunar orbit'),
+('High', '2014-02-26', 'Discovered 715 new planets via Kepler'),
+('High', '2019-04-10', 'Captured image of a black hole by Event Horizon Telescope'),
+('Medium', '2025-03-01', 'Tested long-duration life support in deep space');
 
+-- MISSION FINDING
 INSERT INTO MissionFinding (MissionID, FindingID)
-VALUES
+VALUES 
 (1, 1),
 (2, 2),
 (3, 3),
-(4, 4);
+(4, 4),
+(5, 5),
+(6, 6);
 
-Select *
-FROM Planet;
+-- STAR SYSTEM MISSIONS
+INSERT INTO StarSystemMissions (SystemID, MissionID, StartDate, EndDate)
+VALUES 
+(1, 1, '1977-09-05', '2025-01-01'),
+(1, 2, '2020-07-30', '2021-02-18'),
+(1, 3, '2022-11-16', '2022-12-11'),
+(7, 4, '2012-03-07', '2014-02-26'),
+(8, 5, '2022-01-01', NULL),
+(9, 6, '2025-01-01', NULL);
 
-SELECT P.PlanetID, P.PlanetName, P.PlanetType, P.Mass, P.NumMoons, P.Eccentricity, P.Inclination, S.StarID
-FROM Planet P
-         JOIN Orbits O ON P.PlanetID = O.PlanetID
-         JOIN Star S ON S.StarID = O.StarID
-WHERE P.PlanetID = 5;
-
-SELECT P.PlanetID, P.PlanetName, P.PlanetType, P.Mass, P.NumMoons, P.Eccentricity, P.Inclination, S.StarID
-FROM Planet P
-         LEFT JOIN Orbits O ON P.PlanetID = O.PlanetID
-         LEFT JOIN Star S ON S.StarID = O.StarID
+-- SPACECRAFT ASTRONAUT
+INSERT INTO SpacecraftAstronaut (ShipID, AstroID)
+VALUES 
+(3, 1),  -- Orion: Neil Armstrong
+(3, 3),  -- Orion: Christina Koch
+(6, 4),
+(6, 6);

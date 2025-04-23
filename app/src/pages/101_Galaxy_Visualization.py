@@ -30,24 +30,24 @@ with st.form("Galaxy Searcher"):
             if verif:
                 systems = requests.get(f'http://api:4000/galaxies/{GalaxyID}/starsystems').json()
                 if systems and viewStarSystem:
-                    st.write("Star systems in planet:")
+                    st.write("Star systems in galaxy:")
                     st.dataframe(systems)
                 star = {}
                 if viewStars:
-                    st.write("Stars in star system:")
+                    st.write("Stars in galaxy:")
                 for system in systems:
                     StarSysID = system['SystemID']
-                    star = requests.get(f'http://api:4000/starsystems/{StarSysID}').json()
+                    star = requests.get(f'http://api:4000/star_systems/{StarSysID}').json()
                     if star:
                         stars.append(star)
                         if viewStars:
                             st.dataframe(star)
                 if viewPlanets:
-                    st.write("Planets in star system:")
+                    st.write("Planets in galaxy:")
                     for s in stars:
                         for sta in s:
                             starID = sta['StarID']
                             planet = requests.get(
-                                f'http://api:4000/galaxies/{starSystemID}/starsystems/{StarSysID}/stars/{starID}/planets').json()
+                                f'http://api:4000/planets/orbits',params={"star":starID}).json()
                             if planet:
                                 st.dataframe(planet)
