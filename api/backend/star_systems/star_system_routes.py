@@ -70,15 +70,23 @@ def find_starsystems_by_galaxy_id(GalaxyID):
             return jsonify({'error': str(e)}), 400
 
 
-# Get a star system by its id
-@star_system.route('/starsystems/<int:SystemID>', methods=['GET'])
+# Get or delete a star system by its id
+@star_system.route('/starsystems/<int:SystemID>', methods=['GET', 'DELETE'])
 def find_starsystems_by_starsystem_name(SystemID):
-    query = f'''
-        SELECT *
-        FROM StarSystem
-        WHERE SystemID = {SystemID}
-    '''
-    return run_program(query)
+    if request.method == 'GET':
+        query = f'''
+            SELECT *
+            FROM StarSystem
+            WHERE SystemID = {SystemID}
+        '''
+        return run_program(query)
+
+    elif request.method == 'DELETE':
+        query = f'''
+            DELETE FROM StarSystem
+            WHERE SystemID = {SystemID}
+        '''
+        return run_program(query)
 
 
 # Get a star system by a combination of galaxy name and star system name

@@ -153,10 +153,10 @@ def get_planets_that_orbit_star():
         try:
             cursor = db.get_db().cursor()
             cursor.execute(query, (
-                int(orbit_data['StarID']),
-                float(orbit_data['OrbitalPeriod']),
-                float(orbit_data['SemiMajorAxis']),
-                int(orbit_data['PlanetID'])
+                orbit_data['StarID'],
+                orbit_data['OrbitalPeriod'],
+                orbit_data['SemiMajorAxis'],
+                orbit_data['PlanetID']
             ))
             db.get_db().commit()
             return jsonify({

@@ -19,7 +19,7 @@ def run_program(query):
 
 
 # Do stuff with galaxies
-@galaxy.route('/galaxies', methods=['GET', 'POST', 'PUT'])
+@galaxy.route('/galaxies', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def get_galaxies():
     if request.method == 'GET':
         query = '''
@@ -78,6 +78,22 @@ def get_galaxies():
                 'message': 'Galaxy updated successfully',
                 'rows_affected': cursor.rowcount
             }), 200
+        except Exception as e:
+            db.get_db().rollback()
+            return jsonify({'error': str(e)}), 400
+
+    elif request.method == 'DELETE':
+        galaxy_id = request.args.get('GalaxyID')
+        query = '''
+            DELETE FROM Galaxy
+            WHERE GalaxyID = %s
+        '''
+
+        try:
+            cursor = db.get_db().cursor()
+            cursor.execute(query, galaxy_id)
+            db.get_db().commit()
+            return jsonify({'message': 'Galaxy deleted successfully'}), 200
         except Exception as e:
             db.get_db().rollback()
             return jsonify({'error': str(e)}), 400

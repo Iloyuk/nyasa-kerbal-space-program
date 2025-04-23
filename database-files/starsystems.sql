@@ -343,24 +343,18 @@ VALUES
 (1, 1),
 (2, 2),
 (3, 3),
-(4, 4),
-(5, 5),
-(6, 6);
+(4, 4);
 
--- STAR SYSTEM MISSIONS
-INSERT INTO StarSystemMissions (SystemID, MissionID, StartDate, EndDate)
-VALUES 
-(1, 1, '1977-09-05', '2025-01-01'),
-(1, 2, '2020-07-30', '2021-02-18'),
-(1, 3, '2022-11-16', '2022-12-11'),
-(7, 4, '2012-03-07', '2014-02-26'),
-(8, 5, '2022-01-01', NULL),
-(9, 6, '2025-01-01', NULL);
+Select *
+FROM Planet;
 
--- SPACECRAFT ASTRONAUT
-INSERT INTO SpacecraftAstronaut (ShipID, AstroID)
-VALUES 
-(3, 1),  -- Orion: Neil Armstrong
-(3, 3),  -- Orion: Christina Koch
-(6, 4),
-(6, 6);
+SELECT P.PlanetID, P.PlanetName, P.PlanetType, P.Mass, P.NumMoons, P.Eccentricity, P.Inclination, S.StarID
+FROM Planet P
+         JOIN Orbits O ON P.PlanetID = O.PlanetID
+         JOIN Star S ON S.StarID = O.StarID
+WHERE P.PlanetID = 5;
+
+SELECT P.PlanetID, P.PlanetName, P.PlanetType, P.Mass, P.NumMoons, P.Eccentricity, P.Inclination, S.StarID
+FROM Planet P
+         LEFT JOIN Orbits O ON P.PlanetID = O.PlanetID
+         LEFT JOIN Star S ON S.StarID = O.StarID

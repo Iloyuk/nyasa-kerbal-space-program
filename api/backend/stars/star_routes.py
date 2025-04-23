@@ -18,8 +18,8 @@ def run_program(query):
     return response
 
 
-# Add or update stars
-@star.route('/stars', methods=['POST', 'PUT'])
+# Add, update, or delete stars
+@star.route('/stars', methods=['POST', 'PUT', 'DELETE'])
 def add_or_update_stars():
     if request.method == 'POST':
         data = request.get_json()
@@ -73,6 +73,22 @@ def add_or_update_stars():
                 'message': 'Star updated successfully',
                 'rows_affected': cursor.rowcount
             }), 200
+        except Exception as e:
+            db.get_db().rollback()
+            return jsonify({'error': str(e)}), 400
+
+    elif request.method == 'DELETE':
+        star_id = request.args.get('StarID')
+        query = '''
+            DELETE FROM Star
+            WHERE StarID = %s
+        '''
+
+        try:
+            cursor = db.get_db().cursor()
+            cursor.execute(query, star_id)
+            db.get_db().commit()
+            return jsonify({'message': 'Star deleted successfully'}), 200
         except Exception as e:
             db.get_db().rollback()
             return jsonify({'error': str(e)}), 400

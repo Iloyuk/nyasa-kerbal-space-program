@@ -13,37 +13,40 @@ SideBarLinks()
 
 st.write("# Planet Database")
 
-with st.form("lookup_star"):
-    st.write('**Search a star\'s orbits**')
-    star = st.text_input("Enter star name/id:")
+view, planets, orbits = st.tabs(['View Planets/Orbits', 'Modify Planets', 'Modify Orbits'])
 
-    if st.form_submit_button('Search'):
-        if '/' in star or '\\' in star or len(star) == 0:
-            st.error("Please enter a valid star name/id")
-        else:
-            data = requests.get(f'http://api:4000/planets/orbits',
-                                params={"star": star}).json()
-            if not data:
-                st.error("Could not find star system")
+with view:
+    with st.form("lookup_star"):
+        st.write('**Search a star\'s orbits**')
+        star = st.text_input("Enter star name/id:")
+
+        if st.form_submit_button('Search'):
+            if '/' in star or '\\' in star or len(star) == 0:
+                st.error("Please enter a valid star name/id")
             else:
-                st.dataframe(data)
+                data = requests.get(f'http://api:4000/planets/orbits',
+                                    params={"star": star}).json()
+                if not data:
+                    st.error("Could not find star")
+                else:
+                    st.dataframe(data)
 
-with st.form("lookup_planet"):
-    st.write('**Lookup information on a planet**')
-    planet_identifier = st.text_input("Enter planet name/id:")
+    with st.form("lookup_planet"):
+        st.write('**Lookup information on a planet**')
+        planet_identifier = st.text_input("Enter planet name/id:")
 
-    if st.form_submit_button('Search'):
-        if '/' in planet_identifier or '\\' in planet_identifier or len(planet_identifier) == 0:
-            st.error("Please enter a valid planet name/id")
-        else:
-            data = requests.get(f'http://api:4000/planets/{planet_identifier}').json()
-            if not data:
-                st.error("Could not find planet")
+        if st.form_submit_button('Search'):
+            if '/' in planet_identifier or '\\' in planet_identifier or len(planet_identifier) == 0:
+                st.error("Please enter a valid planet name/id")
             else:
-                st.dataframe(data)
+                data = requests.get(f'http://api:4000/planets/{planet_identifier}').json()
+                if not data:
+                    st.error("Could not find planet")
+                else:
+                    st.dataframe(data)
 
-if st.checkbox("Add, modify, or delete a planet"):
-    with st.form("input"):
+with planets:
+    with st.form("input_planet"):
         st.write('**Add a new planet to the database**')
         planet_name = st.text_input("Planet Name:")
         planet_type = st.text_input("Planet Type:")
@@ -70,7 +73,7 @@ if st.checkbox("Add, modify, or delete a planet"):
                 st.error("Could not insert data.")
                 st.text(f"Details: {e}")
 
-    with st.form("update"):
+    with st.form("update_planet"):
         st.write('**Update a planet**')
         planet_id = st.text_input("*Planet ID to be modified:*")
         planet_name = st.text_input("Planet Name:")
@@ -106,7 +109,7 @@ if st.checkbox("Add, modify, or delete a planet"):
                 st.error("Could not update data.")
                 st.text(f"Details: {e}")
 
-    with st.form("delete"):
+    with st.form("delete_planet"):
         st.write('**Delete a planet**')
         planet_id = st.text_input("*Planet ID to be deleted:*")
 
@@ -121,8 +124,8 @@ if st.checkbox("Add, modify, or delete a planet"):
                 st.error("Could not delete data.")
                 st.text(f"Details: {e}")
 
-if st.checkbox("Add, modify, or delete a star's orbiting planets"):
-    with st.form("input"):
+with orbits:
+    with st.form("input_orbit"):
         st.write('**Add a new planet\'s orbital status to the database**')
         planet_id = st.text_input("*Planet ID:*")
         star_id = st.text_input("*Star ID:*")
@@ -131,7 +134,7 @@ if st.checkbox("Add, modify, or delete a star's orbiting planets"):
 
         if st.form_submit_button("Add"):
             try:
-                response = requests.post('http://api:4000/planets', json={
+                response = requests.post('http://api:4000/planets/orbits', json={
                     "PlanetID": planet_id,
                     "StarID": star_id,
                     "OrbitalPeriod": orbital_period if orbital_period != "" else None,
@@ -144,4 +147,53 @@ if st.checkbox("Add, modify, or delete a star's orbiting planets"):
                     error = response.json().get("error", "Unknown error occurred.")
             except requests.exceptions.RequestException as e:
                 st.error("Could not insert data.")
+                st.text(f"Details: {e}")
+
+    with st.form("update_orbit"):
+        st.write('**Update a planet\'s orbital status**')
+        planet_id = st.text_input("*Planet ID to be modified:*")
+        star_id = st.text_input("Star ID:")
+        orbital_period = st.text_input("Orbital Period:")
+        semi_major_axis = st.text_input("Semi-major axis:")
+
+        if st.form_submit_button("Update"):
+            try:
+                response = requests.put('http://api:4000/planets/orbits', json={
+                    "PlanetID": planet_id,
+                    "StarID": star_id,
+                    "OrbitalPeriod": orbital_period if orbital_period != "" else None,
+                    "SemiMajorAxis": semi_major_axis if semi_major_axis != "" else None
+                })
+
+                if response.status_code == 200:
+                    result = response.json()
+                    if result.get('rows_affected') == 0:
+                        st.warning("No orbital status was updated")
+                    else:
+                        st.success("Orbital status updated successfully!")
+                else:
+                    error = response.json().get("error", "Unknown error occurred.")
+                    st.error(f"Update failed: {error}")
+
+            except requests.exceptions.RequestException as e:
+                st.error("Could not update data.")
+                st.text(f"Details: {e}")
+
+    with st.form("delete_orbit"):
+        st.write('**Delete a planet\'s orbital info**')
+        star_id = st.text_input("*Orbit's Star ID:*")
+        planet_id = st.text_input("*Orbit's Planet ID:*")
+
+        if st.form_submit_button("Delete"):
+            try:
+                response = requests.delete(f'http://api:4000/planets/orbits', json={
+                    "PlanetID": planet_id,
+                    "StarID": star_id
+                })
+                if response.status_code == 200:
+                    st.success("Orbital information deleted successfully!")
+                else:
+                    st.warning("No information was deleted")
+            except requests.exceptions.RequestException as e:
+                st.error("Could not delete data.")
                 st.text(f"Details: {e}")
