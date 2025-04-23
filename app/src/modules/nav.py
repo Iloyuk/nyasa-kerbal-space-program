@@ -38,7 +38,7 @@ def AboutPageNav():
 
 # Alex
 def GalaxyVis():
-    st.sidebar.page_link("pages/101_Galaxy_VIsualization.py", label="Galaxy Visualization", icon="🌌")
+    st.sidebar.page_link("pages/101_Galaxy_Visualization.py", label="Galaxy Visualization", icon="🌌")
 
 
 # Sammy

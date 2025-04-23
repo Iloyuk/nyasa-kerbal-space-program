@@ -48,7 +48,7 @@ def get_mission_extended_info():
 def get_mission_search(MissionName):
     query = f'''
         SELECT * FROM Mission
-        WHERE Mission.MissionName = "{MissionName}";
+        WHERE Mission.MissionName = '{MissionName}';
     '''
     return run_program(query)
 

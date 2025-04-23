@@ -20,7 +20,7 @@ with tab1:
             if starSystemID:
                 for i in data:
                     if i['SystemID'] == starSystemID:
-                        request = requests.get(f'http://api:4000/galaxies/starsystems/{starSystemID}').json()
+                        request = requests.get(f'http://api:4000/starsystems/{starSystemID}').json()
                         astronaut = requests.get(f'http://api:4000/astronauts/missions/{starSystemID}').json()
                         st.dataframe(request)
                         st.dataframe(astronaut)
