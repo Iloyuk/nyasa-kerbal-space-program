@@ -37,8 +37,20 @@ def AboutPageNav():
 
 
 # Alex
+def AlexHome():
+    st.sidebar.page_link("pages/100_Student_Home.py", label="Home", icon="🏠")
+
+
 def GalaxyVis():
     st.sidebar.page_link("pages/101_Galaxy_Visualization.py", label="Galaxy Visualization", icon="🌌")
+
+
+def StarVis():
+    st.sidebar.page_link("pages/102_Star_System_Vis.py", label="Star System Visualization", icon="✨")
+
+
+def Constellations():
+    st.sidebar.page_link("pages/103_Constellations.py", label="Constellations", icon="⛎")
 
 
 # Sammy
@@ -118,7 +130,10 @@ def SideBarLinks(show_home=False):
     if st.session_state["authenticated"]:
         # alex
         if st.session_state.first_name == "Alex":
+            AlexHome()
             GalaxyVis()
+            StarVis()
+            Constellations()
         # carl my goat
         if st.session_state.first_name == "Carl":
             CarlHomePage()

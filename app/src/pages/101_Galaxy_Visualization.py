@@ -8,9 +8,9 @@ logger = logging.getLogger(__name__)
 SideBarLinks()
 
 st.header('Galaxy Visualization')
-#st.write(f"### Hi, {st.session_state['first_name']}.")
 
-data = requests.get('http://api:4000/galaxies').json()
+amount = int(st.number_input("Amount of galaxies you would like to display:", min_value=0, step=1, format="%d"))
+data = requests.get('http://api:4000/galaxies', params={"amount": amount}).json()
 st.dataframe(data)
 
 with st.form("Galaxy Searcher"):

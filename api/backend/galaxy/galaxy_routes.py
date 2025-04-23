@@ -22,10 +22,11 @@ def run_program(query):
 @galaxy.route('/galaxies', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def get_galaxies():
     if request.method == 'GET':
-        query = '''
+        amount = request.args.get('amount')
+        query = f'''
             SELECT * 
             FROM Galaxy
-            LIMIT 10
+            LIMIT {amount}
         '''
         return run_program(query)
 
