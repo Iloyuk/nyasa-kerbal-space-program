@@ -109,9 +109,19 @@ def get_stars_by_system_name(SystemName):
 @star.route('/star_systems/<int:SystemID>', methods=['GET'])
 def get_stars_by_system_id(SystemID):
     query = f'''
-        SELECT StarName, StarID
+        SELECT Star.StarName, Star.StarID
         FROM Star
-        WHERE SystemID = {SystemID}
+        WHERE Star.SystemID = {SystemID}
+    '''
+    return run_program(query)
+
+# Find distInLY based on star system id
+@star.route('/star_systems/<int:SystemID>', methods=['GET'])
+def get_DLY_by_system_id(SystemID):
+    query = f'''
+        SELECT Star.StarName, Star.StarID
+        FROM Star
+        WHERE Star.SystemID = {SystemID}
     '''
     return run_program(query)
 

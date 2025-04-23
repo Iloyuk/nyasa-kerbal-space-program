@@ -51,3 +51,13 @@ with st.form("Galaxy Searcher"):
                                 f'http://api:4000/planets/orbits',params={"star":starID}).json()
                             if planet:
                                 st.dataframe(planet)
+
+if st.button('Star Systems in detail',
+             type='primary',
+             use_container_width=True):
+    st.switch_page('pages/102_Star_System_Vis.py')
+
+if st.button('Constellations',
+             type='primary',
+             use_container_width=True):
+    st.switch_page('pages/103_Constellations.py')

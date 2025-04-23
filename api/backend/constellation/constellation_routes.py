@@ -22,7 +22,7 @@ def run_program(query):
 @constellation.route('/constellation', methods=['GET'])
 def get_constellation():
     query = '''
-        SELECT * 
+        SELECT Constellation.ConstName, Constellation.ConstID
         FROM Constellation
     '''
     return run_program(query)
@@ -44,6 +44,15 @@ def get_constellation_from_star(StarName):
         SELECT C.ConstName
         FROM Constellation C JOIN Star S ON C.ConstID = S.ConstID
         WHERE S.StarName = '{StarName}'
+    '''
+    return run_program(query)
+
+@constellation.route('/constellation/<ConstID>/stars', methods=['GET'])
+def get_from_star(ConstID):
+    query = f'''
+        SELECT S.StarName
+        FROM Constellation C JOIN Star S ON C.ConstID = S.ConstID
+        WHERE S.ConstID = {ConstID}
     '''
     return run_program(query)
 
