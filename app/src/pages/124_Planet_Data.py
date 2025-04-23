@@ -24,7 +24,7 @@ with st.form("lookup_star"):
             data = requests.get(f'http://api:4000/planets/orbits',
                                 params={"star": star}).json()
             if not data:
-                st.error("Could not find star system")
+                st.error("Could not find star")
             else:
                 st.dataframe(data)
 
@@ -131,7 +131,7 @@ if st.checkbox("Add, modify, or delete a star's orbiting planets"):
 
         if st.form_submit_button("Add"):
             try:
-                response = requests.post('http://api:4000/planets', json={
+                response = requests.post('http://api:4000/planets/orbits', json={
                     "PlanetID": planet_id,
                     "StarID": star_id,
                     "OrbitalPeriod": orbital_period if orbital_period != "" else None,
@@ -144,4 +144,34 @@ if st.checkbox("Add, modify, or delete a star's orbiting planets"):
                     error = response.json().get("error", "Unknown error occurred.")
             except requests.exceptions.RequestException as e:
                 st.error("Could not insert data.")
+                st.text(f"Details: {e}")
+
+    with st.form("update"):
+        st.write('**Update a planet\'s orbital status**')
+        planet_id = st.text_input("*Planet ID to be modified:*")
+        star_id = st.text_input("Star ID:")
+        orbital_period = st.text_input("Orbital Period:")
+        semi_major_axis = st.text_input("Semi-major axis:")
+
+        if st.form_submit_button("Update"):
+            try:
+                response = requests.put('http://api:4000/planets/orbits', json={
+                    "PlanetID": planet_id,
+                    "StarID": star_id,
+                    "OrbitalPeriod": orbital_period if orbital_period != "" else None,
+                    "SemiMajorAxis": semi_major_axis if semi_major_axis != "" else None
+                })
+
+                if response.status_code == 200:
+                    result = response.json()
+                    if result.get('rows_affected') == 0:
+                        st.warning("No orbital status was updated")
+                    else:
+                        st.success("Orbital status updated successfully!")
+                else:
+                    error = response.json().get("error", "Unknown error occurred.")
+                    st.error(f"Update failed: {error}")
+
+            except requests.exceptions.RequestException as e:
+                st.error("Could not update data.")
                 st.text(f"Details: {e}")

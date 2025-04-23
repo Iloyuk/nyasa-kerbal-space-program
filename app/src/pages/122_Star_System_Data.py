@@ -120,3 +120,18 @@ with st.form("replace"):
         except requests.exceptions.RequestException as e:
             st.error("Could not update data.")
             st.text(f"Details: {e}")
+
+with st.form("delete"):
+    st.write("**Delete a star system**")
+    star_sys_id = st.text_input("*Star System ID to be deleted:*")
+
+    if st.form_submit_button("Delete"):
+        try:
+            response = requests.delete(f'http://api:4000/starsystems/{star_sys_id}',)
+            if response.status_code == 200:
+                st.success("Star System deleted successfully!")
+            else:
+                st.warning("No star system was deleted")
+        except requests.exceptions.RequestException as e:
+            st.error("Could not delete data.")
+            st.text(f"Details: {e}")

@@ -85,3 +85,18 @@ with st.form("replace"):
         except requests.exceptions.RequestException as e:
             st.error("Could not update data.")
             st.text(f"Details: {e}")
+
+with st.form("delete"):
+    st.write("**Delete a galaxy. WARNING: THIS WILL DELETE ALL STAR SYSTEMS IN SAID GALAXY**")
+    galaxy_id = st.text_input("*Galaxy ID to be deleted:*")
+
+    if st.form_submit_button("Delete"):
+        try:
+            response = requests.delete(f'http://api:4000/galaxies', params={"GalaxyID": galaxy_id})
+            if response.status_code == 200:
+                st.success("Galaxy deleted successfully!")
+            else:
+                st.warning("No galaxy was deleted")
+        except requests.exceptions.RequestException as e:
+            st.error("Could not delete data.")
+            st.text(f"Details: {e}")

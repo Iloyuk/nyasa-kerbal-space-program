@@ -44,7 +44,17 @@ with st.form("lookup_star"):
             else:
                 st.dataframe(data)
 
-    # TODO: add submitted_planet
+    if submitted_planet:
+        if not star.isnumeric():
+            st.error("Please enter a valid star id")
+        else:
+            data = requests.get(f'http://api:4000/planets/orbits',
+                                params={"star": star}).json()
+            if not data:
+                st.error("Could not find star")
+            else:
+                st.dataframe(data)
+
 
 with st.form("input"):
     st.write('**Add a new star to the database**')
@@ -110,4 +120,19 @@ with st.form("update"):
 
         except requests.exceptions.RequestException as e:
             st.error("Could not update data.")
+            st.text(f"Details: {e}")
+
+with st.form("delete"):
+    st.write("**Delete a star**")
+    star_id = st.text_input("*Star ID to be deleted:*")
+
+    if st.form_submit_button("Delete"):
+        try:
+            response = requests.delete(f'http://api:4000/stars', params={"StarID": star_id})
+            if response.status_code == 200:
+                st.success("Star deleted successfully!")
+            else:
+                st.warning("No star was deleted")
+        except requests.exceptions.RequestException as e:
+            st.error("Could not delete data.")
             st.text(f"Details: {e}")

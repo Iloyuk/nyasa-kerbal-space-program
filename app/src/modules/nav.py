@@ -36,16 +36,46 @@ def AboutPageNav():
     st.sidebar.page_link("pages/30_About.py", label="About", icon="🧠")
 
 
-## Alex
+# Alex
 def GalaxyVis():
     st.sidebar.page_link("pages/101_Galaxy_VIsualization.py", label="Galaxy Visualization", icon="🌌")
 
 
-## Sammy
+# Sammy
+def SammyHome():
+    st.sidebar.page_link("pages/120_Scientist_Home.py", label="Home", icon="🏠")
 
-## Lexie
 
-### For Carl
+def Galaxy():
+    st.sidebar.page_link("pages/121_Galaxy_Data.py", label="Galaxy Data", icon="🌌")
+
+
+def StarSystem():
+    st.sidebar.page_link("pages/122_Star_System_Data.py", label="Star System Data", icon="☄")
+
+
+def Star():
+    st.sidebar.page_link("pages/123_Star_Data.py", label="Star Data", icon="⭐")
+
+
+def Planet():
+    st.sidebar.page_link("pages/124_Planet_Data.py", label="Planet Data", icon="🪐")
+
+
+# Lexie
+def LexieHome():
+    st.sidebar.page_link("pages/130_Astrologist_Home.py", label="Home", icon="🏠")
+
+
+def ConstellationInfo():
+    st.sidebar.page_link("pages/131_Constellation_Info.py", label="Constellation Information", icon="⛎")
+
+
+def FindConstellation():
+    st.sidebar.page_link("pages/132_Find_Constellation.py", label="Find constellation from star", icon="✨")
+
+
+# Carl
 def Findings():
     st.sidebar.page_link("pages/111_Findings.py", label="Findings", icon="🌟")
 
@@ -86,7 +116,7 @@ def SideBarLinks(show_home=False):
 
     # Show the other page navigators depending on the users' role.
     if st.session_state["authenticated"]:
-        #Alex
+        # alex
         if st.session_state.first_name == "Alex":
             GalaxyVis()
         # carl my goat
@@ -95,6 +125,19 @@ def SideBarLinks(show_home=False):
             Findings()
             Spacecraft()
             Missions()
+        # sammy my woat >:(
+        if st.session_state.first_name == "Sammy":
+            SammyHome()
+            Galaxy()
+            StarSystem()
+            Star()
+            Planet()
+        # lexie
+        if st.session_state.first_name == "Lexie":
+            LexieHome()
+            ConstellationInfo()
+            FindConstellation()
+
 
     # Always show the About page at the bottom of the list of links
     AboutPageNav()
