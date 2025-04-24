@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS Galaxy (
     GalaxyID INT PRIMARY KEY AUTO_INCREMENT,
     GalaxyName VARCHAR(100) UNIQUE,
     Redshift DOUBLE,
-    YearDiscovered date NOT NULL,
+    DateDiscovered date NOT NULL,
     SolarMassTrillions DOUBLE,
     DominantElement VARCHAR(100)
 );
@@ -204,7 +204,7 @@ CREATE TABLE IF NOT EXISTS Orbits (
  Insert data into tables
  */
 -- GALAXY
-INSERT INTO Galaxy (GalaxyName, Redshift, YearDiscovered, SolarMassTrillions, DominantElement)
+INSERT INTO Galaxy (GalaxyName, Redshift, DateDiscovered, SolarMassTrillions, DominantElement)
 VALUES 
 ('Milky Way', 0.0, '1610-01-01', 1.5, 'Hydrogen'),
 ('Andromeda', -0.001001, '0964-01-01', 1.23, 'Hydrogen'),
