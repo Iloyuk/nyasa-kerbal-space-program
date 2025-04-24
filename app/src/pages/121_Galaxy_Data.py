@@ -4,6 +4,7 @@ import requests
 import json
 from streamlit_extras.app_logo import add_logo
 from modules.nav import SideBarLinks
+from datetime import date
 
 logger = logging.getLogger(__name__)
 
@@ -21,11 +22,11 @@ with view:
         galaxy = st.text_input("Enter galaxy name/id:")
         st.form_submit_button('Search')
         if '/' in galaxy or '\\' in galaxy or len(galaxy) == 0:
-            data = requests.get('http://api:4000/galaxies').json()
+            data = requests.get('http://api:4000/galaxies', params={"amount": 10}).json()
         else:
             data = requests.get(f'http://api:4000/galaxies/{galaxy}').json()
             if not data:
-                data = requests.get('http://api:4000/galaxies').json()
+                data = requests.get('http://api:4000/galaxies', params={"amount": 10}).json()
         st.dataframe(data)
 
 with add:
@@ -33,7 +34,7 @@ with add:
         st.write('**Add a new galaxy to the database**')
         galaxy_name = st.text_input('Galaxy Name:')
         redshift = st.text_input('Redshift:')
-        year_discovered = st.text_input('Year Discovered (YYYY-MM-DD):')
+        year_discovered = st.date_input("Date Discovered")
         solar_mass = st.text_input('Solar Mass in Trillions:')
         dominant_element = st.text_input('Dominant Element:')
         submitted = st.form_submit_button('Add')
@@ -43,7 +44,7 @@ with add:
                 response = requests.post('http://api:4000/galaxies', json={
                     "GalaxyName": galaxy_name if galaxy_name != "" else None,
                     "Redshift": redshift if redshift != "" else None,
-                    "YearDiscovered": year_discovered,
+                    "YearDiscovered": year_discovered.strftime('%Y-%m-%d') if isinstance(year_discovered, date) else year_discovered,
                     "SolarMassTrillions": solar_mass if solar_mass != "" else None,
                     "DominantElement": dominant_element if dominant_element != "" else None
                 })
@@ -62,7 +63,7 @@ with edit:
         galaxy_id = st.text_input('*Galaxy ID to be modified:*')
         galaxy_name = st.text_input('Galaxy Name:')
         redshift = st.text_input('Redshift:')
-        year_discovered = st.text_input('Year Discovered (YYYY-MM-DD):')
+        year_discovered = st.date_input("Date Discovered")
         solar_mass = st.text_input('Solar Mass in Trillions:')
         dominant_element = st.text_input('Dominant Element:')
         submitted = st.form_submit_button('Modify')
@@ -73,7 +74,7 @@ with edit:
                     "GalaxyID": galaxy_id,
                     "GalaxyName": galaxy_name,
                     "Redshift": redshift,
-                    "YearDiscovered": year_discovered,
+                    "YearDiscovered": year_discovered.strftime('%Y-%m-%d') if isinstance(year_discovered, date) else year_discovered,
                     "SolarMassTrillions": solar_mass,
                     "DominantElement": dominant_element
                 })

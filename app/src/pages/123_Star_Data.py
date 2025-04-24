@@ -73,7 +73,7 @@ with add:
             try:
                 response = requests.post('http://api:4000/stars', json={
                     "SystemID": sys_id,
-                    "ConstID": const_id,
+                    "ConstID": const_id if const_id != "" else None,
                     "StarName": star_name if star_name != "" else None,
                     "Mass": mass if mass != "" else None,
                     "Temperature": temp if temp != "" else None,

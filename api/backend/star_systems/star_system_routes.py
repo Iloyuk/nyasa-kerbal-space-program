@@ -99,7 +99,8 @@ def find_starsystems_by_galaxy_name_and_starsystem_name(GalaxyName, SystemName):
     '''
     return run_program(query)
 
-@star_system.route('/galaxies/<int:GalaxyID>/starsystems/distInLY',methods=["GET"])
+
+@star_system.route('/galaxies/<int:GalaxyID>/starsystems/distInLY', methods=["GET"])
 def find_DIYL_in_ss(GalaxyID):
     query = f'''
         SELECT StarSystem.SystemID, StarSystem.DistInLY
