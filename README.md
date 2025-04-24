@@ -2,7 +2,7 @@
 
 ## Re-Bootstrapping the Database
 
-To rebootstrap the database run the commands in `starsystems.sql` sequentially.
+To rebootstrap the database with sample data, run the commands in `starsystems.sql` sequentially.
 
 ```sql
 CREATE DATABASE IF NOT EXISTS NYASA;
