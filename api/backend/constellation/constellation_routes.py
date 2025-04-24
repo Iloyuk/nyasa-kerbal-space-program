@@ -22,7 +22,7 @@ def run_program(query):
 @constellation.route('/constellation', methods=['GET'])
 def get_constellation():
     query = '''
-        SELECT Constellation.ConstName, Constellation.ConstID
+        SELECT *
         FROM Constellation
     '''
     return run_program(query)

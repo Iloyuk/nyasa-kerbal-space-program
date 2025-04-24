@@ -6,13 +6,13 @@ SideBarLinks()
 
 st.write("# About this App")
 
-st.markdown (
-    """
-    This is a demo app for CS 3200 Course Project.  
+with st.container():
+    st.markdown (
+        """
+        The Kerbal Space Program database app was made by Jason, Davey, and Kylie. 
 
-    The goal of this demo is to provide information on the tech stack 
-    being used as well as demo some of the features of the various platforms. 
-
-    Stay tuned for more information and features to come!
-    """
-        )
+        It is a database app that keep tracks of galaxies, stars, star systems, and more, with the ability to update
+        it and view, made with the intent of easy control and idenfiable info. 
+        """
+            )
+    st.image("assets/faust.png", caption="This is the credits section!")
