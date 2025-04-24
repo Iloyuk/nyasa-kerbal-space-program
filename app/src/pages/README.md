@@ -8,15 +8,15 @@ Documentation for all of the pages.
 
 > Provides a brief introduction to the application.
 
-* Outlines the goal of the demo, focusing on showcasing the technology stack (like Streamlit) and platform features.
-* Informs the user that more features and information are planned for future updates.
+* Outlines the goal of the application (to be a database app that keep tracks of galaxies, stars, star systems, and more)
 
 ## How It Works
 
 1.  Imports necessary libraries (`streamlit`, `streamlit_extras`, `modules.nav`).
 2.  Renders the sidebar navigation links using the imported `SideBarLinks()` function.
 3.  Displays the main title "# About this App" using `st.write`.
-4.  Uses `st.markdown` to display the descriptive text about the app's purpose and goals.
+4.  Uses `st.markdown` to display the descriptive text about the app's purpose, and the creators.
+5. Uses `st.image` to display a cute image (`faust.png`) with the caption `This is the credits section!`.
 
 ## API Connections
 
