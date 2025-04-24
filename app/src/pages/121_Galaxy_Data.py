@@ -18,7 +18,7 @@ view, add, edit, delete = st.tabs(['View', 'Add', 'Edit', 'Delete'])
 with view:
     with st.form("lookup"):
         st.write('**Lookup galaxy**')
-        galaxy = st.text_input("Enter galaxy name:")
+        galaxy = st.text_input("Enter galaxy name/id:")
         st.form_submit_button('Search')
         if '/' in galaxy or '\\' in galaxy or len(galaxy) == 0:
             data = requests.get('http://api:4000/galaxies').json()
