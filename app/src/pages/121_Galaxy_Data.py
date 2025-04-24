@@ -21,7 +21,7 @@ with view:
         galaxy = st.text_input("Enter galaxy name/id:")
         st.form_submit_button('Search')
         if '/' in galaxy or '\\' in galaxy or len(galaxy) == 0:
-            data = requests.get('http://api:4000/galaxies').json()
+            data = requests.get('http://api:4000/galaxies', params={"amount": 10}).json()
         else:
             data = requests.get(f'http://api:4000/galaxies/{galaxy}').json()
             if not data:

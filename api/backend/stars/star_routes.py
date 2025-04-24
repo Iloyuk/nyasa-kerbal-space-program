@@ -32,7 +32,7 @@ def add_or_update_stars():
             cursor = db.get_db().cursor()
             cursor.execute(query, (
                 int(data['SystemID']),
-                int(data['ConstID']),
+                data['ConstID'],
                 data['StarName'],
                 data['Mass'],
                 data['Temperature'],

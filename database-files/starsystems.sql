@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS Finding (
 CREATE TABLE IF NOT EXISTS Star (
     StarID INT PRIMARY KEY AUTO_INCREMENT,
     SystemID INT NOT NULL,
-    ConstID INT NOT NULL,
+    ConstID INT,
     StarName VARCHAR(100) UNIQUE,
     Mass INT,
     Temperature INT,
