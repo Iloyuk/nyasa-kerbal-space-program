@@ -1,8 +1,136 @@
 # NYASA Database Documentation
 
+## Purpose
+
+Defines the structure for the **NYASA** database, which stores information about astronomical objects (galaxies, star systems, stars, planets, constellations), space missions, spacecraft, astronauts, and related findings. It uses a relational model to link these entities together.
+
+## Structure
+
+The schema consists of several tables, linked primarily through foreign keys. ON UPDATE CASCADE and ON DELETE CASCADE are used extensively to maintain data integrity when parent records are modified or removed.
+
+* **Galaxy**
+    * **Purpose:** Stores information about individual galaxies.
+    * **Key Columns:**
+        * GalaxyID (INT, PK, Auto-Increment): Unique identifier for each galaxy.
+        * GalaxyName (VARCHAR, UNIQUE): The common name of the galaxy.
+        * YearDiscovered (DATE, NOT NULL): Date the galaxy was discovered.
+    * **Relationships:** Parent table for StarSystem.
+* **StarSystem**
+    * **Purpose:** Stores information about star systems within galaxies.
+    * **Key Columns:**
+        * SystemID (INT, PK, Auto-Increment): Unique identifier for each star system.
+        * GalaxyID (INT, FK, NOT NULL): Links to the Galaxy table.
+        * SystemName (VARCHAR, UNIQUE): The name of the star system.
+        * NumStars (INT, NOT NULL): Number of stars in the system.
+    * **Relationships:** Child of Galaxy, Parent of Star and StarSystemMissions. Cascades updates/deletes from Galaxy.
+* **Constellation**
+    * **Purpose:** Stores information about constellations.
+    * **Key Columns:**
+        * ConstID (INT, PK, Auto-Increment): Unique identifier.
+        * ConstName (VARCHAR, UNIQUE): Name of the constellation.
+        * Abbreviation (VARCHAR, UNIQUE): Standard abbreviation.
+        * Hemisphere (ENUM, NOT NULL): Hemisphere where it's primarily visible.
+    * **Relationships:** Parent table for Star.
+* **Finding**
+    * **Purpose:** Stores details about scientific findings or observations.
+    * **Key Columns:**
+        * FindingID (INT, PK, Auto-Increment): Unique identifier.
+        * Significance (ENUM, NOT NULL): Subjective importance (Low, Medium, High).
+        * FindingDate (DATE, NOT NULL): Date the finding was recorded.
+        * Notes (VARCHAR, NOT NULL): Description of the finding.
+    * **Relationships:** Parent table for MissionFinding.
+* **Star**
+    * **Purpose:** Stores information about individual stars.
+    * **Key Columns:**
+        * StarID (INT, PK, Auto-Increment): Unique identifier.
+        * SystemID (INT, FK, NOT NULL): Links to the StarSystem table.
+        * ConstID (INT, FK, NOT NULL): Links to the Constellation table.
+        * StarName (VARCHAR, UNIQUE): Name of the star.
+        * SpectralType (VARCHAR, NOT NULL): Classification of the star.
+    * **Relationships:** Child of StarSystem and Constellation, Parent of Orbits. Cascades updates/deletes from StarSystem and Constellation.
+* **Planet**
+    * **Purpose:** Stores information about planets.
+    * **Key Columns:**
+        * PlanetID (INT, PK, Auto-Increment): Unique identifier.
+        * PlanetName (VARCHAR, UNIQUE): Name of the planet.
+        * PlanetType (VARCHAR, NOT NULL): Classification (e.g., Terrestrial, Gas Giant).
+    * **Relationships:** Parent table for Orbits.
+* **Spacecraft**
+    * **Purpose:** Stores information about individual spacecraft.
+    * **Key Columns:**
+        * ShipID (INT, PK, Auto-Increment): Unique identifier.
+        * ShipName (VARCHAR, UNIQUE, NOT NULL): Name of the spacecraft.
+        * Status (ENUM, NOT NULL): Current operational status.
+        * Manufacturer (VARCHAR, NOT NULL): Company or agency that built it.
+    * **Relationships:** Parent table for Part, MissionSpacecraft, and SpacecraftAstronaut.
+* **Part**
+    * **Purpose:** Stores information about components of a spacecraft.
+    * **Key Columns:**
+        * PartID (INT, PK, Auto-Increment): Unique identifier.
+        * ShipID (INT, FK, NOT NULL): Links to the Spacecraft table.
+        * PartName (VARCHAR, NOT NULL): Name of the part.
+    * **Relationships:** Child of Spacecraft. Cascades updates/deletes from Spacecraft.
+* **Mission**
+    * **Purpose:** Stores information about space missions.
+    * **Key Columns:**
+        * MissionID (INT, PK, Auto-Increment): Unique identifier.
+        * MissionName (VARCHAR, NOT NULL): Name of the mission.
+        * Agency (VARCHAR, NOT NULL): Sponsoring agency.
+        * Objective (VARCHAR, NOT NULL): Goal of the mission.
+    * **Relationships:** Parent table for MissionSpacecraft, MissionAstronaut, MissionFinding, and StarSystemMissions.
+* **Astronaut**
+    * **Purpose:** Stores information about astronauts.
+    * **Key Columns:**
+        * AstroID (INT, PK, Auto-Increment): Unique identifier.
+        * Name (VARCHAR, NOT NULL): Name of the astronaut.
+        * Country (VARCHAR, NOT NULL): Astronaut's country of origin.
+    * **Relationships:** Parent table for MissionAstronaut and SpacecraftAstronaut.
+* **MissionSpacecraft** (Linking Table)
+    * **Purpose:** Links Missions to the Spacecraft used in them.
+    * **Key Columns:**
+        * MissionID (INT, PK, FK): Links to Mission.
+        * ShipID (INT, PK, FK): Links to Spacecraft.
+        * MissionStatus (ENUM, NOT NULL): Status of the spacecraft within that specific mission.
+    * **Relationships:** Many-to-many relationship between Mission and Spacecraft. Cascades updates/deletes from both parent tables.
+* **MissionAstronaut** (Linking Table)
+    * **Purpose:** Links Missions to the Astronauts assigned to them.
+    * **Key Columns:**
+        * MissionID (INT, PK, FK): Links to Mission.
+        * AstroID (INT, PK, FK): Links to Astronaut.
+    * **Relationships:** Many-to-many relationship between Mission and Astronaut. Cascades updates/deletes from both parent tables.
+* **MissionFinding** (Linking Table)
+    * **Purpose:** Links Missions to the Findings associated with them.
+    * **Key Columns:**
+        * MissionID (INT, PK, FK): Links to Mission.
+        * FindingID (INT, PK, FK): Links to Finding.
+    * **Relationships:** Many-to-many relationship between Mission and Finding. Cascades updates/deletes from both parent tables.
+* **StarSystemMissions** (Linking Table)
+    * **Purpose:** Links Missions to the Star Systems they target, including visit dates.
+    * **Key Columns:**
+        * SystemID (INT, PK, FK): Links to StarSystem.
+        * MissionID (INT, PK, FK): Links to Mission.
+        * StartDate (DATE, NOT NULL): Date the mission arrived/started activity in the system.
+        * EndDate (DATE): Date the mission left/concluded activity in the system.
+    * **Relationships:** Many-to-many relationship between StarSystem and Mission. Cascades updates/deletes from both parent tables.
+* **SpacecraftAstronaut** (Linking Table)
+    * **Purpose:** Links Spacecraft to the Astronauts assigned to them (potentially across multiple missions or generally).
+    * **Key Columns:**
+        * ShipID (INT, PK, FK): Links to Spacecraft.
+        * AstroID (INT, PK, FK): Links to Astronaut.
+    * **Relationships:** Many-to-many relationship between Spacecraft and Astronaut. *Note: Cascade behavior is not explicitly defined here but might be desirable.*
+* **Orbits** (Linking Table)
+    * **Purpose:** Links Planets to the Stars they orbit, including orbital parameters.
+    * **Key Columns:**
+        * PlanetID (INT, PK, FK): Links to Planet.
+        * StarID (INT, PK, FK): Links to Star.
+        * OrbitalPeriod (DOUBLE, NOT NULL): Time taken for one orbit.
+        * SemiMajorAxis (DOUBLE, NOT NULL): Average distance from the star.
+    * **Relationships:** Many-to-many relationship between Planet and Star (though typically one planet orbits one star in this context, the structure allows for flexibility). Cascades updates/deletes from both parent tables.
+
+
 ## Re-Bootstrapping the Database
 
-To rebootstrap the database with sample data, run the commands in `starsystems.sql` sequentially.
+To rebootstrap the database with sample data, run the commands in `starsystems.sql` sequentially. If one wishes to not add the sample data, ignore the `INSERT INTO` statements.
 
 ```sql
 CREATE DATABASE IF NOT EXISTS NYASA;
@@ -488,130 +616,3 @@ FROM Planet P
          LEFT JOIN Star S ON S.StarID = O.StarID
 
 ```
-
-## Purpose
-
-Defines the structure for the **NYASA** database, which stores information about astronomical objects (galaxies, star systems, stars, planets, constellations), space missions, spacecraft, astronauts, and related findings. It uses a relational model to link these entities together.
-
-## Structure
-
-The schema consists of several tables, linked primarily through foreign keys. ON UPDATE CASCADE and ON DELETE CASCADE are used extensively to maintain data integrity when parent records are modified or removed.
-
-* **Galaxy**
-    * **Purpose:** Stores information about individual galaxies.
-    * **Key Columns:**
-        * GalaxyID (INT, PK, Auto-Increment): Unique identifier for each galaxy.
-        * GalaxyName (VARCHAR, UNIQUE): The common name of the galaxy.
-        * YearDiscovered (DATE, NOT NULL): Date the galaxy was discovered.
-    * **Relationships:** Parent table for StarSystem.
-* **StarSystem**
-    * **Purpose:** Stores information about star systems within galaxies.
-    * **Key Columns:**
-        * SystemID (INT, PK, Auto-Increment): Unique identifier for each star system.
-        * GalaxyID (INT, FK, NOT NULL): Links to the Galaxy table.
-        * SystemName (VARCHAR, UNIQUE): The name of the star system.
-        * NumStars (INT, NOT NULL): Number of stars in the system.
-    * **Relationships:** Child of Galaxy, Parent of Star and StarSystemMissions. Cascades updates/deletes from Galaxy.
-* **Constellation**
-    * **Purpose:** Stores information about constellations.
-    * **Key Columns:**
-        * ConstID (INT, PK, Auto-Increment): Unique identifier.
-        * ConstName (VARCHAR, UNIQUE): Name of the constellation.
-        * Abbreviation (VARCHAR, UNIQUE): Standard abbreviation.
-        * Hemisphere (ENUM, NOT NULL): Hemisphere where it's primarily visible.
-    * **Relationships:** Parent table for Star.
-* **Finding**
-    * **Purpose:** Stores details about scientific findings or observations.
-    * **Key Columns:**
-        * FindingID (INT, PK, Auto-Increment): Unique identifier.
-        * Significance (ENUM, NOT NULL): Subjective importance (Low, Medium, High).
-        * FindingDate (DATE, NOT NULL): Date the finding was recorded.
-        * Notes (VARCHAR, NOT NULL): Description of the finding.
-    * **Relationships:** Parent table for MissionFinding.
-* **Star**
-    * **Purpose:** Stores information about individual stars.
-    * **Key Columns:**
-        * StarID (INT, PK, Auto-Increment): Unique identifier.
-        * SystemID (INT, FK, NOT NULL): Links to the StarSystem table.
-        * ConstID (INT, FK, NOT NULL): Links to the Constellation table.
-        * StarName (VARCHAR, UNIQUE): Name of the star.
-        * SpectralType (VARCHAR, NOT NULL): Classification of the star.
-    * **Relationships:** Child of StarSystem and Constellation, Parent of Orbits. Cascades updates/deletes from StarSystem and Constellation.
-* **Planet**
-    * **Purpose:** Stores information about planets.
-    * **Key Columns:**
-        * PlanetID (INT, PK, Auto-Increment): Unique identifier.
-        * PlanetName (VARCHAR, UNIQUE): Name of the planet.
-        * PlanetType (VARCHAR, NOT NULL): Classification (e.g., Terrestrial, Gas Giant).
-    * **Relationships:** Parent table for Orbits.
-* **Spacecraft**
-    * **Purpose:** Stores information about individual spacecraft.
-    * **Key Columns:**
-        * ShipID (INT, PK, Auto-Increment): Unique identifier.
-        * ShipName (VARCHAR, UNIQUE, NOT NULL): Name of the spacecraft.
-        * Status (ENUM, NOT NULL): Current operational status.
-        * Manufacturer (VARCHAR, NOT NULL): Company or agency that built it.
-    * **Relationships:** Parent table for Part, MissionSpacecraft, and SpacecraftAstronaut.
-* **Part**
-    * **Purpose:** Stores information about components of a spacecraft.
-    * **Key Columns:**
-        * PartID (INT, PK, Auto-Increment): Unique identifier.
-        * ShipID (INT, FK, NOT NULL): Links to the Spacecraft table.
-        * PartName (VARCHAR, NOT NULL): Name of the part.
-    * **Relationships:** Child of Spacecraft. Cascades updates/deletes from Spacecraft.
-* **Mission**
-    * **Purpose:** Stores information about space missions.
-    * **Key Columns:**
-        * MissionID (INT, PK, Auto-Increment): Unique identifier.
-        * MissionName (VARCHAR, NOT NULL): Name of the mission.
-        * Agency (VARCHAR, NOT NULL): Sponsoring agency.
-        * Objective (VARCHAR, NOT NULL): Goal of the mission.
-    * **Relationships:** Parent table for MissionSpacecraft, MissionAstronaut, MissionFinding, and StarSystemMissions.
-* **Astronaut**
-    * **Purpose:** Stores information about astronauts.
-    * **Key Columns:**
-        * AstroID (INT, PK, Auto-Increment): Unique identifier.
-        * Name (VARCHAR, NOT NULL): Name of the astronaut.
-        * Country (VARCHAR, NOT NULL): Astronaut's country of origin.
-    * **Relationships:** Parent table for MissionAstronaut and SpacecraftAstronaut.
-* **MissionSpacecraft** (Linking Table)
-    * **Purpose:** Links Missions to the Spacecraft used in them.
-    * **Key Columns:**
-        * MissionID (INT, PK, FK): Links to Mission.
-        * ShipID (INT, PK, FK): Links to Spacecraft.
-        * MissionStatus (ENUM, NOT NULL): Status of the spacecraft within that specific mission.
-    * **Relationships:** Many-to-many relationship between Mission and Spacecraft. Cascades updates/deletes from both parent tables.
-* **MissionAstronaut** (Linking Table)
-    * **Purpose:** Links Missions to the Astronauts assigned to them.
-    * **Key Columns:**
-        * MissionID (INT, PK, FK): Links to Mission.
-        * AstroID (INT, PK, FK): Links to Astronaut.
-    * **Relationships:** Many-to-many relationship between Mission and Astronaut. Cascades updates/deletes from both parent tables.
-* **MissionFinding** (Linking Table)
-    * **Purpose:** Links Missions to the Findings associated with them.
-    * **Key Columns:**
-        * MissionID (INT, PK, FK): Links to Mission.
-        * FindingID (INT, PK, FK): Links to Finding.
-    * **Relationships:** Many-to-many relationship between Mission and Finding. Cascades updates/deletes from both parent tables.
-* **StarSystemMissions** (Linking Table)
-    * **Purpose:** Links Missions to the Star Systems they target, including visit dates.
-    * **Key Columns:**
-        * SystemID (INT, PK, FK): Links to StarSystem.
-        * MissionID (INT, PK, FK): Links to Mission.
-        * StartDate (DATE, NOT NULL): Date the mission arrived/started activity in the system.
-        * EndDate (DATE): Date the mission left/concluded activity in the system.
-    * **Relationships:** Many-to-many relationship between StarSystem and Mission. Cascades updates/deletes from both parent tables.
-* **SpacecraftAstronaut** (Linking Table)
-    * **Purpose:** Links Spacecraft to the Astronauts assigned to them (potentially across multiple missions or generally).
-    * **Key Columns:**
-        * ShipID (INT, PK, FK): Links to Spacecraft.
-        * AstroID (INT, PK, FK): Links to Astronaut.
-    * **Relationships:** Many-to-many relationship between Spacecraft and Astronaut. *Note: Cascade behavior is not explicitly defined here but might be desirable.*
-* **Orbits** (Linking Table)
-    * **Purpose:** Links Planets to the Stars they orbit, including orbital parameters.
-    * **Key Columns:**
-        * PlanetID (INT, PK, FK): Links to Planet.
-        * StarID (INT, PK, FK): Links to Star.
-        * OrbitalPeriod (DOUBLE, NOT NULL): Time taken for one orbit.
-        * SemiMajorAxis (DOUBLE, NOT NULL): Average distance from the star.
-    * **Relationships:** Many-to-many relationship between Planet and Star (though typically one planet orbits one star in this context, the structure allows for flexibility). Cascades updates/deletes from both parent tables.
