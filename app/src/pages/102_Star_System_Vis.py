@@ -8,7 +8,8 @@ logger = logging.getLogger(__name__)
 SideBarLinks()
 
 st.header('Star System Visualization')
-galaxys = requests.get('http://api:4000/galaxies').json() #wrong name on purpose for funny
+amount = int(st.number_input("Amount of galaxies you would like to display:", min_value=0, step=1, format="%d"))
+galaxys = requests.get('http://api:4000/galaxies', params={"amount": amount}).json() #wrong name on purpose for funny
 st.dataframe(galaxys)
 
 with st.form("viewing the stars"):
