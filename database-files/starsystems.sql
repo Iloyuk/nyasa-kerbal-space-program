@@ -456,6 +456,20 @@ VALUES
 ('Medium', '2027-05-15', 'Planned subsurface scan of Europa’s ice crust.'),
 ('Medium', '2021-12-06', 'Successful lunar flyby by Artemis I.');
 
+INSERT INTO StarSystemMissions (SystemID, MissionID, StartDate, EndDate)
+VALUES
+(1, 1, '2029-06-01', '2030-05-12'),
+(2, 8, '2021-12-25', '2022-02-01'),
+(3, 7, '1969-07-16', '1969-07-24'),
+(4, 4, '2030-01-12', '2031-03-12'),
+(5, 6, '2033-04-20', NULL),
+(6, 2, '2020-07-30', '2021-02-18'),
+(8, 11, '2023-08-05', '2023-08-09'),
+(12, 5, '2035-01-10', NULL),
+(19, 10, '2032-11-20', NULL),
+(21, 9, '2041-02-10', NULL),
+(28, 12, '2046-01-05', NULL);
+
 -- MISSION FINDING
 INSERT INTO MissionFinding (MissionID, FindingID)
 VALUES 
@@ -465,6 +479,14 @@ VALUES
 (4, 6),  -- Artemis lunar flyby
 (5, 4),  -- ExoMars organic detection
 (6, 5);  -- Europa Clipper planned scan
+
+INSERT INTO SpacecraftAstronaut (ShipID, AstroID) VALUES
+(1, 5),  -- Valentina Tereshkova on Apollo 11
+(1, 6),  -- Chris Hadfield on Apollo 11
+(2, 1),  -- Neil Armstrong on Orion I
+(3, 4),  -- Neil Armstrong on Starship Alpha
+(3, 2),  -- Buzz Aldrin on Starship Alpha
+(3, 3);  -- Sally Ride on Starship Alpha
 
 Select *
 FROM Planet;
