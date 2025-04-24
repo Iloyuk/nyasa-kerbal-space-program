@@ -15,4 +15,5 @@ with st.container():
         it and view, made with the intent of easy control and idenfiable info. 
         """
             )
-    st.image("assets/faust.png", caption="This is the credits section!")
+    st.image("assets/faust.png", width=256, caption="hello! - davey")
+    st.image("assets/skye.png", width=256, caption="sammy killed my will to live - jason")
